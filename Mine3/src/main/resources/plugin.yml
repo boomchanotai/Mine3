@@ -1,0 +1,4 @@
+name: Mine3
+version: '${project.version}'
+main: com.boomchanotai.mine3.Mine3
+api-version: '1.21'
