@@ -3,13 +3,8 @@ package com.boomchanotai.mine3;
 import com.boomchanotai.mine3.Javalin.Javalin;
 import com.boomchanotai.mine3.Listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3.Redis.Redis;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.javalin.http.HttpStatus;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.JSONObject;
-import redis.clients.jedis.JedisPool;
 
 import java.util.Objects;
 

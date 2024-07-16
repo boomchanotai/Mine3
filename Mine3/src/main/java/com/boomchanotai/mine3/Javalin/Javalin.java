@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.http.HttpStatus;
-import org.bukkit.Bukkit;
-import org.json.JSONObject;
 import redis.clients.jedis.Jedis;
 
 import static com.boomchanotai.mine3.Listeners.PlayerJoinQuitEvent.PLAYER_PREFIX_KEY;
