@@ -3,6 +3,7 @@ import { useCallback, useMemo } from "react";
 import { Container } from "../../components/Container";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { useBindWalletMutation } from "../../hook/mutation/useBindWalletMutation";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Login = () => {
   const [searchParams] = useSearchParams();
@@ -43,16 +44,23 @@ const Login = () => {
   }
 
   return (
-    <main className="flex flex-col justify-center items-center min-h-[50vh]">
+    <main className="flex flex-col justify-center items-center min-h-[80vh]">
       <Container>
-        {isConnected && (
+        {isConnected ? (
           <div>
             <button
               onClick={handleSignMessage}
-              className="outline-none bg-blue-500 py-2 px-6 rounded-2xl shadow-lg font-bold text-white"
+              className="outline-none bg-black py-2 px-6 rounded-2xl shadow-lg font-bold text-white"
             >
-              Bind EVM Wallet
+              Login Minecraft via Mine3
             </button>
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center items-center gap-4">
+            <div className="text-2xl font-bold">
+              Please Login to your wallet
+            </div>
+            <ConnectButton />
           </div>
         )}
       </Container>

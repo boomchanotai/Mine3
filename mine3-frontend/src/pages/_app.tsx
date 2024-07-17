@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import logo from "../assets/logo.png";
 import { Container } from "../components/Container";
@@ -11,13 +11,13 @@ const Layout = () => {
 
       <Container className="flex flex-row justify-between items-center py-4">
         <div className="flex flex-row items-center gap-6">
-          <div>
+          <Link to="/">
             <img
               src={logo}
               alt="Mine3"
               className="object-cover object-center size-10"
             />
-          </div>
+          </Link>
         </div>
         <div>
           <ConnectButton />
