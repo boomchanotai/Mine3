@@ -15,13 +15,17 @@ public class Config {
     public static String REDIS_HOST;
     public static int REDIS_PORT;
 
+    // Postgres Settings
+    public static String POSTGRES_HOST;
+    public static String POSTGRES_USERNAME;
+    public static String POSTGRES_PASSWORD;
+
     // Httpserver Settings
     public static int HTTPSERVER_PORT;
 
     // Authentication Settings
     public static String AUTH_WEBSITE_TOKEN_BASE_URL;
     public static int AUTH_LOGIN_SESSION_TIMEOUT;
-    public static int AUTH_AUTO_LOGIN_TIMEOUT;
     public static String AUTH_TOKEN_PREFIX_KEY;
     public static String AUTH_ADDRESS_KEY;
     public static String AUTH_PLAYER_KEY;
@@ -48,6 +52,10 @@ public class Config {
 
         REDIS_HOST = config.getString("redis.host");
         REDIS_PORT = config.getInt("redis.port");
+
+        POSTGRES_HOST = config.getString("postgres.host");
+        POSTGRES_USERNAME = config.getString("postgres.username");
+        POSTGRES_PASSWORD = config.getString("postgres.password");
 
         HTTPSERVER_PORT = config.getInt("httpserver.port");
 

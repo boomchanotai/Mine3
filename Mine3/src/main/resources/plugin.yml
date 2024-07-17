@@ -2,3 +2,6 @@ name: Mine3
 version: '${project.version}'
 main: com.boomchanotai.mine3.Mine3
 api-version: '1.21'
+description: 'minecraft authentication system with evm wallet'
+author: boomchanotai
+website: https://github.com/boomchanotai/Mine3

@@ -14,6 +14,12 @@ redis:
   host: "localhost"
   port: 6379
 
+# Postgres Settings
+postgres:
+  host: "jdbc:postgresql://localhost:5432/postgres"
+  username: "postgres"
+  password: "password"
+
 # Httpserver Settings
 httpserver:
   port: 4000

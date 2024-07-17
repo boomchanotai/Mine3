@@ -49,10 +49,13 @@ public class Server {
             Mine3.getInstance().getServer().getLogger().warning(LOG_TITLE + e.getMessage());
             Mine3.getInstance().getServer().shutdown();
         }
+
+        Mine3.getInstance().getLogger().info(LOG_TITLE + "Http server is running!");
     }
 
     public static void stopServer() {
         getApp().stop();
+        Mine3.getInstance().getLogger().info(LOG_TITLE + "Http server has been stopped!");
     }
 
     public static void getServerStatus(Context ctx) {

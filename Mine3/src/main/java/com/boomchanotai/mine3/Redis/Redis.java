@@ -21,6 +21,8 @@ public class Redis {
 
     public static void connect() {
         pool = new JedisPool(REDIS_HOST, REDIS_PORT);
+
+        Mine3.getInstance().getLogger().info(LOG_TITLE + "Connected to redis!");
     }
 
     public static void close() {
@@ -32,6 +34,8 @@ public class Redis {
         }
 
         getPool().close();
+
+        Mine3.getInstance().getLogger().info(LOG_TITLE + "Disconnected to redis!");
     }
 
 }
