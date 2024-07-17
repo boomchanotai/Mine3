@@ -1,12 +1,10 @@
 package com.boomchanotai.mine3.Listeners;
 
-import com.boomchanotai.mine3.Mine3;
 import com.boomchanotai.mine3.Redis.Redis;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,27 +14,11 @@ import redis.clients.jedis.Jedis;
 
 import java.util.Random;
 
-import static com.boomchanotai.mine3.Mine3.COLOR_CODE_PREFIX;
-import static com.boomchanotai.mine3.Mine3.TITLE;
+import static com.boomchanotai.mine3.Config.Config.*;
+import static com.boomchanotai.mine3.Config.Config.AUTH_JOIN_SERVER_TITLE_FADE_OUT;
 
 public class PlayerJoinQuitEvent implements Listener {
     private static final int TOKEN_LENGTH = 32;
-
-    // Redis Keys
-    public static String TOKEN_PREFIX_KEY;
-    public static String PLAYER_PREFIX_KEY;
-    public static String IP_PREFIX_KEY;
-
-    private static String CLICK_TO_LOGIN_MESSAGE;
-    private static String WEBSITE_TOKEN_BASE_URL;
-    private static int LOGIN_SESSION_TIMEOUT_SEC;
-    private static int AUTO_LOGIN_TIMEOUT_SEC;
-
-    private static String JOIN_SERVER_TITLE;
-    private static String JOIN_SERVER_SUBTITLE;
-    private static int JOIN_SERVER_FADE_IN;
-    private static int JOIN_SERVER_STAY;
-    private static int JOIN_SERVER_FADE_OUT;
 
     private String getRandomHexString(int numchars){
         Random r = new Random();
@@ -46,23 +28,6 @@ public class PlayerJoinQuitEvent implements Listener {
         }
 
         return stringBuffer.substring(0, numchars);
-    }
-
-    public PlayerJoinQuitEvent() {
-        FileConfiguration config = Mine3.getInstance().getConfig();
-        WEBSITE_TOKEN_BASE_URL = config.getString("auth.website_token_base_url");
-        LOGIN_SESSION_TIMEOUT_SEC = config.getInt("auth.login_session_timeout");
-        AUTO_LOGIN_TIMEOUT_SEC = config.getInt("auth.auto_login_timeout");
-        TOKEN_PREFIX_KEY = config.getString("auth.token_prefix_key");
-        IP_PREFIX_KEY = config.getString("auth.ip_prefix_key");
-        PLAYER_PREFIX_KEY = config.getString("auth.player_prefix_key");
-        CLICK_TO_LOGIN_MESSAGE = config.getString("auth.click_to_login_message");
-
-        JOIN_SERVER_TITLE = config.getString("auth.join_server_title.title");
-        JOIN_SERVER_SUBTITLE = config.getString("auth.join_server_title.subtitle");
-        JOIN_SERVER_FADE_IN = config.getInt("auth.join_server_title.fade_in");
-        JOIN_SERVER_STAY = config.getInt("auth.join_server_title.stay");
-        JOIN_SERVER_FADE_OUT = config.getInt("auth.join_server_title.fade_out");
     }
 
     @EventHandler
@@ -75,8 +40,7 @@ public class PlayerJoinQuitEvent implements Listener {
         String token = getRandomHexString(TOKEN_LENGTH);
 
         try (Jedis j = Redis.getPool().getResource()) {
-            j.setex(TOKEN_PREFIX_KEY + ":" + token, LOGIN_SESSION_TIMEOUT_SEC, playerUUID);
-            j.setex(IP_PREFIX_KEY + ":" + playerUUID, AUTO_LOGIN_TIMEOUT_SEC, String.valueOf(player.getAddress()));
+            j.setex(AUTH_TOKEN_PREFIX_KEY + ":" + token, AUTH_LOGIN_SESSION_TIMEOUT, playerUUID);
         } catch (Exception e) {
             Bukkit.getLogger().warning(e.getMessage());
         }
@@ -85,18 +49,18 @@ public class PlayerJoinQuitEvent implements Listener {
         TextComponent titleComponent = new TextComponent(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE));
         titleComponent.setColor(ChatColor.BLUE);
 
-        String url = WEBSITE_TOKEN_BASE_URL + token;
-        TextComponent urlComponent = new TextComponent(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, CLICK_TO_LOGIN_MESSAGE));
+        String url = AUTH_WEBSITE_TOKEN_BASE_URL + token;
+        TextComponent urlComponent = new TextComponent(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_CLICK_TO_LOGIN_MESSAGE));
         urlComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
         urlComponent.setUnderlined(true);
         urlComponent.setColor(ChatColor.GRAY);
 
         player.sendTitle(
-                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, JOIN_SERVER_TITLE),
-                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, JOIN_SERVER_SUBTITLE),
-                JOIN_SERVER_FADE_IN,
-                JOIN_SERVER_STAY,
-                JOIN_SERVER_FADE_OUT);
+                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_JOIN_SERVER_TITLE_TITLE),
+                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_JOIN_SERVER_TITLE_SUBTITLE),
+                AUTH_JOIN_SERVER_TITLE_FADE_IN,
+                AUTH_JOIN_SERVER_TITLE_STAY,
+                AUTH_JOIN_SERVER_TITLE_FADE_OUT);
 
         player.spigot().sendMessage(titleComponent, urlComponent);
     }
@@ -107,7 +71,7 @@ public class PlayerJoinQuitEvent implements Listener {
         String playerUUID = player.getUniqueId().toString();
 
         try (Jedis j = Redis.getPool().getResource()) {
-            j.hdel(PLAYER_PREFIX_KEY, playerUUID);
+            j.hdel(AUTH_PLAYER_PREFIX_KEY, playerUUID);
         } catch (Exception e) {
             Bukkit.getLogger().warning(e.getMessage());
         }

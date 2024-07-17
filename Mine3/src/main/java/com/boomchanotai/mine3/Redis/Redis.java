@@ -4,6 +4,9 @@ import com.boomchanotai.mine3.Mine3;
 import org.bukkit.configuration.file.FileConfiguration;
 import redis.clients.jedis.JedisPool;
 
+import static com.boomchanotai.mine3.Config.Config.REDIS_HOST;
+import static com.boomchanotai.mine3.Config.Config.REDIS_PORT;
+
 public class Redis {
     private static JedisPool pool;
 
@@ -17,11 +20,7 @@ public class Redis {
     }
 
     public static void connect() {
-        FileConfiguration config = Mine3.getInstance().getConfig();
-        String host = config.getString("redis.host");
-        int port = config.getInt("redis.port");
-
-        pool = new JedisPool(host, port);
+        pool = new JedisPool(REDIS_HOST, REDIS_PORT);
     }
 
 }
