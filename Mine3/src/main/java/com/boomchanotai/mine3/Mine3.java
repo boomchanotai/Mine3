@@ -1,6 +1,6 @@
 package com.boomchanotai.mine3;
 
-import com.boomchanotai.mine3.Javalin.Javalin;
+import com.boomchanotai.mine3.Server.Server;
 import com.boomchanotai.mine3.Listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3.Redis.Redis;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,7 +28,7 @@ public final class Mine3 extends JavaPlugin {
 
         saveDefaultConfig();
         Redis.connect();
-        Javalin.startServer();
+        Server.startServer();
 
         getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(), this);
     }
@@ -36,7 +36,7 @@ public final class Mine3 extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        Javalin.app.stop();
+        Server.getApp().stop();
         Redis.getPool().close();
     }
 }

@@ -32,6 +32,12 @@ public class PlayerJoinQuitEvent implements Listener {
     private static int LOGIN_SESSION_TIMEOUT_SEC;
     private static int AUTO_LOGIN_TIMEOUT_SEC;
 
+    private static String JOIN_SERVER_TITLE;
+    private static String JOIN_SERVER_SUBTITLE;
+    private static int JOIN_SERVER_FADE_IN;
+    private static int JOIN_SERVER_STAY;
+    private static int JOIN_SERVER_FADE_OUT;
+
     private String getRandomHexString(int numchars){
         Random r = new Random();
         StringBuilder stringBuffer = new StringBuilder();
@@ -51,6 +57,12 @@ public class PlayerJoinQuitEvent implements Listener {
         IP_PREFIX_KEY = config.getString("auth.ip_prefix_key");
         PLAYER_PREFIX_KEY = config.getString("auth.player_prefix_key");
         CLICK_TO_LOGIN_MESSAGE = config.getString("auth.click_to_login_message");
+
+        JOIN_SERVER_TITLE = config.getString("auth.join_server_title.title");
+        JOIN_SERVER_SUBTITLE = config.getString("auth.join_server_title.subtitle");
+        JOIN_SERVER_FADE_IN = config.getInt("auth.join_server_title.fade_in");
+        JOIN_SERVER_STAY = config.getInt("auth.join_server_title.stay");
+        JOIN_SERVER_FADE_OUT = config.getInt("auth.join_server_title.fade_out");
     }
 
     @EventHandler
@@ -78,6 +90,13 @@ public class PlayerJoinQuitEvent implements Listener {
         urlComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
         urlComponent.setUnderlined(true);
         urlComponent.setColor(ChatColor.GRAY);
+
+        player.sendTitle(
+                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, JOIN_SERVER_TITLE),
+                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, JOIN_SERVER_SUBTITLE),
+                JOIN_SERVER_FADE_IN,
+                JOIN_SERVER_STAY,
+                JOIN_SERVER_FADE_OUT);
 
         player.spigot().sendMessage(titleComponent, urlComponent);
     }

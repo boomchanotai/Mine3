@@ -5,7 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import redis.clients.jedis.JedisPool;
 
 public class Redis {
-    public static JedisPool pool;
+    private static JedisPool pool;
 
     public static JedisPool getPool() {
         if (pool == null || pool.isClosed()) {

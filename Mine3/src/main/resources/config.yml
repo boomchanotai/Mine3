@@ -7,13 +7,25 @@ httpserver:
   port: 4000
 
 auth:
-  website_token_base_url: "http://localhost:3000?token="
+  website_token_base_url: "http://localhost:5173/login?token="
   login_session_timeout: 600 # sec
   auto_login_timeout: 3600 # sec
   token_prefix_key: "mine3:auth:token" # redis key (string) follow with :{token}
   ip_prefix_key: "mine3:auth:ip" # redis key (string) follow with :{uuid}
   player_prefix_key: "mine3:auth:player" # redis key (hash) key: uuid, value: json (walletAddress)
   click_to_login_message: "Click here to login!"
+  join_server_title:
+    title: "&9Mine3"
+    subtitle: "&fPlease login with your wallet!"
+    fade_in: 10
+    stay: 70
+    fade_out: 20
+  logged_in_title:
+    title: "&9Mine3"
+    subtitle: "&aLogin Successful!"
+    fade_in: 10
+    stay: 70
+    fade_out: 20
 
 color_code_prefix: '&'
 title: "&9[Mine3] &7"
