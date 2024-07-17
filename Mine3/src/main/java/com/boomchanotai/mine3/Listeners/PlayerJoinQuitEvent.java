@@ -5,11 +5,13 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.json.JSONObject;
 import redis.clients.jedis.Jedis;
 
 import java.util.Random;
@@ -34,8 +36,6 @@ public class PlayerJoinQuitEvent implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         String playerUUID = player.getUniqueId().toString();
-
-        player.setWalkSpeed(0);
 
         String token = getRandomHexString(TOKEN_LENGTH);
 
@@ -71,7 +71,11 @@ public class PlayerJoinQuitEvent implements Listener {
         String playerUUID = player.getUniqueId().toString();
 
         try (Jedis j = Redis.getPool().getResource()) {
-            j.hdel(AUTH_PLAYER_PREFIX_KEY, playerUUID);
+            String playerInfo = j.hget(AUTH_PLAYER_KEY, playerUUID);
+            JSONObject playerData = new JSONObject(playerInfo);
+            String address = (String) playerData.get("address");
+            j.hdel(AUTH_ADDRESS_KEY, address);
+            j.hdel(AUTH_PLAYER_KEY, playerUUID);
         } catch (Exception e) {
             Bukkit.getLogger().warning(e.getMessage());
         }

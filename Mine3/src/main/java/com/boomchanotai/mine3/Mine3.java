@@ -1,6 +1,7 @@
 package com.boomchanotai.mine3;
 
 import com.boomchanotai.mine3.Config.Config;
+import com.boomchanotai.mine3.Listeners.PreventMoveWhenNotLoggedIn;
 import com.boomchanotai.mine3.Server.Server;
 import com.boomchanotai.mine3.Listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3.Redis.Redis;
@@ -24,12 +25,13 @@ public final class Mine3 extends JavaPlugin {
         Server.startServer();
 
         getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(), this);
+        getServer().getPluginManager().registerEvents(new PreventMoveWhenNotLoggedIn(), this);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        Server.getApp().stop();
-        Redis.getPool().close();
+        Server.stopServer();
+        Redis.close();
     }
 }

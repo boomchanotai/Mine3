@@ -23,7 +23,8 @@ public class Config {
     public static int AUTH_LOGIN_SESSION_TIMEOUT;
     public static int AUTH_AUTO_LOGIN_TIMEOUT;
     public static String AUTH_TOKEN_PREFIX_KEY;
-    public static String AUTH_PLAYER_PREFIX_KEY;
+    public static String AUTH_ADDRESS_KEY;
+    public static String AUTH_PLAYER_KEY;
     public static String AUTH_CLICK_TO_LOGIN_MESSAGE;
 
     // Join server title
@@ -52,9 +53,9 @@ public class Config {
 
         AUTH_WEBSITE_TOKEN_BASE_URL = config.getString("auth.website_token_base_url");
         AUTH_LOGIN_SESSION_TIMEOUT = config.getInt("auth.login_session_timeout");
-        AUTH_AUTO_LOGIN_TIMEOUT = config.getInt("auth.auto_login_timeout");
         AUTH_TOKEN_PREFIX_KEY = config.getString("auth.token_prefix_key");
-        AUTH_PLAYER_PREFIX_KEY = config.getString("auth.player_prefix_key");
+        AUTH_ADDRESS_KEY = config.getString("auth.address_key");
+        AUTH_PLAYER_KEY = config.getString("auth.player_key");
         AUTH_CLICK_TO_LOGIN_MESSAGE = config.getString("auth.click_to_login_message");
 
         AUTH_JOIN_SERVER_TITLE_TITLE = config.getString("auth.join_server_title.title");

@@ -22,9 +22,9 @@ httpserver:
 auth:
   website_token_base_url: "http://localhost:5173/login?token="
   login_session_timeout: 600 # sec
-  auto_login_timeout: 3600 # sec
   token_prefix_key: "mine3:auth:token" # redis key (string) follow with :{token}
-  player_prefix_key: "mine3:auth:player" # redis key (hash) key: uuid, value: json (walletAddress)
+  address_key: "mine3:auth:address" # redis key (hash) key: address, value: uuid
+  player_key: "mine3:auth:player" # redis key (hash) key: uuid, value: json (address)
   click_to_login_message: "Click here to login!"
   join_server_title:
     title: "&9Mine3"
