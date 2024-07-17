@@ -4,6 +4,7 @@ import { Container } from "../../components/Container";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { useBindWalletMutation } from "../../hook/mutation/useBindWalletMutation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Icon } from "@iconify/react";
 
 const Login = () => {
   const [searchParams] = useSearchParams();
@@ -14,7 +15,7 @@ const Login = () => {
 
   const { isConnected, address } = useAccount();
   const { signMessageAsync } = useSignMessage();
-  const { mutate } = useBindWalletMutation();
+  const { mutate, isPending } = useBindWalletMutation();
 
   const handleSignMessage = useCallback(async () => {
     if (!token || !address) return;
@@ -49,10 +50,15 @@ const Login = () => {
         {isConnected ? (
           <div>
             <button
+              disabled={isPending}
               onClick={handleSignMessage}
               className="outline-none bg-black py-2 px-6 rounded-2xl shadow-lg font-bold text-white"
             >
-              Login Minecraft via Mine3
+              {!isPending ? (
+                <span>Login Minecraft via Mine3</span>
+              ) : (
+                <Icon icon="lucide:loader-circle" className="animate-spin" />
+              )}
             </button>
           </div>
         ) : (
