@@ -4,14 +4,13 @@ import com.boomchanotai.mine3.Commands.Address;
 import com.boomchanotai.mine3.Config.Config;
 import com.boomchanotai.mine3.Database.Database;
 import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
+import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Server.Server;
 import com.boomchanotai.mine3.Listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3.Redis.Redis;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
-
-import static com.boomchanotai.mine3.Config.Config.LOG_TITLE;
 
 public final class Mine3 extends JavaPlugin {
     private static Mine3 instance;
@@ -31,7 +30,7 @@ public final class Mine3 extends JavaPlugin {
         try {
             Database.connect();
         } catch (SQLException e) {
-            getLogger().warning(LOG_TITLE + "Fail to connect database.");
+            Logger.warning("Fail to connect database.");
         }
         Server.startServer();
 
@@ -49,7 +48,7 @@ public final class Mine3 extends JavaPlugin {
         try {
             Database.disconnect();
         } catch (SQLException e) {
-            getLogger().warning(LOG_TITLE + "Fail to disconnect database.");
+            Logger.warning("Fail to disconnect database.");
         }
     }
 }

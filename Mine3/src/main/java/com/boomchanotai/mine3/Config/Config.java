@@ -6,7 +6,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.Objects;
 
 public class Config {
-    public static final String LOG_TITLE = "[Mine3] ";
     // Plugin Settings
     public static String TITLE;
     public static char COLOR_CODE_PREFIX;

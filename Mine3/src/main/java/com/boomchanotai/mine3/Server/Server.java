@@ -1,8 +1,10 @@
 package com.boomchanotai.mine3.Server;
 
 import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
+import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Mine3;
 import com.boomchanotai.mine3.Repository.PlayerRepository;
+import com.boomchanotai.mine3.Service.PlayerService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -45,16 +47,16 @@ public class Server {
             app.get("/", Server::getServerStatus);
             app.post("/login", Server::login);
         } catch (Exception e) {
-            Mine3.getInstance().getServer().getLogger().warning(LOG_TITLE + e.getMessage());
+            Logger.warning(e.getMessage());
             Mine3.getInstance().getServer().shutdown();
         }
 
-        Mine3.getInstance().getLogger().info(LOG_TITLE + "Http server is running!");
+        Logger.info("Http server is running!");
     }
 
     public static void stopServer() {
         getApp().stop();
-        Mine3.getInstance().getLogger().info(LOG_TITLE + "Http server has been stopped!");
+        Logger.info("Http server has been stopped!");
     }
 
     public static void getServerStatus(Context ctx) {
@@ -96,7 +98,17 @@ public class Server {
             return;
         };
 
-        // 3. Check address already exist
+        // 3. Check Player in game
+        boolean isPlayerInGame = PlayerService.isPlayerInGame(playerUUID);
+        if (!isPlayerInGame) {
+            JSONObject res = new JSONObject();
+            res.put("error", "PLAYER_NOT_IN_GAME");
+
+            ctx.status(HttpStatus.BAD_REQUEST).json(res.toString());
+            return;
+        }
+
+        // 4. Check address already exist
         UUID checkPlayer = PlayerRepository.getPlayerFromAddress(recoveredAddress);
         if (checkPlayer != null) {
             JSONObject res = new JSONObject();
@@ -106,15 +118,15 @@ public class Server {
             return;
         };
 
-        // 4. Store Player: (json) address
+        // 5. Store Player: (json) address
         JSONObject playerInfo = new JSONObject();
         playerInfo.put("address", recoveredAddress);
         PlayerRepository.setPlayerInfo(playerUUID, playerInfo.toString());
 
-        // 5. Store Address: PlayerUUID
+        // 6. Store Address: PlayerUUID
         PlayerRepository.setAddress(playerUUID, recoveredAddress);
 
-        // 6. Delete Token
+        // 7. Delete Token
         PlayerRepository.deleteToken(loginRequest.token);
 
         // Game Logic

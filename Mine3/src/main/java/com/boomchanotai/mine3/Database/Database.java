@@ -1,5 +1,6 @@
 package com.boomchanotai.mine3.Database;
 
+import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Mine3;
 import org.postgresql.Driver;
 
@@ -24,12 +25,12 @@ public class Database {
         DriverManager.registerDriver(new Driver());
         connection = DriverManager.getConnection(POSTGRES_HOST, POSTGRES_USERNAME, POSTGRES_PASSWORD);
 
-        Mine3.getInstance().getLogger().info(LOG_TITLE + "Connected to database!");
+        Logger.info("Connected to database!");
     }
 
     public static void disconnect() throws SQLException {
         connection.close();
 
-        Mine3.getInstance().getLogger().info(LOG_TITLE + "Disconnected to database!");
+        Logger.info("Disconnected to database!");
     }
 }
