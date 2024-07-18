@@ -3,7 +3,7 @@ package com.boomchanotai.mine3;
 import com.boomchanotai.mine3.Commands.Address;
 import com.boomchanotai.mine3.Config.Config;
 import com.boomchanotai.mine3.Database.Database;
-import com.boomchanotai.mine3.Listeners.PreventMoveWhenNotLoggedIn;
+import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3.Server.Server;
 import com.boomchanotai.mine3.Listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3.Redis.Redis;
@@ -36,7 +36,7 @@ public final class Mine3 extends JavaPlugin {
         Server.startServer();
 
         getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(), this);
-        getServer().getPluginManager().registerEvents(new PreventMoveWhenNotLoggedIn(), this);
+        getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(), this);
 
         getCommand("address").setExecutor(new Address());
     }

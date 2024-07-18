@@ -1,20 +1,15 @@
 package com.boomchanotai.mine3.Listeners;
 
-import com.boomchanotai.mine3.Redis.Redis;
 import com.boomchanotai.mine3.Repository.PlayerRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.json.JSONObject;
-import redis.clients.jedis.Jedis;
 
 import java.util.Random;
 import java.util.UUID;
@@ -67,6 +62,8 @@ public class PlayerJoinQuitEvent implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         UUID playerUUID = player.getUniqueId();
+
+        PreventPlayerActionWhenNotLoggedIn.playerDisconnected(playerUUID);
 
         JsonNode playerInfo = PlayerRepository.getPlayerInfo(playerUUID);
         if (playerInfo == null) return;

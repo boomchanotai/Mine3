@@ -1,17 +1,15 @@
 package com.boomchanotai.mine3.Server;
 
+import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3.Mine3;
-import com.boomchanotai.mine3.Redis.Redis;
 import com.boomchanotai.mine3.Repository.PlayerRepository;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.plugin.bundled.CorsPluginConfig;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
 import org.web3j.crypto.Keys;
-import redis.clients.jedis.Jedis;
 
 import java.util.UUID;
 
@@ -120,6 +118,8 @@ public class Server {
         PlayerRepository.deleteToken(loginRequest.token);
 
         // Game Logic
+        PreventPlayerActionWhenNotLoggedIn.playerConnected(playerUUID);
+
         Player player = Mine3.getInstance().getServer().getPlayer(playerUUID);
         if (player == null) return;
 
