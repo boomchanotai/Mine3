@@ -1,7 +1,9 @@
 package com.boomchanotai.mine3.Service;
 
 import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
+import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Mine3;
+import com.boomchanotai.mine3.Repository.PostgresRepository;
 import com.boomchanotai.mine3.Repository.RedisRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.javalin.http.HttpStatus;
@@ -12,6 +14,8 @@ import org.bukkit.entity.Player;
 import org.json.JSONObject;
 import org.web3j.crypto.Keys;
 
+import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -99,11 +103,27 @@ public class PlayerService {
         // 6. Delete Token
         RedisRepository.deleteToken(loginRequest.token);
 
-        // Game Logic
+        // 7. Game Logic
         PreventPlayerActionWhenNotLoggedIn.playerConnected(playerUUID);
 
         Player player = Mine3.getInstance().getServer().getPlayer(playerUUID);
         if (player == null) return;
+
+        // 8. Create User in Database
+        try {
+            PostgresRepository.createNewPlayer(
+                    parsedAddress,
+                    player.getLocation().getX(),
+                    player.getLocation().getY(),
+                    player.getLocation().getZ(),
+                    player.getLocation().getYaw(),
+                    player.getLocation().getPitch(),
+                    Objects.requireNonNull(player.getLocation().getWorld()).getName()
+            );
+        } catch (SQLException exception) {
+            Logger.warning(exception.getMessage());
+            throw exception;
+        }
 
         player.sendTitle(
                 org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_LOGGED_IN_TITLE_TITLE),
