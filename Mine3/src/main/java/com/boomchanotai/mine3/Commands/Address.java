@@ -1,7 +1,7 @@
 package com.boomchanotai.mine3.Commands;
 
 import com.boomchanotai.mine3.Logger.Logger;
-import com.boomchanotai.mine3.Repository.PlayerRepository;
+import com.boomchanotai.mine3.Repository.RedisRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -23,7 +23,7 @@ public class Address implements CommandExecutor {
         }
 
         Player p = (Player) sender;
-        JsonNode playerInfo = PlayerRepository.getPlayerInfo(p.getUniqueId());
+        JsonNode playerInfo = RedisRepository.getPlayerInfo(p.getUniqueId());
         if (playerInfo == null) {
             Logger.warning("Unexpected Event: Not found playerInfo!, UUID: " + p.getUniqueId() + ", Command: /address");
             return false;

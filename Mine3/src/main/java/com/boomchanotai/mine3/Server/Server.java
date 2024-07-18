@@ -3,7 +3,7 @@ package com.boomchanotai.mine3.Server;
 import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Mine3;
-import com.boomchanotai.mine3.Repository.PlayerRepository;
+import com.boomchanotai.mine3.Repository.RedisRepository;
 import com.boomchanotai.mine3.Service.PlayerService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -24,12 +24,6 @@ public class Server {
         return app;
     }
 
-    public static class LoginRequest {
-        public String token;
-        public String address;
-        public String signature;
-        public long timestamp;
-    }
 
     public static void startServer() {
         try {
@@ -67,7 +61,7 @@ public class Server {
     }
 
     public static void login(Context ctx) {
-        LoginRequest loginRequest = ctx.bodyAsClass(LoginRequest.class);
+        PlayerService.LoginRequest loginRequest = ctx.bodyAsClass(PlayerService.LoginRequest.class);
 
         if (loginRequest.token.isEmpty() || loginRequest.address.isEmpty() || loginRequest.signature.isEmpty() || loginRequest.timestamp == 0) {
             JSONObject res = new JSONObject();
@@ -77,7 +71,7 @@ public class Server {
             return;
         }
 
-        // 1. Verify Signature with address and timestamp
+        // Verify Signature with address and timestamp
         String msg = "Sign in to Mine3 and this is my wallet address: " + loginRequest.address + " to sign in " + loginRequest.token + ". now is " + loginRequest.timestamp;
         String recoveredAddress = EthersUtils.verifyMessage(msg, loginRequest.signature);
         if (!Keys.toChecksumAddress(recoveredAddress).equals(Keys.toChecksumAddress(loginRequest.address))) {
@@ -88,59 +82,15 @@ public class Server {
             return;
         }
 
-        // 2. Get Player UUID
-        UUID playerUUID = PlayerRepository.getPlayerUUIDFromToken(loginRequest.token);
-        if (playerUUID == null) {
+        try {
+            PlayerService.playerLogin(loginRequest);
+        } catch (Exception e) {
             JSONObject res = new JSONObject();
-            res.put("error", "INVALID_TOKEN");
-
-            ctx.status(HttpStatus.BAD_REQUEST).json(res.toString());
-            return;
-        };
-
-        // 3. Check Player in game
-        boolean isPlayerInGame = PlayerService.isPlayerInGame(playerUUID);
-        if (!isPlayerInGame) {
-            JSONObject res = new JSONObject();
-            res.put("error", "PLAYER_NOT_IN_GAME");
+            res.put("error", e.getMessage());
 
             ctx.status(HttpStatus.BAD_REQUEST).json(res.toString());
             return;
         }
-
-        // 4. Check address already exist
-        UUID checkPlayer = PlayerRepository.getPlayerFromAddress(recoveredAddress);
-        if (checkPlayer != null) {
-            JSONObject res = new JSONObject();
-            res.put("error", "ADDRESS_ALREADY_USED");
-
-            ctx.status(HttpStatus.BAD_REQUEST).json(res.toString());
-            return;
-        };
-
-        // 5. Store Player: (json) address
-        JSONObject playerInfo = new JSONObject();
-        playerInfo.put("address", recoveredAddress);
-        PlayerRepository.setPlayerInfo(playerUUID, playerInfo.toString());
-
-        // 6. Store Address: PlayerUUID
-        PlayerRepository.setAddress(playerUUID, recoveredAddress);
-
-        // 7. Delete Token
-        PlayerRepository.deleteToken(loginRequest.token);
-
-        // Game Logic
-        PreventPlayerActionWhenNotLoggedIn.playerConnected(playerUUID);
-
-        Player player = Mine3.getInstance().getServer().getPlayer(playerUUID);
-        if (player == null) return;
-
-        player.sendTitle(
-                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_LOGGED_IN_TITLE_TITLE),
-                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_LOGGED_IN_TITLE_SUBTITLE),
-                AUTH_LOGGED_IN_TITLE_FADE_IN,
-                AUTH_LOGGED_IN_TITLE_STAY,
-                AUTH_LOGGED_IN_TITLE_FADE_OUT);
 
         JSONObject res = new JSONObject();
         res.put("result", "success");

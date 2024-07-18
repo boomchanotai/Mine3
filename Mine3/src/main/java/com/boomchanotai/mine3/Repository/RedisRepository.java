@@ -4,17 +4,14 @@ import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Redis.Redis;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.json.JSONObject;
 import org.web3j.crypto.Keys;
 import redis.clients.jedis.Jedis;
 
-import java.util.Map;
 import java.util.UUID;
 
 import static com.boomchanotai.mine3.Config.Config.*;
 
-public class PlayerRepository {
+public class RedisRepository {
     public static UUID getPlayerUUIDFromToken(String token) {
         String tokenKey = AUTH_TOKEN_PREFIX_KEY + ":" + token;
         try (Jedis j = Redis.getPool().getResource()) {
