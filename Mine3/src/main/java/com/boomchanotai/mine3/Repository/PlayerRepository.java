@@ -82,6 +82,8 @@ public class PlayerRepository {
         String parsedAddress = Keys.toChecksumAddress(address);
         try (Jedis j = Redis.getPool().getResource()) {
             String playerUUID = j.hget(AUTH_ADDRESS_KEY, parsedAddress);
+            if (playerUUID == null || playerUUID.isEmpty()) return null;
+
             return UUID.fromString(playerUUID);
         } catch (Exception e) {
             Logger.warning(e.getMessage());

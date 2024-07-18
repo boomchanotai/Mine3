@@ -32,6 +32,7 @@ auth:
   address_key: "mine3:auth:address" # redis key (hash) key: address, value: uuid
   player_key: "mine3:auth:player" # redis key (hash) key: uuid, value: json (address)
   click_to_login_message: "Click here to login!"
+  prevent_action_message: "Please connect to your wallet!"
   join_server_title:
     title: "&9Mine3"
     subtitle: "&fPlease login with your wallet!"

@@ -1,5 +1,6 @@
 package com.boomchanotai.mine3.Listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +11,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
+
+import static com.boomchanotai.mine3.Config.Config.*;
 
 public class PreventPlayerActionWhenNotLoggedIn implements Listener {
 
@@ -26,6 +29,7 @@ public class PreventPlayerActionWhenNotLoggedIn implements Listener {
             return;
         }
 
+        player.sendMessage(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE + AUTH_PREVENT_ACTION_MESSAGE));
         event.setCancelled(true);
     }
 
@@ -36,6 +40,7 @@ public class PreventPlayerActionWhenNotLoggedIn implements Listener {
             return;
         }
 
+        player.sendMessage(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE + AUTH_PREVENT_ACTION_MESSAGE));
         event.setCancelled(true);
     }
 
@@ -46,6 +51,7 @@ public class PreventPlayerActionWhenNotLoggedIn implements Listener {
             return;
         }
 
+        player.sendMessage(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE + AUTH_PREVENT_ACTION_MESSAGE));
         event.setCancelled(true);
     }
 

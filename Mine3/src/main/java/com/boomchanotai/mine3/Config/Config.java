@@ -30,6 +30,7 @@ public class Config {
     public static String AUTH_ADDRESS_KEY;
     public static String AUTH_PLAYER_KEY;
     public static String AUTH_CLICK_TO_LOGIN_MESSAGE;
+    public static String AUTH_PREVENT_ACTION_MESSAGE;
 
     // Join server title
     public static String AUTH_JOIN_SERVER_TITLE_TITLE;
@@ -65,6 +66,7 @@ public class Config {
         AUTH_ADDRESS_KEY = config.getString("auth.address_key");
         AUTH_PLAYER_KEY = config.getString("auth.player_key");
         AUTH_CLICK_TO_LOGIN_MESSAGE = config.getString("auth.click_to_login_message");
+        AUTH_PREVENT_ACTION_MESSAGE = config.getString("auth.prevent_action_message");
 
         AUTH_JOIN_SERVER_TITLE_TITLE = config.getString("auth.join_server_title.title");
         AUTH_JOIN_SERVER_TITLE_SUBTITLE = config.getString("auth.join_server_title.subtitle");
