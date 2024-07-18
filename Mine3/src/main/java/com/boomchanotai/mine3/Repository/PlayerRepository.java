@@ -41,7 +41,7 @@ public class PlayerRepository {
     public static void deleteToken(String token) {
         String tokenKey = AUTH_TOKEN_PREFIX_KEY + ":" + token;
         try (Jedis j = Redis.getPool().getResource()) {
-            j.hdel(tokenKey);
+            j.del(tokenKey);
         } catch (Exception e) {
             Logger.warning(e.getMessage());
         }
