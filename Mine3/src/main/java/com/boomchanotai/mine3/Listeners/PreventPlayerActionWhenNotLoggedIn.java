@@ -61,4 +61,8 @@ public class PreventPlayerActionWhenNotLoggedIn implements Listener {
     public static void playerDisconnected(UUID playerUUID) {
         isLoggedIn.remove(playerUUID);
     }
+
+    public static void disconnectAll() {
+        isLoggedIn.clear();
+    }
 }

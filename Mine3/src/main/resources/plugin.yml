@@ -9,3 +9,6 @@ commands:
   address:
     description: get address
     usage: /<command>
+  logout:
+    description: logout
+    usage: /<command>
