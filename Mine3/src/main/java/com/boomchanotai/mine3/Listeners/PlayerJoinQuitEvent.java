@@ -1,6 +1,8 @@
 package com.boomchanotai.mine3.Listeners;
 
 import com.boomchanotai.mine3.Redis.Redis;
+import com.boomchanotai.mine3.Repository.PlayerRepository;
+import com.fasterxml.jackson.databind.JsonNode;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -15,6 +17,7 @@ import org.json.JSONObject;
 import redis.clients.jedis.Jedis;
 
 import java.util.Random;
+import java.util.UUID;
 
 import static com.boomchanotai.mine3.Config.Config.*;
 import static com.boomchanotai.mine3.Config.Config.AUTH_JOIN_SERVER_TITLE_FADE_OUT;
@@ -35,15 +38,10 @@ public class PlayerJoinQuitEvent implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        String playerUUID = player.getUniqueId().toString();
+        UUID playerUUID = player.getUniqueId();
 
         String token = getRandomHexString(TOKEN_LENGTH);
-
-        try (Jedis j = Redis.getPool().getResource()) {
-            j.setex(AUTH_TOKEN_PREFIX_KEY + ":" + token, AUTH_LOGIN_SESSION_TIMEOUT, playerUUID);
-        } catch (Exception e) {
-            Bukkit.getLogger().warning(e.getMessage());
-        }
+        PlayerRepository.setToken(token, playerUUID);
 
         // Send Message to player
         TextComponent titleComponent = new TextComponent(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE));
@@ -68,16 +66,13 @@ public class PlayerJoinQuitEvent implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        String playerUUID = player.getUniqueId().toString();
+        UUID playerUUID = player.getUniqueId();
 
-        try (Jedis j = Redis.getPool().getResource()) {
-            String playerInfo = j.hget(AUTH_PLAYER_KEY, playerUUID);
-            JSONObject playerData = new JSONObject(playerInfo);
-            String address = (String) playerData.get("address");
-            j.hdel(AUTH_ADDRESS_KEY, address);
-            j.hdel(AUTH_PLAYER_KEY, playerUUID);
-        } catch (Exception e) {
-            Bukkit.getLogger().warning(e.getMessage());
-        }
+        JsonNode playerInfo = PlayerRepository.getPlayerInfo(playerUUID);
+        if (playerInfo == null) return;
+        String address = playerInfo.get("address").asText();
+
+        PlayerRepository.deleteAddress(address);
+        PlayerRepository.deletePlayerInfo(playerUUID);
     }
 }

@@ -1,5 +1,6 @@
 package com.boomchanotai.mine3;
 
+import com.boomchanotai.mine3.Commands.Address;
 import com.boomchanotai.mine3.Config.Config;
 import com.boomchanotai.mine3.Database.Database;
 import com.boomchanotai.mine3.Listeners.PreventMoveWhenNotLoggedIn;
@@ -36,6 +37,8 @@ public final class Mine3 extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(), this);
         getServer().getPluginManager().registerEvents(new PreventMoveWhenNotLoggedIn(), this);
+
+        getCommand("address").setExecutor(new Address());
     }
 
     @Override

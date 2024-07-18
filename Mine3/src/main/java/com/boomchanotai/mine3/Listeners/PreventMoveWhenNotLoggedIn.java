@@ -1,6 +1,8 @@
 package com.boomchanotai.mine3.Listeners;
 
 import com.boomchanotai.mine3.Redis.Redis;
+import com.boomchanotai.mine3.Repository.PlayerRepository;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,13 +19,11 @@ public class PreventMoveWhenNotLoggedIn implements Listener {
         Player player = event.getPlayer();
         if (isPlayerLoggedIn) return;
 
-        try (Jedis j = Redis.getPool().getResource()) {
-            String playerInfo = j.hget(AUTH_PLAYER_KEY, player.getUniqueId().toString());
-            if (playerInfo == null) {
-                event.setCancelled(true);
-            } else {
-                isPlayerLoggedIn = true;
-            }
+        JsonNode playerInfo = PlayerRepository.getPlayerInfo(player.getUniqueId());
+        if (playerInfo == null) {
+            event.setCancelled(true);
+        } else {
+            isPlayerLoggedIn = true;
         }
     }
 }

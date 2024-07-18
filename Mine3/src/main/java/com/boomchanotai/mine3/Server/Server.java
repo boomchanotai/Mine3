@@ -2,6 +2,7 @@ package com.boomchanotai.mine3.Server;
 
 import com.boomchanotai.mine3.Mine3;
 import com.boomchanotai.mine3.Redis.Redis;
+import com.boomchanotai.mine3.Repository.PlayerRepository;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -76,7 +77,7 @@ public class Server {
             return;
         }
 
-        // Verify Signature with address and timestamp
+        // 1. Verify Signature with address and timestamp
         String msg = "Sign in to Mine3 and this is my wallet address: " + loginRequest.address + " to sign in " + loginRequest.token + ". now is " + loginRequest.timestamp;
         String recoveredAddress = EthersUtils.verifyMessage(msg, loginRequest.signature);
         if (!Keys.toChecksumAddress(recoveredAddress).equals(Keys.toChecksumAddress(loginRequest.address))) {
@@ -87,51 +88,38 @@ public class Server {
             return;
         }
 
-        String address = Keys.toChecksumAddress(recoveredAddress);
-
-        UUID playerUUID = null;
-        try (Jedis j = Redis.getPool().getResource()) {
-            // 1. Get Player UUID
-            String tokenKey = AUTH_TOKEN_PREFIX_KEY + ":" + loginRequest.token;
-            String playerUUIDStr = j.get(tokenKey);
-            if (playerUUIDStr == null) {
-                JSONObject res = new JSONObject();
-                res.put("error", "SESSION_TIMEOUT");
-
-                ctx.status(HttpStatus.BAD_REQUEST).json(res.toString());
-                return;
-            }
-            playerUUID = UUID.fromString(playerUUIDStr);
-
-            // 2. Check Address already exist
-            String addressInfo = j.hget(AUTH_ADDRESS_KEY, address);
-            if (addressInfo != null) {
-                JSONObject res = new JSONObject();
-                res.put("error", "ADDRESS_ALREADY_USED");
-
-                ctx.status(HttpStatus.BAD_REQUEST).json(res.toString());
-                return;
-            }
-
-            // 3. Store player_key (hash) (Player : (JSON) address)
-            JSONObject playerInfo = new JSONObject();
-            playerInfo.put("address", address);
-            j.hset(AUTH_PLAYER_KEY, playerUUID.toString(), playerInfo.toString());
-
-            // 4. Store address_key (hash) (Address : UUID)
-            j.hset(AUTH_ADDRESS_KEY, address, playerUUID.toString());
-
-            // 5. Delete Token
-            j.del(tokenKey);
-        } catch (Exception e) {
+        // 2. Get Player UUID
+        UUID playerUUID = PlayerRepository.getPlayerUUIDFromToken(loginRequest.token);
+        if (playerUUID == null) {
             JSONObject res = new JSONObject();
-            res.put("error", "INTERNAL_SERVER_ERROR");
+            res.put("error", "INVALID_TOKEN");
 
-            ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).json(res.toString());
-        }
+            ctx.status(HttpStatus.BAD_REQUEST).json(res.toString());
+            return;
+        };
+
+        // 3. Check address already exist
+        UUID checkPlayer = PlayerRepository.getPlayerFromAddress(recoveredAddress);
+        if (checkPlayer != null) {
+            JSONObject res = new JSONObject();
+            res.put("error", "ADDRESS_ALREADY_USED");
+
+            ctx.status(HttpStatus.BAD_REQUEST).json(res.toString());
+            return;
+        };
+
+        // 4. Store Player: (json) address
+        JSONObject playerInfo = new JSONObject();
+        playerInfo.put("address", recoveredAddress);
+        PlayerRepository.setPlayerInfo(playerUUID, playerInfo.toString());
+
+        // 5. Store Address: PlayerUUID
+        PlayerRepository.setAddress(playerUUID, recoveredAddress);
+
+        // 6. Delete Token
+        PlayerRepository.deleteToken(loginRequest.token);
 
         // Game Logic
-        if (playerUUID == null) return;
         Player player = Mine3.getInstance().getServer().getPlayer(playerUUID);
         if (player == null) return;
 

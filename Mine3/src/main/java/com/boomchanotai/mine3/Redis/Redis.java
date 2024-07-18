@@ -26,6 +26,7 @@ public class Redis {
     }
 
     public static void close() {
+        // Destroy Redis
         try (Jedis j = Redis.getPool().getResource()) {
             j.del(AUTH_ADDRESS_KEY);
             j.del(AUTH_PLAYER_KEY);

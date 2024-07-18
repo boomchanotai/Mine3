@@ -1,0 +1,110 @@
+package com.boomchanotai.mine3.Repository;
+
+import com.boomchanotai.mine3.Logger.Logger;
+import com.boomchanotai.mine3.Redis.Redis;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.json.JSONObject;
+import org.web3j.crypto.Keys;
+import redis.clients.jedis.Jedis;
+
+import java.util.Map;
+import java.util.UUID;
+
+import static com.boomchanotai.mine3.Config.Config.*;
+
+public class PlayerRepository {
+    public static UUID getPlayerUUIDFromToken(String token) {
+        String tokenKey = AUTH_TOKEN_PREFIX_KEY + ":" + token;
+        try (Jedis j = Redis.getPool().getResource()) {
+            String playerUUIDStr = j.get(tokenKey);
+            if (playerUUIDStr == null) return null;
+
+            return UUID.fromString(playerUUIDStr);
+        } catch (Exception e) {
+            Logger.warning(e.getMessage());
+        }
+
+        return null;
+    }
+
+    public static void setToken(String token, UUID playerUUID) {
+        String tokenKey = AUTH_TOKEN_PREFIX_KEY + ":" + token;
+        try (Jedis j = Redis.getPool().getResource()) {
+            j.setex(tokenKey, AUTH_LOGIN_SESSION_TIMEOUT, playerUUID.toString());
+        } catch (Exception e) {
+            Logger.warning(e.getMessage());
+        }
+    }
+
+    public static void deleteToken(String token) {
+        String tokenKey = AUTH_TOKEN_PREFIX_KEY + ":" + token;
+        try (Jedis j = Redis.getPool().getResource()) {
+            j.hdel(tokenKey);
+        } catch (Exception e) {
+            Logger.warning(e.getMessage());
+        }
+    }
+
+    public static JsonNode getPlayerInfo(UUID playerUUID) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try (Jedis j = Redis.getPool().getResource()) {
+            String info = j.hget(AUTH_PLAYER_KEY, playerUUID.toString());
+            if (info == null) return null;
+
+            return mapper.readTree(info);
+        } catch (Exception e) {
+            Logger.warning(e.getMessage());
+        }
+
+        return null;
+    }
+
+    public static void setPlayerInfo(UUID playerUUID, String data) {
+        try (Jedis j = Redis.getPool().getResource()) {
+            j.hset(AUTH_PLAYER_KEY, playerUUID.toString(), data);
+        } catch (Exception e) {
+            Logger.warning(e.getMessage());
+        }
+    }
+
+    public static void deletePlayerInfo(UUID playerUUID) {
+        try (Jedis j = Redis.getPool().getResource()) {
+            j.hdel(AUTH_PLAYER_KEY, playerUUID.toString());
+        } catch (Exception e) {
+            Logger.warning(e.getMessage());
+        }
+    }
+
+    public static UUID getPlayerFromAddress(String address) {
+        String parsedAddress = Keys.toChecksumAddress(address);
+        try (Jedis j = Redis.getPool().getResource()) {
+            String playerUUID = j.hget(AUTH_ADDRESS_KEY, parsedAddress);
+            return UUID.fromString(playerUUID);
+        } catch (Exception e) {
+            Logger.warning(e.getMessage());
+        }
+
+        return null;
+    }
+
+    public static void setAddress(UUID playerUUID, String address) {
+        String parsedAddress = Keys.toChecksumAddress(address);
+        try (Jedis j = Redis.getPool().getResource()) {
+            j.hset(AUTH_ADDRESS_KEY, parsedAddress, playerUUID.toString());
+        } catch (Exception e) {
+            Logger.warning(e.getMessage());
+        }
+    }
+
+    public static void deleteAddress(String address) {
+        String parsedAddress = Keys.toChecksumAddress(address);
+        try (Jedis j = Redis.getPool().getResource()) {
+            j.hdel(AUTH_ADDRESS_KEY, parsedAddress);
+        } catch (Exception e) {
+            Logger.warning(e.getMessage());
+        }
+    }
+}
