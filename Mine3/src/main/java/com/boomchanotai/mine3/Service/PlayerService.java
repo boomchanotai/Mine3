@@ -6,7 +6,6 @@ import com.boomchanotai.mine3.Mine3;
 import com.boomchanotai.mine3.Repository.PostgresRepository;
 import com.boomchanotai.mine3.Repository.RedisRepository;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.javalin.http.HttpStatus;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -15,9 +14,7 @@ import org.json.JSONObject;
 import org.web3j.crypto.Keys;
 
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import static com.boomchanotai.mine3.Config.Config.*;
 import static com.boomchanotai.mine3.Config.Config.AUTH_JOIN_SERVER_TITLE_FADE_OUT;
@@ -125,6 +122,31 @@ public class PlayerService {
             throw exception;
         }
 
+        // 9. Update user Login
+        try {
+            PostgresRepository.setUserLoggedIn(parsedAddress);
+        } catch (SQLException exception) {
+            Logger.warning(exception.getMessage());
+            throw exception;
+        }
+
+        // 10. get player info
+        JsonNode playerData = PostgresRepository.getPlayer(parsedAddress);
+        if (playerData == null) return;
+        player.setLevel(playerData.get("xpLevel").asInt());
+        player.setExp((float) playerData.get("xpExp").asDouble());
+        player.setHealth(playerData.get("health").asDouble());
+        player.setFoodLevel(playerData.get("foodLevel").asInt());
+
+        player.getLocation().setX(playerData.get("location").get("x").asDouble());
+        player.getLocation().setY(playerData.get("location").get("y").asDouble());
+        player.getLocation().setZ(playerData.get("location").get("z").asDouble());
+        player.getLocation().setYaw((float) playerData.get("location").get("yaw").asDouble());
+        player.getLocation().setPitch((float) playerData.get("location").get("pitch").asDouble());
+
+        String world = playerData.get("location").get("world").asText();
+        player.getLocation().setWorld(Mine3.getInstance().getServer().getWorld(world));
+
         player.sendTitle(
                 org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_LOGGED_IN_TITLE_TITLE),
                 org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_LOGGED_IN_TITLE_SUBTITLE),
@@ -141,8 +163,30 @@ public class PlayerService {
         JsonNode playerInfo = RedisRepository.getPlayerInfo(playerUUID);
         if (playerInfo == null) return;
         String address = playerInfo.get("address").asText();
+        String parsedAddress = Keys.toChecksumAddress(address);
 
-        RedisRepository.deleteAddress(address);
+        try {
+            PostgresRepository.updateUserInventory(
+                    parsedAddress,
+                    player.getLevel(),
+                    player.getExp(),
+                    player.getHealth(),
+                    player.getFoodLevel(),
+                    player.getInventory().getArmorContents(),
+                    player.getInventory().getContents(),
+                    player.getEnderChest().getContents(),
+                    player.getLocation().getX(),
+                    player.getLocation().getY(),
+                    player.getLocation().getZ(),
+                    player.getLocation().getYaw(),
+                    player.getLocation().getPitch(),
+                    Objects.requireNonNull(player.getLocation().getWorld()).getName()
+            );
+        } catch (SQLException exception) {
+            Logger.warning(exception.getMessage());
+        }
+
+        RedisRepository.deleteAddress(parsedAddress);
         RedisRepository.deletePlayerInfo(playerUUID);
     }
 }

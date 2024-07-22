@@ -1,7 +1,6 @@
 package com.boomchanotai.mine3.Database;
 
 import com.boomchanotai.mine3.Logger.Logger;
-import com.boomchanotai.mine3.Mine3;
 import org.postgresql.Driver;
 
 import java.sql.Connection;
@@ -12,7 +11,7 @@ import java.sql.Statement;
 import static com.boomchanotai.mine3.Config.Config.*;
 
 public class Database {
-    public static Connection connection;
+    private static Connection connection;
     
     public static Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
@@ -46,9 +45,9 @@ public class Database {
                 "\t\"xp_exp\" FLOAT NOT NULL DEFAULT 0,\n" +
                 "\t\"health\" DECIMAL NOT NULL DEFAULT 20,\n" +
                 "\t\"food_level\" INTEGER NOT NULL DEFAULT 20,\n" +
-                "\t\"armor\" JSONB NOT NULL DEFAULT '[]',\n" +
-                "\t\"inventory\" JSONB NOT NULL DEFAULT '[]',\n" +
-                "\t\"ender_chest\" JSONB NOT NULL DEFAULT '[]',\n" +
+                "\t\"armor\" BYTEA,\n" +
+                "\t\"inventory\" BYTEA,\n" +
+                "\t\"ender_chest\" BYTEA,\n" +
                 "\t\"last_location_x\" DECIMAL NOT NULL DEFAULT 0,\n" +
                 "\t\"last_location_y\" DECIMAL NOT NULL DEFAULT 0,\n" +
                 "\t\"last_location_z\" DECIMAL NOT NULL DEFAULT 0,\n" +
