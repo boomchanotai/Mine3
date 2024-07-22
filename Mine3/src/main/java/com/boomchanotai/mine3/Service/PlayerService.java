@@ -44,6 +44,11 @@ public class PlayerService {
     }
 
     public static void connectPlayer(Player player) {
+        player.setHealth(20.0);
+        player.setFoodLevel(20);
+        player.setLevel(0);
+        player.setExp(0.0F);
+        
         UUID playerUUID = player.getUniqueId();
 
         String token = getRandomHexString(TOKEN_LENGTH);
