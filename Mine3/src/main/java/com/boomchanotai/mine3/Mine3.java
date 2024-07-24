@@ -8,6 +8,7 @@ import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Repository.PostgresRepository;
 import com.boomchanotai.mine3.Repository.RedisRepository;
+import com.boomchanotai.mine3.Repository.SpigotRepository;
 import com.boomchanotai.mine3.Server.Server;
 import com.boomchanotai.mine3.Listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3.Redis.Redis;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 
 public final class Mine3 extends JavaPlugin {
     private static Mine3 instance;
+
     public static Mine3 getInstance() {
         return instance;
     }
@@ -30,7 +32,6 @@ public final class Mine3 extends JavaPlugin {
         saveDefaultConfig();
         Config.loadConfig();
 
-
         try {
             Database.connect();
         } catch (SQLException e) {
@@ -41,14 +42,15 @@ public final class Mine3 extends JavaPlugin {
         // Dependencies
         PostgresRepository pgRepo = new PostgresRepository();
         RedisRepository redisRepo = new RedisRepository();
+        SpigotRepository spigotRepo = new SpigotRepository();
 
-        PlayerService playerService = new PlayerService(pgRepo, redisRepo);
+        PlayerService playerService = new PlayerService(pgRepo, redisRepo, spigotRepo);
 
         Server server = new Server(playerService);
         server.startServer();
 
         getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(playerService), this);
-        getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(), this);
+        getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(spigotRepo), this);
 
         getCommand("address").setExecutor(new Address(playerService));
         getCommand("logout").setExecutor(new Logout(playerService));

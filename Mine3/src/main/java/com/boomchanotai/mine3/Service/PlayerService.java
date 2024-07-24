@@ -6,6 +6,7 @@ import com.boomchanotai.mine3.Mine3;
 import com.boomchanotai.mine3.Entity.PlayerData;
 import com.boomchanotai.mine3.Repository.PostgresRepository;
 import com.boomchanotai.mine3.Repository.RedisRepository;
+import com.boomchanotai.mine3.Repository.SpigotRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -18,16 +19,17 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static com.boomchanotai.mine3.Config.Config.*;
-import static com.boomchanotai.mine3.Config.Config.AUTH_JOIN_SERVER_TITLE_FADE_OUT;
 
 public class PlayerService {
-    private static PostgresRepository pgRepo;
-    private static RedisRepository redisRepo;
+    private PostgresRepository pgRepo;
+    private RedisRepository redisRepo;
+    private SpigotRepository spigotRepo;
     private static final int TOKEN_LENGTH = 32;
 
-    public PlayerService(PostgresRepository pgRepo, RedisRepository redisRepo) {
-        PlayerService.pgRepo = pgRepo;
-        PlayerService.redisRepo = redisRepo;
+    public PlayerService(PostgresRepository pgRepo, RedisRepository redisRepo, SpigotRepository spigotRepo) {
+        this.pgRepo = pgRepo;
+        this.redisRepo = redisRepo;
+        this.spigotRepo = spigotRepo;
     }
     private static String getRandomHexString(int numchars){
         Random r = new Random();
@@ -45,10 +47,7 @@ public class PlayerService {
     }
 
     public void connectPlayer(Player player) {
-        player.setHealth(20.0);
-        player.setFoodLevel(20);
-        player.setLevel(0);
-        player.setExp(0.0F);
+        spigotRepo.setPlayerDefaultState(player);
         
         UUID playerUUID = player.getUniqueId();
 
@@ -65,14 +64,17 @@ public class PlayerService {
         urlComponent.setUnderlined(true);
         urlComponent.setColor(ChatColor.GRAY);
 
-        player.sendTitle(
-                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_JOIN_SERVER_TITLE_TITLE),
-                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_JOIN_SERVER_TITLE_SUBTITLE),
-                AUTH_JOIN_SERVER_TITLE_FADE_IN,
-                AUTH_JOIN_SERVER_TITLE_STAY,
-                AUTH_JOIN_SERVER_TITLE_FADE_OUT);
+        spigotRepo.sendMessage(
+            player, 
+            titleComponent, 
+            urlComponent);
 
-        player.spigot().sendMessage(titleComponent, urlComponent);
+        spigotRepo.sendTitle(player, 
+            AUTH_JOIN_SERVER_TITLE_TITLE, 
+            AUTH_JOIN_SERVER_TITLE_SUBTITLE, 
+            AUTH_JOIN_SERVER_TITLE_FADE_OUT, 
+            AUTH_JOIN_SERVER_TITLE_STAY, 
+            AUTH_JOIN_SERVER_TITLE_FADE_IN);     
     }
 
     public void playerLogin(String token, String address) throws Exception {
@@ -139,23 +141,13 @@ public class PlayerService {
         // 10. get player info
         PlayerData playerData = pgRepo.getPlayer(parsedAddress);
         if (playerData == null) return;
-
-        player.setLevel(playerData.getXpLevel());
-        player.setExp(playerData.getXpExp());
-        player.setHealth(playerData.getHealth());
-        player.setFoodLevel(playerData.getFoodLevel());
-
-        player.getLocation().setX(playerData.getPlayerLocation().getX());
-        player.getLocation().setY(playerData.getPlayerLocation().getY());
-        player.getLocation().setZ(playerData.getPlayerLocation().getZ());
-        player.getLocation().setYaw(playerData.getPlayerLocation().getYaw());
-        player.getLocation().setPitch(playerData.getPlayerLocation().getPitch());
-        player.getLocation().setWorld(playerData.getPlayerLocation().getWorld());
+        spigotRepo.restorePlayerState(player, playerData);
 
         // 11. Send Title
-        player.sendTitle(
-                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_LOGGED_IN_TITLE_TITLE),
-                org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_LOGGED_IN_TITLE_SUBTITLE),
+        spigotRepo.sendTitle(
+                player,
+                AUTH_LOGGED_IN_TITLE_TITLE,
+                AUTH_LOGGED_IN_TITLE_SUBTITLE,
                 AUTH_LOGGED_IN_TITLE_FADE_IN,
                 AUTH_LOGGED_IN_TITLE_STAY,
                 AUTH_LOGGED_IN_TITLE_FADE_OUT);
