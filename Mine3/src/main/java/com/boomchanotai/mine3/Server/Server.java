@@ -15,6 +15,7 @@ import static com.boomchanotai.mine3.Config.Config.*;
 public class Server {
     private static Javalin app = null;
     private static PlayerService playerService;
+    
     public Server(PlayerService playerService) {
         Server.playerService = playerService;
     }
@@ -58,8 +59,15 @@ public class Server {
         ctx.json(res.toString());
     }
 
+    public static class LoginRequest {
+        public String token;
+        public String address;
+        public String signature;
+        public long timestamp;
+    }
+
     public static void login(Context ctx) {
-        PlayerService.LoginRequest loginRequest = ctx.bodyAsClass(PlayerService.LoginRequest.class);
+        LoginRequest loginRequest = ctx.bodyAsClass(LoginRequest.class);
 
         if (loginRequest.token.isEmpty() || loginRequest.address.isEmpty() || loginRequest.signature.isEmpty() || loginRequest.timestamp == 0) {
             JSONObject res = new JSONObject();
@@ -81,7 +89,7 @@ public class Server {
         }
 
         try {
-            playerService.playerLogin(loginRequest);
+            playerService.playerLogin(loginRequest.token, loginRequest.address);
         } catch (Exception e) {
             JSONObject res = new JSONObject();
             res.put("error", e.getMessage());

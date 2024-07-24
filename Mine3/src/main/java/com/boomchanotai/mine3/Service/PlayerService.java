@@ -3,6 +3,7 @@ package com.boomchanotai.mine3.Service;
 import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Mine3;
+import com.boomchanotai.mine3.Entity.PlayerData;
 import com.boomchanotai.mine3.Repository.PostgresRepository;
 import com.boomchanotai.mine3.Repository.RedisRepository;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,13 +37,6 @@ public class PlayerService {
         }
 
         return stringBuffer.substring(0, numchars);
-    }
-
-    public static class LoginRequest {
-        public String token;
-        public String address;
-        public String signature;
-        public long timestamp;
     }
 
     public boolean isPlayerInGame(UUID playerUUID) {
@@ -81,10 +75,10 @@ public class PlayerService {
         player.spigot().sendMessage(titleComponent, urlComponent);
     }
 
-    public void playerLogin(LoginRequest loginRequest) throws Exception {
-        String parsedAddress = Keys.toChecksumAddress(loginRequest.address);
+    public void playerLogin(String token, String address) throws Exception {
+        String parsedAddress = Keys.toChecksumAddress(address);
         // 1. Get Player UUID
-        UUID playerUUID = redisRepo.getPlayerUUIDFromToken(loginRequest.token);
+        UUID playerUUID = redisRepo.getPlayerUUIDFromToken(token);
         if (playerUUID == null) {
             throw new Exception("INVALID_TOKEN");
         };
@@ -110,7 +104,7 @@ public class PlayerService {
         redisRepo.setAddress(playerUUID, parsedAddress);
 
         // 6. Delete Token
-        redisRepo.deleteToken(loginRequest.token);
+        redisRepo.deleteToken(token);
 
         // 7. Game Logic
         PreventPlayerActionWhenNotLoggedIn.playerConnected(playerUUID);
@@ -143,22 +137,22 @@ public class PlayerService {
         }
 
         // 10. get player info
-        JsonNode playerData = pgRepo.getPlayer(parsedAddress);
+        PlayerData playerData = pgRepo.getPlayer(parsedAddress);
         if (playerData == null) return;
-        player.setLevel(playerData.get("xpLevel").asInt());
-        player.setExp((float) playerData.get("xpExp").asDouble());
-        player.setHealth(playerData.get("health").asDouble());
-        player.setFoodLevel(playerData.get("foodLevel").asInt());
 
-        player.getLocation().setX(playerData.get("location").get("x").asDouble());
-        player.getLocation().setY(playerData.get("location").get("y").asDouble());
-        player.getLocation().setZ(playerData.get("location").get("z").asDouble());
-        player.getLocation().setYaw((float) playerData.get("location").get("yaw").asDouble());
-        player.getLocation().setPitch((float) playerData.get("location").get("pitch").asDouble());
+        player.setLevel(playerData.getXpLevel());
+        player.setExp(playerData.getXpExp());
+        player.setHealth(playerData.getHealth());
+        player.setFoodLevel(playerData.getFoodLevel());
 
-        String world = playerData.get("location").get("world").asText();
-        player.getLocation().setWorld(Mine3.getInstance().getServer().getWorld(world));
+        player.getLocation().setX(playerData.getPlayerLocation().getX());
+        player.getLocation().setY(playerData.getPlayerLocation().getY());
+        player.getLocation().setZ(playerData.getPlayerLocation().getZ());
+        player.getLocation().setYaw(playerData.getPlayerLocation().getYaw());
+        player.getLocation().setPitch(playerData.getPlayerLocation().getPitch());
+        player.getLocation().setWorld(playerData.getPlayerLocation().getWorld());
 
+        // 11. Send Title
         player.sendTitle(
                 org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_LOGGED_IN_TITLE_TITLE),
                 org.bukkit.ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_LOGGED_IN_TITLE_SUBTITLE),

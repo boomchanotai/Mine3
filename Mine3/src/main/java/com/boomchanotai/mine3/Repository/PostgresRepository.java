@@ -1,10 +1,11 @@
 package com.boomchanotai.mine3.Repository;
 
 import com.boomchanotai.mine3.Database.Database;
+import com.boomchanotai.mine3.Entity.PlayerData;
+import com.boomchanotai.mine3.Entity.PlayerLocation;
 import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Mine3;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.web3j.crypto.Keys;
 
@@ -15,7 +16,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Objects;
 
 public class PostgresRepository {
     public void createNewPlayer(String address, double lastLocationX, double lastLocationY, double lastLocationZ, float lastLocationYaw, float lastLocationPitch, String  lastLocationWorld) throws SQLException {
@@ -41,7 +41,7 @@ public class PostgresRepository {
         preparedStatement.executeUpdate();
     }
 
-    public ObjectNode getPlayer(String address) {
+    public PlayerData getPlayer(String address) {
         String parsedAddress = Keys.toChecksumAddress(address);
 
         try {
@@ -50,25 +50,25 @@ public class PostgresRepository {
             ResultSet res = preparedStatement.executeQuery();
 
             if (res.next()) {
-                ObjectMapper mapper = new ObjectMapper();
-                ObjectNode obj = mapper.createObjectNode();
+                double lastLocationX = res.getDouble("last_location_x");
+                double lastLocationY = res.getDouble("last_location_y");
+                double lastLocationZ = res.getDouble("last_location_z");
+                float lastLocationYaw = res.getFloat("last_location_yaw");
+                float lastLocationPitch = res.getFloat("last_location_pitch");
+                String lastLocationWorld = res.getString("last_location_world");
+                World world = Mine3.getInstance().getServer().getWorld(lastLocationWorld);
 
-                ObjectNode location = mapper.createObjectNode();
-                location.put("x", res.getDouble("last_location_x"));
-                location.put("y", res.getDouble("last_location_y"));
-                location.put("z", res.getDouble("last_location_z"));
-                location.put("yaw", res.getFloat("last_location_yaw"));
-                location.put("pitch", res.getFloat("last_location_pitch"));
-                location.put("world", Objects.requireNonNull(Mine3.getInstance().getServer().getWorld(res.getString("last_location_world"))).getName());
+                PlayerLocation playerLocation = new PlayerLocation(lastLocationX, lastLocationY, lastLocationZ, lastLocationYaw, lastLocationPitch, world);
 
-                obj.put("isLoggedIn", true);
-                obj.put("xpLevel", res.getInt("xp_level"));
-                obj.put("xpExp", res.getFloat("xp_exp"));
-                obj.put("health", res.getInt("health"));
-                obj.put("foodLevel", res.getInt("food_level"));
-                obj.set("location", location);
+                boolean isLoggedIn = res.getBoolean("is_logged_in");
+                int xpLevel = res.getInt("xp_level");
+                float xpExp = res.getFloat("xp_exp");
+                int health = res.getInt("health");
+                int foodLevel = res.getInt("food_level");
 
-                return obj;
+                PlayerData playerData = new PlayerData(parsedAddress, isLoggedIn, xpLevel, xpExp, health, foodLevel, playerLocation);
+
+                return playerData;
             }
         } catch (Exception e) {
             Logger.warning(e.getMessage());
