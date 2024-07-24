@@ -192,8 +192,4 @@ public class PlayerService {
         redisRepo.deleteAddress(address);
         redisRepo.deletePlayerInfo(playerUUID);
     }
-
-    public PlayerCacheData getPlayer(UUID playerUUID) {
-        return redisRepo.getPlayerInfo(playerUUID);
-    }
 }

@@ -2,22 +2,21 @@ package com.boomchanotai.mine3.Commands;
 
 import com.boomchanotai.mine3.Entity.PlayerCacheData;
 import com.boomchanotai.mine3.Logger.Logger;
-import com.boomchanotai.mine3.Service.PlayerService;
-import org.bukkit.ChatColor;
+import com.boomchanotai.mine3.Repository.RedisRepository;
+import com.boomchanotai.mine3.Repository.SpigotRepository;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static com.boomchanotai.mine3.Config.Config.COLOR_CODE_PREFIX;
-import static com.boomchanotai.mine3.Config.Config.TITLE;
-
 public class Address implements CommandExecutor {
-    private PlayerService playerService;
+    private RedisRepository redisRepo;
+    private SpigotRepository spigotRepo;
 
-    public Address(PlayerService playerService) {
-        this.playerService = playerService;
+    public Address(RedisRepository redisRepo, SpigotRepository spigotRepo) {
+        this.redisRepo = redisRepo;
+        this.spigotRepo = spigotRepo;
     }
 
     @Override
@@ -28,14 +27,14 @@ public class Address implements CommandExecutor {
         }
 
         Player p = (Player) sender;
-        PlayerCacheData playerCacheData = playerService.getPlayer(p.getUniqueId());
+        PlayerCacheData playerCacheData = redisRepo.getPlayerInfo(p.getUniqueId());
         if (playerCacheData == null) {
             Logger.warning("Unexpected Event: Not found playerInfo!, UUID: " + p.getUniqueId() + ", Command: /address");
             return false;
         }
 
         String address = playerCacheData.getAddress();
-        p.sendMessage(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE + address));
+        spigotRepo.sendMessage(p, address);
 
         return true;
     }

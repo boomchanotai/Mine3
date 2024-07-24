@@ -52,7 +52,7 @@ public final class Mine3 extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(playerService), this);
         getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(spigotRepo), this);
 
-        getCommand("address").setExecutor(new Address(playerService));
+        getCommand("address").setExecutor(new Address(redisRepo, spigotRepo));
         getCommand("logout").setExecutor(new Logout(playerService));
 
         // Connect when reloaded
