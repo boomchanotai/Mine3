@@ -16,7 +16,8 @@ public class RedisRepository {
         String tokenKey = AUTH_TOKEN_PREFIX_KEY + ":" + token;
         try (Jedis j = Redis.getPool().getResource()) {
             String playerUUIDStr = j.get(tokenKey);
-            if (playerUUIDStr == null) return null;
+            if (playerUUIDStr == null)
+                return null;
 
             return UUID.fromString(playerUUIDStr);
         } catch (Exception e) {
@@ -49,7 +50,8 @@ public class RedisRepository {
 
         try (Jedis j = Redis.getPool().getResource()) {
             String info = j.hget(AUTH_PLAYER_KEY, playerUUID.toString());
-            if (info == null) return null;
+            if (info == null)
+                return null;
 
             return mapper.readTree(info);
         } catch (Exception e) {
@@ -79,7 +81,8 @@ public class RedisRepository {
         String parsedAddress = Keys.toChecksumAddress(address);
         try (Jedis j = Redis.getPool().getResource()) {
             String playerUUID = j.hget(AUTH_ADDRESS_KEY, parsedAddress);
-            if (playerUUID == null || playerUUID.isEmpty()) return null;
+            if (playerUUID == null || playerUUID.isEmpty())
+                return null;
 
             return UUID.fromString(playerUUID);
         } catch (Exception e) {

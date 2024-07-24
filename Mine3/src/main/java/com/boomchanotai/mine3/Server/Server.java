@@ -15,7 +15,7 @@ import static com.boomchanotai.mine3.Config.Config.*;
 public class Server {
     private static Javalin app = null;
     private static PlayerService playerService;
-    
+
     public Server(PlayerService playerService) {
         Server.playerService = playerService;
     }
@@ -69,7 +69,8 @@ public class Server {
     public static void login(Context ctx) {
         LoginRequest loginRequest = ctx.bodyAsClass(LoginRequest.class);
 
-        if (loginRequest.token.isEmpty() || loginRequest.address.isEmpty() || loginRequest.signature.isEmpty() || loginRequest.timestamp == 0) {
+        if (loginRequest.token.isEmpty() || loginRequest.address.isEmpty() || loginRequest.signature.isEmpty()
+                || loginRequest.timestamp == 0) {
             JSONObject res = new JSONObject();
             res.put("error", "BAD_REQUEST");
 
@@ -78,7 +79,8 @@ public class Server {
         }
 
         // Verify Signature with address and timestamp
-        String msg = "Sign in to Mine3 and this is my wallet address: " + loginRequest.address + " to sign in " + loginRequest.token + ". now is " + loginRequest.timestamp;
+        String msg = "Sign in to Mine3 and this is my wallet address: " + loginRequest.address + " to sign in "
+                + loginRequest.token + ". now is " + loginRequest.timestamp;
         String recoveredAddress = EthersUtils.verifyMessage(msg, loginRequest.signature);
         if (!Keys.toChecksumAddress(recoveredAddress).equals(Keys.toChecksumAddress(loginRequest.address))) {
             JSONObject res = new JSONObject();

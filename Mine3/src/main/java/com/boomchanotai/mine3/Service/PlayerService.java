@@ -31,10 +31,11 @@ public class PlayerService {
         this.redisRepo = redisRepo;
         this.spigotRepo = spigotRepo;
     }
-    private static String getRandomHexString(int numchars){
+
+    private static String getRandomHexString(int numchars) {
         Random r = new Random();
         StringBuilder stringBuffer = new StringBuilder();
-        while(stringBuffer.length() < numchars){
+        while (stringBuffer.length() < numchars) {
             stringBuffer.append(Integer.toHexString(r.nextInt()));
         }
 
@@ -48,33 +49,35 @@ public class PlayerService {
 
     public void connectPlayer(Player player) {
         spigotRepo.setPlayerDefaultState(player);
-        
+
         UUID playerUUID = player.getUniqueId();
 
         String token = getRandomHexString(TOKEN_LENGTH);
         redisRepo.setToken(token, playerUUID);
 
         // Send Message to player
-        TextComponent titleComponent = new TextComponent(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE));
+        TextComponent titleComponent = new TextComponent(
+                ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE));
         titleComponent.setColor(ChatColor.BLUE);
 
         String url = AUTH_WEBSITE_TOKEN_BASE_URL + token;
-        TextComponent urlComponent = new TextComponent(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_CLICK_TO_LOGIN_MESSAGE));
+        TextComponent urlComponent = new TextComponent(
+                ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_CLICK_TO_LOGIN_MESSAGE));
         urlComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
         urlComponent.setUnderlined(true);
         urlComponent.setColor(ChatColor.GRAY);
 
         spigotRepo.sendMessage(
-            player, 
-            titleComponent, 
-            urlComponent);
+                player,
+                titleComponent,
+                urlComponent);
 
-        spigotRepo.sendTitle(player, 
-            AUTH_JOIN_SERVER_TITLE_TITLE, 
-            AUTH_JOIN_SERVER_TITLE_SUBTITLE, 
-            AUTH_JOIN_SERVER_TITLE_FADE_OUT, 
-            AUTH_JOIN_SERVER_TITLE_STAY, 
-            AUTH_JOIN_SERVER_TITLE_FADE_IN);     
+        spigotRepo.sendTitle(player,
+                AUTH_JOIN_SERVER_TITLE_TITLE,
+                AUTH_JOIN_SERVER_TITLE_SUBTITLE,
+                AUTH_JOIN_SERVER_TITLE_FADE_OUT,
+                AUTH_JOIN_SERVER_TITLE_STAY,
+                AUTH_JOIN_SERVER_TITLE_FADE_IN);
     }
 
     public void playerLogin(String token, String address) throws Exception {
@@ -83,7 +86,8 @@ public class PlayerService {
         UUID playerUUID = redisRepo.getPlayerUUIDFromToken(token);
         if (playerUUID == null) {
             throw new Exception("INVALID_TOKEN");
-        };
+        }
+        ;
 
         // 2. Check Player in game
         boolean isPlayerInGame = isPlayerInGame(playerUUID);
@@ -95,7 +99,8 @@ public class PlayerService {
         UUID checkPlayer = redisRepo.getPlayerFromAddress(parsedAddress);
         if (checkPlayer != null) {
             throw new Exception("ADDRESS_ALREADY_USED");
-        };
+        }
+        ;
 
         // 4. Store Player: (json) address
         JSONObject playerInfo = new JSONObject();
@@ -112,7 +117,8 @@ public class PlayerService {
         PreventPlayerActionWhenNotLoggedIn.playerConnected(playerUUID);
 
         Player player = Mine3.getInstance().getServer().getPlayer(playerUUID);
-        if (player == null) return;
+        if (player == null)
+            return;
 
         // 8. Create User in Database
         try {
@@ -123,8 +129,7 @@ public class PlayerService {
                     player.getLocation().getZ(),
                     player.getLocation().getYaw(),
                     player.getLocation().getPitch(),
-                    Objects.requireNonNull(player.getLocation().getWorld()).getName()
-            );
+                    Objects.requireNonNull(player.getLocation().getWorld()).getName());
         } catch (SQLException exception) {
             Logger.warning(exception.getMessage());
             throw exception;
@@ -139,8 +144,9 @@ public class PlayerService {
         }
 
         // 10. get player info
-        PlayerData playerData = pgRepo.getPlayer(parsedAddress);
-        if (playerData == null) return;
+        PlayerData playerData = pgRepo.getPlayerData(parsedAddress);
+        if (playerData == null)
+            return;
         spigotRepo.restorePlayerState(player, playerData);
 
         // 11. Send Title
@@ -159,7 +165,8 @@ public class PlayerService {
         PreventPlayerActionWhenNotLoggedIn.playerDisconnected(playerUUID);
 
         JsonNode playerInfo = redisRepo.getPlayerInfo(playerUUID);
-        if (playerInfo == null) return;
+        if (playerInfo == null)
+            return;
         String address = playerInfo.get("address").asText();
         String parsedAddress = Keys.toChecksumAddress(address);
 
@@ -178,8 +185,7 @@ public class PlayerService {
                     player.getLocation().getZ(),
                     player.getLocation().getYaw(),
                     player.getLocation().getPitch(),
-                    Objects.requireNonNull(player.getLocation().getWorld()).getName()
-            );
+                    Objects.requireNonNull(player.getLocation().getWorld()).getName());
         } catch (SQLException exception) {
             Logger.warning(exception.getMessage());
         }

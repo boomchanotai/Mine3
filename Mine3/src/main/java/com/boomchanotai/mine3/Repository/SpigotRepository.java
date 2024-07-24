@@ -21,12 +21,11 @@ public class SpigotRepository {
 
     public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
         player.sendTitle(
-            ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, title),
-            ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, subtitle),
-            fadeIn,
-            stay,
-            fadeOut
-        );
+                ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, title),
+                ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, subtitle),
+                fadeIn,
+                stay,
+                fadeOut);
     }
 
     public void setPlayerDefaultState(Player player) {

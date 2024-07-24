@@ -10,8 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-
-
 import static com.boomchanotai.mine3.Config.Config.COLOR_CODE_PREFIX;
 import static com.boomchanotai.mine3.Config.Config.TITLE;
 
@@ -23,7 +21,8 @@ public class Address implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+            @NotNull String[] args) {
         if (!(sender instanceof Player)) {
             return false;
         }

@@ -12,7 +12,7 @@ import static com.boomchanotai.mine3.Config.Config.*;
 
 public class Database {
     private static Connection connection;
-    
+
     public static Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             connect();

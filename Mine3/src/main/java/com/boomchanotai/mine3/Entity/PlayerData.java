@@ -9,7 +9,8 @@ public class PlayerData {
     private int foodLevel;
     private PlayerLocation playerLocation;
 
-    public PlayerData(String address, boolean isLoggedIn, int xpLevel, float xpExp, int health, int foodLevel, PlayerLocation playerLocation) {
+    public PlayerData(String address, boolean isLoggedIn, int xpLevel, float xpExp, int health, int foodLevel,
+            PlayerLocation playerLocation) {
         this.address = address;
         this.isLoggedIn = isLoggedIn;
         this.xpLevel = xpLevel;
@@ -75,5 +76,3 @@ public class PlayerData {
         this.playerLocation = playerLocation;
     }
 }
-
-
