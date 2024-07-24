@@ -1,7 +1,6 @@
 package com.boomchanotai.mine3.Commands;
 
 import com.boomchanotai.mine3.Logger.Logger;
-import com.boomchanotai.mine3.Repository.RedisRepository;
 import com.boomchanotai.mine3.Service.PlayerService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.bukkit.ChatColor;

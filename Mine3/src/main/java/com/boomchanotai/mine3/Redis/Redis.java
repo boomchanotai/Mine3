@@ -1,8 +1,6 @@
 package com.boomchanotai.mine3.Redis;
 
 import com.boomchanotai.mine3.Logger.Logger;
-import com.boomchanotai.mine3.Mine3;
-import org.bukkit.configuration.file.FileConfiguration;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
