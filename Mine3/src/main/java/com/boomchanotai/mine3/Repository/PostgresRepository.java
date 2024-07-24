@@ -18,7 +18,7 @@ import java.util.Base64;
 import java.util.Objects;
 
 public class PostgresRepository {
-    public static void createNewPlayer(String address, double lastLocationX, double lastLocationY, double lastLocationZ, float lastLocationYaw, float lastLocationPitch, String  lastLocationWorld) throws SQLException {
+    public void createNewPlayer(String address, double lastLocationX, double lastLocationY, double lastLocationZ, float lastLocationYaw, float lastLocationPitch, String  lastLocationWorld) throws SQLException {
         PreparedStatement preparedStatement = Database.getConnection().prepareStatement("INSERT INTO users(address, is_logged_in, last_location_x, last_location_y, last_location_z, last_location_yaw, last_location_pitch, last_location_world) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING");
 
         // set address
@@ -41,7 +41,7 @@ public class PostgresRepository {
         preparedStatement.executeUpdate();
     }
 
-    public static ObjectNode getPlayer(String address) {
+    public ObjectNode getPlayer(String address) {
         String parsedAddress = Keys.toChecksumAddress(address);
 
         try {
@@ -77,7 +77,7 @@ public class PostgresRepository {
         return null;
     }
 
-    public static void updateUserInventory(String address, int xpLevel, float xpExp, double health, int foodLevel, ItemStack[] armor, ItemStack[] inventory, ItemStack[] enderChest, double lastLocationX, double lastLocationY, double lastLocationZ, float lastLocationYaw, float lastLocationPitch, String  lastLocationWorld) throws SQLException {
+    public void updateUserInventory(String address, int xpLevel, float xpExp, double health, int foodLevel, ItemStack[] armor, ItemStack[] inventory, ItemStack[] enderChest, double lastLocationX, double lastLocationY, double lastLocationZ, float lastLocationYaw, float lastLocationPitch, String  lastLocationWorld) throws SQLException {
         PreparedStatement preparedStatement = Database.getConnection().prepareStatement("UPDATE users SET is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, armor = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?");
 
         ArrayList<ItemStack> armorArr = new ArrayList<>(Arrays.asList(armor));
@@ -118,7 +118,7 @@ public class PostgresRepository {
         preparedStatement.executeUpdate();
     }
 
-    public static void setUserLoggedIn(String address) throws SQLException {
+    public void setUserLoggedIn(String address) throws SQLException {
         PreparedStatement preparedStatement = Database.getConnection().prepareStatement("UPDATE users SET is_logged_in = true, last_login = CURRENT_TIMESTAMP WHERE address = ?");
 
         // set address

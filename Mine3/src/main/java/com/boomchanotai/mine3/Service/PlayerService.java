@@ -20,7 +20,14 @@ import static com.boomchanotai.mine3.Config.Config.*;
 import static com.boomchanotai.mine3.Config.Config.AUTH_JOIN_SERVER_TITLE_FADE_OUT;
 
 public class PlayerService {
+    private static PostgresRepository pgRepo;
+    private static RedisRepository redisRepo;
     private static final int TOKEN_LENGTH = 32;
+
+    public PlayerService(PostgresRepository pgRepo, RedisRepository redisRepo) {
+        PlayerService.pgRepo = pgRepo;
+        PlayerService.redisRepo = redisRepo;
+    }
     private static String getRandomHexString(int numchars){
         Random r = new Random();
         StringBuilder stringBuffer = new StringBuilder();
@@ -38,12 +45,12 @@ public class PlayerService {
         public long timestamp;
     }
 
-    public static boolean isPlayerInGame(UUID playerUUID) {
+    public boolean isPlayerInGame(UUID playerUUID) {
         Player player = Mine3.getInstance().getServer().getPlayer(playerUUID);
         return player != null;
     }
 
-    public static void connectPlayer(Player player) {
+    public void connectPlayer(Player player) {
         player.setHealth(20.0);
         player.setFoodLevel(20);
         player.setLevel(0);
@@ -52,7 +59,7 @@ public class PlayerService {
         UUID playerUUID = player.getUniqueId();
 
         String token = getRandomHexString(TOKEN_LENGTH);
-        RedisRepository.setToken(token, playerUUID);
+        redisRepo.setToken(token, playerUUID);
 
         // Send Message to player
         TextComponent titleComponent = new TextComponent(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE));
@@ -74,22 +81,22 @@ public class PlayerService {
         player.spigot().sendMessage(titleComponent, urlComponent);
     }
 
-    public static void playerLogin(LoginRequest loginRequest) throws Exception {
+    public void playerLogin(LoginRequest loginRequest) throws Exception {
         String parsedAddress = Keys.toChecksumAddress(loginRequest.address);
         // 1. Get Player UUID
-        UUID playerUUID = RedisRepository.getPlayerUUIDFromToken(loginRequest.token);
+        UUID playerUUID = redisRepo.getPlayerUUIDFromToken(loginRequest.token);
         if (playerUUID == null) {
             throw new Exception("INVALID_TOKEN");
         };
 
         // 2. Check Player in game
-        boolean isPlayerInGame = PlayerService.isPlayerInGame(playerUUID);
+        boolean isPlayerInGame = isPlayerInGame(playerUUID);
         if (!isPlayerInGame) {
             throw new Exception("PLAYER_NOT_IN_GAME");
         }
 
         // 3. Check address already exist
-        UUID checkPlayer = RedisRepository.getPlayerFromAddress(parsedAddress);
+        UUID checkPlayer = redisRepo.getPlayerFromAddress(parsedAddress);
         if (checkPlayer != null) {
             throw new Exception("ADDRESS_ALREADY_USED");
         };
@@ -97,13 +104,13 @@ public class PlayerService {
         // 4. Store Player: (json) address
         JSONObject playerInfo = new JSONObject();
         playerInfo.put("address", parsedAddress);
-        RedisRepository.setPlayerInfo(playerUUID, playerInfo.toString());
+        redisRepo.setPlayerInfo(playerUUID, playerInfo.toString());
 
         // 5. Store Address: PlayerUUID
-        RedisRepository.setAddress(playerUUID, parsedAddress);
+        redisRepo.setAddress(playerUUID, parsedAddress);
 
         // 6. Delete Token
-        RedisRepository.deleteToken(loginRequest.token);
+        redisRepo.deleteToken(loginRequest.token);
 
         // 7. Game Logic
         PreventPlayerActionWhenNotLoggedIn.playerConnected(playerUUID);
@@ -113,7 +120,7 @@ public class PlayerService {
 
         // 8. Create User in Database
         try {
-            PostgresRepository.createNewPlayer(
+            pgRepo.createNewPlayer(
                     parsedAddress,
                     player.getLocation().getX(),
                     player.getLocation().getY(),
@@ -129,14 +136,14 @@ public class PlayerService {
 
         // 9. Update user Login
         try {
-            PostgresRepository.setUserLoggedIn(parsedAddress);
+            pgRepo.setUserLoggedIn(parsedAddress);
         } catch (SQLException exception) {
             Logger.warning(exception.getMessage());
             throw exception;
         }
 
         // 10. get player info
-        JsonNode playerData = PostgresRepository.getPlayer(parsedAddress);
+        JsonNode playerData = pgRepo.getPlayer(parsedAddress);
         if (playerData == null) return;
         player.setLevel(playerData.get("xpLevel").asInt());
         player.setExp((float) playerData.get("xpExp").asDouble());
@@ -160,18 +167,18 @@ public class PlayerService {
                 AUTH_LOGGED_IN_TITLE_FADE_OUT);
     }
 
-    public static void disconnectPlayer(Player player) {
+    public void disconnectPlayer(Player player) {
         UUID playerUUID = player.getUniqueId();
 
         PreventPlayerActionWhenNotLoggedIn.playerDisconnected(playerUUID);
 
-        JsonNode playerInfo = RedisRepository.getPlayerInfo(playerUUID);
+        JsonNode playerInfo = redisRepo.getPlayerInfo(playerUUID);
         if (playerInfo == null) return;
         String address = playerInfo.get("address").asText();
         String parsedAddress = Keys.toChecksumAddress(address);
 
         try {
-            PostgresRepository.updateUserInventory(
+            pgRepo.updateUserInventory(
                     parsedAddress,
                     player.getLevel(),
                     player.getExp(),
@@ -191,7 +198,11 @@ public class PlayerService {
             Logger.warning(exception.getMessage());
         }
 
-        RedisRepository.deleteAddress(parsedAddress);
-        RedisRepository.deletePlayerInfo(playerUUID);
+        redisRepo.deleteAddress(parsedAddress);
+        redisRepo.deletePlayerInfo(playerUUID);
+    }
+
+    public JsonNode getPlayer(UUID playerUUID) {
+        return redisRepo.getPlayerInfo(playerUUID);
     }
 }

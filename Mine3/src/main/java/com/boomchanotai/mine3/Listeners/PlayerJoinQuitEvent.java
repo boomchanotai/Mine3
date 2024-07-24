@@ -9,18 +9,21 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerJoinQuitEvent implements Listener {
 
+    private PlayerService playerService;
 
-
+    public PlayerJoinQuitEvent(PlayerService playerService) {
+        this.playerService = playerService;
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PlayerService.connectPlayer(player);
+        playerService.connectPlayer(player);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        PlayerService.disconnectPlayer(player);
+        playerService.disconnectPlayer(player);
     }
 }

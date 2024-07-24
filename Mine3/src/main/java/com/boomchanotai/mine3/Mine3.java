@@ -6,6 +6,8 @@ import com.boomchanotai.mine3.Config.Config;
 import com.boomchanotai.mine3.Database.Database;
 import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3.Logger.Logger;
+import com.boomchanotai.mine3.Repository.PostgresRepository;
+import com.boomchanotai.mine3.Repository.RedisRepository;
 import com.boomchanotai.mine3.Server.Server;
 import com.boomchanotai.mine3.Listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3.Redis.Redis;
@@ -35,16 +37,24 @@ public final class Mine3 extends JavaPlugin {
             Logger.warning("Fail to connect database.");
         }
         Redis.connect();
-        Server.startServer();
 
-        getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(), this);
+        // Dependencies
+        PostgresRepository pgRepo = new PostgresRepository();
+        RedisRepository redisRepo = new RedisRepository();
+
+        PlayerService playerService = new PlayerService(pgRepo, redisRepo);
+
+        Server server = new Server(playerService);
+        server.startServer();
+
+        getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(playerService), this);
         getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(), this);
 
-        getCommand("address").setExecutor(new Address());
-        getCommand("logout").setExecutor(new Logout());
+        getCommand("address").setExecutor(new Address(playerService));
+        getCommand("logout").setExecutor(new Logout(playerService));
 
         // Connect when reloaded
-        getServer().getOnlinePlayers().forEach(PlayerService::connectPlayer);
+        getServer().getOnlinePlayers().forEach(playerService::connectPlayer);
     }
 
     @Override

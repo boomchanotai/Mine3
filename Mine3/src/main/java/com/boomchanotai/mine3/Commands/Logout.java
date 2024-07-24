@@ -8,6 +8,11 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class Logout implements CommandExecutor {
+    private PlayerService playerService;
+
+    public Logout(PlayerService playerService) {
+        this.playerService = playerService;
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -16,8 +21,8 @@ public class Logout implements CommandExecutor {
         }
 
         Player p = (Player) sender;
-        PlayerService.disconnectPlayer(p);
-        PlayerService.connectPlayer(p);
+        playerService.disconnectPlayer(p);
+        playerService.connectPlayer(p);
 
         return true;
     }

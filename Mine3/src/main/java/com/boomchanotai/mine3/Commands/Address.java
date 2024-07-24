@@ -2,6 +2,7 @@ package com.boomchanotai.mine3.Commands;
 
 import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Repository.RedisRepository;
+import com.boomchanotai.mine3.Service.PlayerService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -16,6 +17,12 @@ import static com.boomchanotai.mine3.Config.Config.COLOR_CODE_PREFIX;
 import static com.boomchanotai.mine3.Config.Config.TITLE;
 
 public class Address implements CommandExecutor {
+    private PlayerService playerService;
+
+    public Address(PlayerService playerService) {
+        this.playerService = playerService;
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
@@ -23,7 +30,7 @@ public class Address implements CommandExecutor {
         }
 
         Player p = (Player) sender;
-        JsonNode playerInfo = RedisRepository.getPlayerInfo(p.getUniqueId());
+        JsonNode playerInfo = playerService.getPlayer(p.getUniqueId());
         if (playerInfo == null) {
             Logger.warning("Unexpected Event: Not found playerInfo!, UUID: " + p.getUniqueId() + ", Command: /address");
             return false;

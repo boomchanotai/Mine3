@@ -12,7 +12,7 @@ import java.util.UUID;
 import static com.boomchanotai.mine3.Config.Config.*;
 
 public class RedisRepository {
-    public static UUID getPlayerUUIDFromToken(String token) {
+    public UUID getPlayerUUIDFromToken(String token) {
         String tokenKey = AUTH_TOKEN_PREFIX_KEY + ":" + token;
         try (Jedis j = Redis.getPool().getResource()) {
             String playerUUIDStr = j.get(tokenKey);
@@ -26,7 +26,7 @@ public class RedisRepository {
         return null;
     }
 
-    public static void setToken(String token, UUID playerUUID) {
+    public void setToken(String token, UUID playerUUID) {
         String tokenKey = AUTH_TOKEN_PREFIX_KEY + ":" + token;
         try (Jedis j = Redis.getPool().getResource()) {
             j.setex(tokenKey, AUTH_LOGIN_SESSION_TIMEOUT, playerUUID.toString());
@@ -35,7 +35,7 @@ public class RedisRepository {
         }
     }
 
-    public static void deleteToken(String token) {
+    public void deleteToken(String token) {
         String tokenKey = AUTH_TOKEN_PREFIX_KEY + ":" + token;
         try (Jedis j = Redis.getPool().getResource()) {
             j.del(tokenKey);
@@ -44,7 +44,7 @@ public class RedisRepository {
         }
     }
 
-    public static JsonNode getPlayerInfo(UUID playerUUID) {
+    public JsonNode getPlayerInfo(UUID playerUUID) {
         ObjectMapper mapper = new ObjectMapper();
 
         try (Jedis j = Redis.getPool().getResource()) {
@@ -59,7 +59,7 @@ public class RedisRepository {
         return null;
     }
 
-    public static void setPlayerInfo(UUID playerUUID, String data) {
+    public void setPlayerInfo(UUID playerUUID, String data) {
         try (Jedis j = Redis.getPool().getResource()) {
             j.hset(AUTH_PLAYER_KEY, playerUUID.toString(), data);
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class RedisRepository {
         }
     }
 
-    public static void deletePlayerInfo(UUID playerUUID) {
+    public void deletePlayerInfo(UUID playerUUID) {
         try (Jedis j = Redis.getPool().getResource()) {
             j.hdel(AUTH_PLAYER_KEY, playerUUID.toString());
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public class RedisRepository {
         }
     }
 
-    public static UUID getPlayerFromAddress(String address) {
+    public UUID getPlayerFromAddress(String address) {
         String parsedAddress = Keys.toChecksumAddress(address);
         try (Jedis j = Redis.getPool().getResource()) {
             String playerUUID = j.hget(AUTH_ADDRESS_KEY, parsedAddress);
@@ -89,7 +89,7 @@ public class RedisRepository {
         return null;
     }
 
-    public static void setAddress(UUID playerUUID, String address) {
+    public void setAddress(UUID playerUUID, String address) {
         String parsedAddress = Keys.toChecksumAddress(address);
         try (Jedis j = Redis.getPool().getResource()) {
             j.hset(AUTH_ADDRESS_KEY, parsedAddress, playerUUID.toString());
@@ -98,7 +98,7 @@ public class RedisRepository {
         }
     }
 
-    public static void deleteAddress(String address) {
+    public void deleteAddress(String address) {
         String parsedAddress = Keys.toChecksumAddress(address);
         try (Jedis j = Redis.getPool().getResource()) {
             j.hdel(AUTH_ADDRESS_KEY, parsedAddress);

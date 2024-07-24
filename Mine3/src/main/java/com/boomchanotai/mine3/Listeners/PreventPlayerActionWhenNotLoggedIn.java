@@ -1,5 +1,6 @@
 package com.boomchanotai.mine3.Listeners;
 
+import com.boomchanotai.mine3.Service.PlayerService;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +15,6 @@ import java.util.UUID;
 import static com.boomchanotai.mine3.Config.Config.*;
 
 public class PreventPlayerActionWhenNotLoggedIn implements Listener {
-
     private static HashMap<UUID, Boolean> isLoggedIn;
 
     public PreventPlayerActionWhenNotLoggedIn() {
