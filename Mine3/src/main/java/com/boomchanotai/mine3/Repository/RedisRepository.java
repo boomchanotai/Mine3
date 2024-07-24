@@ -1,5 +1,6 @@
 package com.boomchanotai.mine3.Repository;
 
+import com.boomchanotai.mine3.Entity.PlayerCacheData;
 import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Redis.Redis;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -45,15 +46,19 @@ public class RedisRepository {
         }
     }
 
-    public JsonNode getPlayerInfo(UUID playerUUID) {
-        ObjectMapper mapper = new ObjectMapper();
+    public PlayerCacheData getPlayerInfo(UUID playerUUID) {
 
         try (Jedis j = Redis.getPool().getResource()) {
             String info = j.hget(AUTH_PLAYER_KEY, playerUUID.toString());
             if (info == null)
                 return null;
 
-            return mapper.readTree(info);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode node = mapper.readTree(info);
+            String address = node.get("address").asText();
+            String parsedAddress = Keys.toChecksumAddress(address);
+
+            return new PlayerCacheData(parsedAddress);
         } catch (Exception e) {
             Logger.warning(e.getMessage());
         }

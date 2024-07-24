@@ -3,11 +3,11 @@ package com.boomchanotai.mine3.Service;
 import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Mine3;
+import com.boomchanotai.mine3.Entity.PlayerCacheData;
 import com.boomchanotai.mine3.Entity.PlayerData;
 import com.boomchanotai.mine3.Repository.PostgresRepository;
 import com.boomchanotai.mine3.Repository.RedisRepository;
 import com.boomchanotai.mine3.Repository.SpigotRepository;
-import com.fasterxml.jackson.databind.JsonNode;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -164,15 +164,14 @@ public class PlayerService {
 
         PreventPlayerActionWhenNotLoggedIn.playerDisconnected(playerUUID);
 
-        JsonNode playerInfo = redisRepo.getPlayerInfo(playerUUID);
-        if (playerInfo == null)
+        PlayerCacheData playerCacheData = redisRepo.getPlayerInfo(playerUUID);
+        if (playerCacheData == null)
             return;
-        String address = playerInfo.get("address").asText();
-        String parsedAddress = Keys.toChecksumAddress(address);
+        String address = playerCacheData.getAddress();
 
         try {
             pgRepo.updateUserInventory(
-                    parsedAddress,
+                    address,
                     player.getLevel(),
                     player.getExp(),
                     player.getHealth(),
@@ -190,11 +189,11 @@ public class PlayerService {
             Logger.warning(exception.getMessage());
         }
 
-        redisRepo.deleteAddress(parsedAddress);
+        redisRepo.deleteAddress(address);
         redisRepo.deletePlayerInfo(playerUUID);
     }
 
-    public JsonNode getPlayer(UUID playerUUID) {
+    public PlayerCacheData getPlayer(UUID playerUUID) {
         return redisRepo.getPlayerInfo(playerUUID);
     }
 }

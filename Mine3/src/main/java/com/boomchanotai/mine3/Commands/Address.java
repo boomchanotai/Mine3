@@ -1,8 +1,8 @@
 package com.boomchanotai.mine3.Commands;
 
+import com.boomchanotai.mine3.Entity.PlayerCacheData;
 import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Service.PlayerService;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,13 +28,13 @@ public class Address implements CommandExecutor {
         }
 
         Player p = (Player) sender;
-        JsonNode playerInfo = playerService.getPlayer(p.getUniqueId());
-        if (playerInfo == null) {
+        PlayerCacheData playerCacheData = playerService.getPlayer(p.getUniqueId());
+        if (playerCacheData == null) {
             Logger.warning("Unexpected Event: Not found playerInfo!, UUID: " + p.getUniqueId() + ", Command: /address");
             return false;
         }
 
-        String address = playerInfo.get("address").asText();
+        String address = playerCacheData.getAddress();
         p.sendMessage(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE + address));
 
         return true;
