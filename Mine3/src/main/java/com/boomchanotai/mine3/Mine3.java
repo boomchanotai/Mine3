@@ -19,6 +19,7 @@ import java.sql.SQLException;
 
 public final class Mine3 extends JavaPlugin {
     private static Mine3 instance;
+    PlayerService playerService;
 
     public static Mine3 getInstance() {
         return instance;
@@ -44,7 +45,7 @@ public final class Mine3 extends JavaPlugin {
         RedisRepository redisRepo = new RedisRepository();
         SpigotRepository spigotRepo = new SpigotRepository();
 
-        PlayerService playerService = new PlayerService(pgRepo, redisRepo, spigotRepo);
+        playerService = new PlayerService(pgRepo, redisRepo, spigotRepo);
 
         Server server = new Server(playerService);
         server.startServer();
@@ -55,16 +56,20 @@ public final class Mine3 extends JavaPlugin {
         getCommand("address").setExecutor(new Address(redisRepo, spigotRepo));
         getCommand("logout").setExecutor(new Logout(playerService));
 
-        // Connect when reloaded
+        // Connect all players if in game
         getServer().getOnlinePlayers().forEach(playerService::connectPlayer);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        // Disconnect all players when server stop / reload
+        getServer().getOnlinePlayers().forEach(playerService::disconnectPlayer);
+
         PreventPlayerActionWhenNotLoggedIn.disconnectAll();
         Server.stopServer();
         Redis.close();
+
         try {
             Database.disconnect();
         } catch (SQLException e) {

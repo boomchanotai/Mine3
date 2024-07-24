@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class Address implements CommandExecutor {
@@ -35,6 +36,18 @@ public class Address implements CommandExecutor {
 
         String address = playerCacheData.getAddress();
         spigotRepo.sendMessage(p, address);
+
+        ItemStack[] items = p.getInventory().getContents();
+        for (ItemStack item : items) {
+            if (item == null) {
+                continue;
+            }
+
+            System.out.println(item.getType().toString());
+            System.out.println(item.getItemMeta());
+            System.out.println(item.getAmount());
+            System.out.println(item.getData());
+        }
 
         return true;
     }
