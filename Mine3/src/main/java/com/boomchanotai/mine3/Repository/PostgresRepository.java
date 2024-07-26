@@ -7,15 +7,13 @@ import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Mine3;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
+import org.postgresql.util.PGobject;
 import org.web3j.crypto.Keys;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
 
 public class PostgresRepository {
     public PlayerData getPlayerData(String address) {
@@ -89,11 +87,29 @@ public class PostgresRepository {
             double lastLocationY, double lastLocationZ, float lastLocationYaw, float lastLocationPitch,
             String lastLocationWorld) throws SQLException {
         PreparedStatement preparedStatement = Database.getConnection().prepareStatement(
-                "UPDATE users SET is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, armor = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?");
+                "UPDATE users SET is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?");
 
-        ArrayList<ItemStack> armorArr = new ArrayList<>(Arrays.asList(armor));
-        ArrayList<ItemStack> invArr = new ArrayList<>(Arrays.asList(inventory));
-        ArrayList<ItemStack> enderChestArr = new ArrayList<>(Arrays.asList(enderChest));
+        ArrayList<String> inventoryList = new ArrayList<>();
+        for (ItemStack item : inventory) {
+            if (item == null) {
+                inventoryList.add(null);
+                continue;
+            }
+
+            String itemString = ItemStackAdapter.serializeToJsonString(item);
+            inventoryList.add(itemString);
+        }
+
+        ArrayList<String> enderchestList = new ArrayList<>();
+        for (ItemStack item : enderChest) {
+            if (item == null) {
+                enderchestList.add(null);
+                continue;
+            }
+
+            String itemString = ItemStackAdapter.serializeToJsonString(item);
+            enderchestList.add(itemString);
+        }
 
         // set is_logged_in
         preparedStatement.setBoolean(1, false);
@@ -105,28 +121,31 @@ public class PostgresRepository {
         preparedStatement.setDouble(4, health);
         // set food level
         preparedStatement.setInt(5, foodLevel);
-        // set armor
-        preparedStatement.setBytes(6, Base64.getEncoder().encode(armorArr.toString().getBytes(StandardCharsets.UTF_8)));
         // set inventory
-        preparedStatement.setBytes(7, Base64.getEncoder().encode(invArr.toString().getBytes(StandardCharsets.UTF_8)));
+        PGobject inventoryObject = new PGobject();
+        inventoryObject.setType("json");
+        inventoryObject.setValue(inventoryList.toString());
+        preparedStatement.setObject(6, inventoryObject);
         // set ender chest
-        preparedStatement.setBytes(8,
-                Base64.getEncoder().encode(enderChestArr.toString().getBytes(StandardCharsets.UTF_8)));
+        PGobject enderchestObject = new PGobject();
+        enderchestObject.setType("json");
+        enderchestObject.setValue(enderchestList.toString());
+        preparedStatement.setObject(7, enderchestObject);
         // set last_location_x
-        preparedStatement.setDouble(9, lastLocationX);
+        preparedStatement.setDouble(8, lastLocationX);
         // set last_location_y
-        preparedStatement.setDouble(10, lastLocationY);
+        preparedStatement.setDouble(9, lastLocationY);
         // set last_location_z
-        preparedStatement.setDouble(11, lastLocationZ);
+        preparedStatement.setDouble(10, lastLocationZ);
         // set last_location_yaw
-        preparedStatement.setFloat(12, lastLocationYaw);
+        preparedStatement.setFloat(11, lastLocationYaw);
         // set last_location_pitch
-        preparedStatement.setFloat(13, lastLocationPitch);
+        preparedStatement.setFloat(12, lastLocationPitch);
         // set last_location_world
-        preparedStatement.setString(14, lastLocationWorld);
+        preparedStatement.setString(13, lastLocationWorld);
         // set address
         String parsedAddress = Keys.toChecksumAddress(address);
-        preparedStatement.setString(15, parsedAddress);
+        preparedStatement.setString(14, parsedAddress);
         preparedStatement.executeUpdate();
     }
 
