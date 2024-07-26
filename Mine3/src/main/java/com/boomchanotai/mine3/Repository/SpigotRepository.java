@@ -33,6 +33,8 @@ public class SpigotRepository {
         player.setFoodLevel(20);
         player.setLevel(0);
         player.setExp(0.0F);
+        player.getInventory().clear();
+        player.getEnderChest().clear();
     }
 
     public void restorePlayerState(Player player, PlayerData playerData) {
@@ -42,7 +44,8 @@ public class SpigotRepository {
         player.setHealth(playerData.getHealth());
         player.setFoodLevel(playerData.getFoodLevel());
 
-        // TODO: Set Inventory
+        player.getInventory().setContents(playerData.getInventory());
+        player.getEnderChest().setContents(playerData.getEnderchest());
 
         // Set Location
         player.getLocation().setX(playerData.getPlayerLocation().getX());

@@ -1,5 +1,7 @@
 package com.boomchanotai.mine3.Entity;
 
+import org.bukkit.inventory.ItemStack;
+
 public class PlayerData {
     private String address;
     private boolean isLoggedIn;
@@ -7,16 +9,20 @@ public class PlayerData {
     private float xpExp;
     private int health;
     private int foodLevel;
+    private ItemStack[] inventory;
+    private ItemStack[] enderchest;
     private PlayerLocation playerLocation;
 
     public PlayerData(String address, boolean isLoggedIn, int xpLevel, float xpExp, int health, int foodLevel,
-            PlayerLocation playerLocation) {
+            ItemStack[] inventory, ItemStack[] enderchest, PlayerLocation playerLocation) {
         this.address = address;
         this.isLoggedIn = isLoggedIn;
         this.xpLevel = xpLevel;
         this.xpExp = xpExp;
         this.health = health;
         this.foodLevel = foodLevel;
+        this.inventory = inventory;
+        this.enderchest = enderchest;
         this.playerLocation = playerLocation;
     }
 
@@ -42,6 +48,14 @@ public class PlayerData {
 
     public int getFoodLevel() {
         return foodLevel;
+    }
+
+    public ItemStack[] getInventory() {
+        return inventory;
+    }
+
+    public ItemStack[] getEnderchest() {
+        return enderchest;
     }
 
     public PlayerLocation getPlayerLocation() {
@@ -70,6 +84,14 @@ public class PlayerData {
 
     public void setFoodLevel(int foodLevel) {
         this.foodLevel = foodLevel;
+    }
+
+    public void setInventory(ItemStack[] inventory) {
+        this.inventory = inventory;
+    }
+
+    public void setEnderchest(ItemStack[] enderchest) {
+        this.enderchest = enderchest;
     }
 
     public void setPlayerLocation(PlayerLocation playerLocation) {

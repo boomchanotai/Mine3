@@ -4,6 +4,9 @@ import com.boomchanotai.mine3.Database.Database;
 import com.boomchanotai.mine3.Entity.PlayerData;
 import com.boomchanotai.mine3.Entity.PlayerLocation;
 import com.boomchanotai.mine3.Logger.Logger;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.boomchanotai.mine3.Mine3;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
@@ -14,8 +17,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class PostgresRepository {
+    public boolean isPlayerExist(String address) {
+        String parsedAddress = Keys.toChecksumAddress(address);
+
+        try {
+            PreparedStatement preparedStatement = Database.getConnection()
+                    .prepareStatement("SELECT * FROM users WHERE address = ?");
+            preparedStatement.setString(1, parsedAddress);
+            ResultSet res = preparedStatement.executeQuery();
+
+            return res.next();
+        } catch (Exception e) {
+            Logger.warning(e.getMessage());
+        }
+
+        return false;
+    }
+
     public PlayerData getPlayerData(String address) {
         String parsedAddress = Keys.toChecksumAddress(address);
 
@@ -43,9 +64,42 @@ public class PostgresRepository {
                 int health = res.getInt("health");
                 int foodLevel = res.getInt("food_level");
 
-                PlayerData playerData = new PlayerData(parsedAddress, isLoggedIn, xpLevel, xpExp, health, foodLevel,
-                        playerLocation);
+                ObjectMapper objectMapper = new ObjectMapper();
 
+                System.out.println("here1");
+                ArrayList<ItemStack> inventoryList = new ArrayList<>();
+                PGobject inventoryObject = (PGobject) res.getObject("inventory");
+                if (inventoryObject != null) {
+                    String inventoryString = inventoryObject.getValue();
+                    JsonNode inventoryNode = objectMapper.readTree(inventoryString);
+
+                    if (!inventoryNode.isArray()) {
+                        Logger.warning("Inventory is not an array");
+                    }
+
+                    for (JsonNode itemNode : inventoryNode) {
+                        if (itemNode.isNull()) {
+                            inventoryList.add(null);
+                            continue;
+                        }
+
+                        TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
+                        };
+                        Map<String, Object> itemMap = objectMapper.convertValue(itemNode, typeRef);
+                        inventoryList.add(ItemStack.deserialize(itemMap));
+                    }
+                }
+                System.out.println("here2");
+
+                ItemStack[] inventory = inventoryList.toArray(new ItemStack[inventoryList.size()]);
+                System.out.println(inventoryList);
+                System.out.println(inventory);
+
+                System.out.println("here3");
+                PlayerData playerData = new PlayerData(parsedAddress, isLoggedIn, xpLevel, xpExp, health, foodLevel,
+                        inventory, new ItemStack[0], playerLocation);
+
+                System.out.println("here4");
                 return playerData;
             }
         } catch (Exception e) {
