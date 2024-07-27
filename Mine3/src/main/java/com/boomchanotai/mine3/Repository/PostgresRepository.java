@@ -21,7 +21,7 @@ public class PostgresRepository {
         this.itemStackAdapter = itemStackAdapter;
     }
 
-    public boolean isPlayerExist(String address) {
+    public boolean isAddressExist(String address) {
         String parsedAddress = Keys.toChecksumAddress(address);
 
         try {

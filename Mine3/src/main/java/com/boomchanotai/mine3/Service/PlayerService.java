@@ -48,7 +48,7 @@ public class PlayerService {
     }
 
     public void connectPlayer(Player player) {
-        spigotRepo.setPlayerDefaultState(player);
+        spigotRepo.setPlayerIdleState(player);
 
         UUID playerUUID = player.getUniqueId();
 
@@ -85,22 +85,23 @@ public class PlayerService {
         // 1. Get Player UUID
         UUID playerUUID = redisRepo.getPlayerUUIDFromToken(token);
         if (playerUUID == null) {
+            Logger.warning("INVALID_TOKEN", "Can't get player from token.", parsedAddress);
             throw new Exception("INVALID_TOKEN");
         }
-        ;
 
         // 2. Check Player in game
         boolean isPlayerInGame = isPlayerInGame(playerUUID);
         if (!isPlayerInGame) {
+            Logger.warning("PLAYER_NOT_IN_GAME", "Not found player in game.", parsedAddress);
             throw new Exception("PLAYER_NOT_IN_GAME");
         }
 
         // 3. Check address already exist
         UUID checkPlayer = redisRepo.getPlayerFromAddress(parsedAddress);
         if (checkPlayer != null) {
+            Logger.warning("ADDRESS_ALREADY_USED", "Address already used", parsedAddress);
             throw new Exception("ADDRESS_ALREADY_USED");
         }
-        ;
 
         // 4. Store Player: (json) address
         JSONObject playerInfo = new JSONObject();
@@ -115,38 +116,44 @@ public class PlayerService {
 
         // 7. Game Logic
         PreventPlayerActionWhenNotLoggedIn.playerConnected(playerUUID);
-
         Player player = Mine3.getInstance().getServer().getPlayer(playerUUID);
-        if (player == null)
+        if (player == null) {
+            Logger.warning("Player is null", "Not found player in game.", parsedAddress);
             return;
+        }
 
         // 8. Create User in Database
-        try {
-            pgRepo.createNewPlayer(
-                    parsedAddress,
-                    player.getLocation().getX(),
-                    player.getLocation().getY(),
-                    player.getLocation().getZ(),
-                    player.getLocation().getYaw(),
-                    player.getLocation().getPitch(),
-                    Objects.requireNonNull(player.getLocation().getWorld()).getName());
-        } catch (SQLException exception) {
-            Logger.warning(exception.getMessage());
-            throw exception;
+        if (!pgRepo.isAddressExist(parsedAddress)) {
+            try {
+                pgRepo.createNewPlayer(
+                        parsedAddress,
+                        player.getLocation().getX(),
+                        player.getLocation().getY(),
+                        player.getLocation().getZ(),
+                        player.getLocation().getYaw(),
+                        player.getLocation().getPitch(),
+                        Objects.requireNonNull(player.getLocation().getWorld()).getName());
+            } catch (SQLException exception) {
+                Logger.warning(exception.getMessage(), "Failed to create new player", parsedAddress);
+                throw exception;
+            }
         }
 
         // 9. Update user Login
         try {
             pgRepo.setUserLoggedIn(parsedAddress);
         } catch (SQLException exception) {
-            Logger.warning(exception.getMessage());
+            Logger.warning(exception.getMessage(), "Failed to update user login.", parsedAddress);
             throw exception;
         }
 
         // 10. get player info
         PlayerData playerData = pgRepo.getPlayerData(parsedAddress);
-        if (playerData == null)
+        if (playerData == null) {
+            Logger.warning("PlayerData is null", "Failed to get player data in database.", parsedAddress);
             return;
+        }
+        spigotRepo.setPlayerActiveState(player);
         spigotRepo.restorePlayerState(player, playerData);
 
         // 11. Send Title
@@ -188,6 +195,7 @@ public class PlayerService {
         } catch (SQLException exception) {
             Logger.warning(exception.getMessage());
         }
+        spigotRepo.clearPlayerState(player);
 
         redisRepo.deleteAddress(address);
         redisRepo.deletePlayerInfo(playerUUID);

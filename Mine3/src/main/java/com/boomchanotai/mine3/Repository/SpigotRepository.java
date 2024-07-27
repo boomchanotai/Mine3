@@ -28,7 +28,7 @@ public class SpigotRepository {
                 fadeOut);
     }
 
-    public void setPlayerDefaultState(Player player) {
+    public void clearPlayerState(Player player) {
         player.setHealth(20.0);
         player.setFoodLevel(20);
         player.setLevel(0);
@@ -54,5 +54,13 @@ public class SpigotRepository {
         player.getLocation().setYaw(playerData.getPlayerLocation().getYaw());
         player.getLocation().setPitch(playerData.getPlayerLocation().getPitch());
         player.getLocation().setWorld(playerData.getPlayerLocation().getWorld());
+    }
+
+    public void setPlayerIdleState(Player player) {
+        player.setInvulnerable(true);
+    }
+
+    public void setPlayerActiveState(Player player) {
+        player.setInvulnerable(false);
     }
 }
