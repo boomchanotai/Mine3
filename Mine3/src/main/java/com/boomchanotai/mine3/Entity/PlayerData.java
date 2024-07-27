@@ -7,13 +7,13 @@ public class PlayerData {
     private boolean isLoggedIn;
     private int xpLevel;
     private float xpExp;
-    private int health;
+    private double health;
     private int foodLevel;
     private ItemStack[] inventory;
     private ItemStack[] enderchest;
     private PlayerLocation playerLocation;
 
-    public PlayerData(String address, boolean isLoggedIn, int xpLevel, float xpExp, int health, int foodLevel,
+    public PlayerData(String address, boolean isLoggedIn, int xpLevel, float xpExp, double health, int foodLevel,
             ItemStack[] inventory, ItemStack[] enderchest, PlayerLocation playerLocation) {
         this.address = address;
         this.isLoggedIn = isLoggedIn;
@@ -42,7 +42,7 @@ public class PlayerData {
         return xpExp;
     }
 
-    public int getHealth() {
+    public double getHealth() {
         return health;
     }
 
@@ -78,7 +78,7 @@ public class PlayerData {
         this.xpExp = xpExp;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(double health) {
         this.health = health;
     }
 

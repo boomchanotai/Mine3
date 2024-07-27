@@ -110,43 +110,40 @@ public class PostgresRepository {
         preparedStatement.executeUpdate();
     }
 
-    public void updateUserInventory(String address, int xpLevel, float xpExp, double health, int foodLevel,
-            ItemStack[] armor, ItemStack[] inventory, ItemStack[] enderChest, double lastLocationX,
-            double lastLocationY, double lastLocationZ, float lastLocationYaw, float lastLocationPitch,
-            String lastLocationWorld) throws SQLException {
+    public void updateUserInventory(PlayerData playerData) throws SQLException {
         PreparedStatement preparedStatement = Database.getConnection().prepareStatement(
                 "UPDATE users SET is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?");
 
         // set is_logged_in
         preparedStatement.setBoolean(1, false);
         // set xp level
-        preparedStatement.setInt(2, xpLevel);
+        preparedStatement.setInt(2, playerData.getXpLevel());
         // set xp exp
-        preparedStatement.setFloat(3, xpExp);
+        preparedStatement.setFloat(3, playerData.getXpExp());
         // set health
-        preparedStatement.setDouble(4, health);
+        preparedStatement.setDouble(4, playerData.getHealth());
         // set food level
-        preparedStatement.setInt(5, foodLevel);
+        preparedStatement.setInt(5, playerData.getFoodLevel());
         // set inventory
-        PGobject inventoryObject = itemStackAdapter.ParsePGObjectFromItemStackList(inventory);
+        PGobject inventoryObject = itemStackAdapter.ParsePGObjectFromItemStackList(playerData.getInventory());
         preparedStatement.setObject(6, inventoryObject);
         // set ender chest
-        PGobject enderchestObject = itemStackAdapter.ParsePGObjectFromItemStackList(enderChest);
+        PGobject enderchestObject = itemStackAdapter.ParsePGObjectFromItemStackList(playerData.getEnderchest());
         preparedStatement.setObject(7, enderchestObject);
         // set last_location_x
-        preparedStatement.setDouble(8, lastLocationX);
+        preparedStatement.setDouble(8, playerData.getPlayerLocation().getX());
         // set last_location_y
-        preparedStatement.setDouble(9, lastLocationY);
+        preparedStatement.setDouble(9, playerData.getPlayerLocation().getY());
         // set last_location_z
-        preparedStatement.setDouble(10, lastLocationZ);
+        preparedStatement.setDouble(10, playerData.getPlayerLocation().getZ());
         // set last_location_yaw
-        preparedStatement.setFloat(11, lastLocationYaw);
+        preparedStatement.setFloat(11, playerData.getPlayerLocation().getYaw());
         // set last_location_pitch
-        preparedStatement.setFloat(12, lastLocationPitch);
+        preparedStatement.setFloat(12, playerData.getPlayerLocation().getPitch());
         // set last_location_world
-        preparedStatement.setString(13, lastLocationWorld);
+        preparedStatement.setString(13, playerData.getPlayerLocation().getWorld().getName());
         // set address
-        String parsedAddress = Keys.toChecksumAddress(address);
+        String parsedAddress = Keys.toChecksumAddress(playerData.getAddress());
         preparedStatement.setString(14, parsedAddress);
         preparedStatement.executeUpdate();
     }

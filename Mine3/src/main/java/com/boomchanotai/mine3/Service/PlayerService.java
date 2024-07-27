@@ -5,6 +5,7 @@ import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Mine3;
 import com.boomchanotai.mine3.Entity.PlayerCacheData;
 import com.boomchanotai.mine3.Entity.PlayerData;
+import com.boomchanotai.mine3.Entity.PlayerLocation;
 import com.boomchanotai.mine3.Repository.PostgresRepository;
 import com.boomchanotai.mine3.Repository.RedisRepository;
 import com.boomchanotai.mine3.Repository.SpigotRepository;
@@ -175,29 +176,35 @@ public class PlayerService {
         if (playerCacheData == null)
             return;
         String address = playerCacheData.getAddress();
+        String parsedAddress = Keys.toChecksumAddress(address);
+
+        PlayerLocation playerLocation = new PlayerLocation(
+                player.getLocation().getX(),
+                player.getLocation().getY(),
+                player.getLocation().getZ(),
+                player.getLocation().getYaw(),
+                player.getLocation().getPitch(),
+                Objects.requireNonNull(player.getLocation().getWorld()));
+
+        PlayerData playerData = new PlayerData(
+                parsedAddress,
+                false,
+                player.getLevel(),
+                player.getExp(),
+                player.getHealth(),
+                player.getFoodLevel(),
+                player.getInventory().getContents(),
+                player.getEnderChest().getContents(),
+                playerLocation);
 
         try {
-            pgRepo.updateUserInventory(
-                    address,
-                    player.getLevel(),
-                    player.getExp(),
-                    player.getHealth(),
-                    player.getFoodLevel(),
-                    player.getInventory().getArmorContents(),
-                    player.getInventory().getContents(),
-                    player.getEnderChest().getContents(),
-                    player.getLocation().getX(),
-                    player.getLocation().getY(),
-                    player.getLocation().getZ(),
-                    player.getLocation().getYaw(),
-                    player.getLocation().getPitch(),
-                    Objects.requireNonNull(player.getLocation().getWorld()).getName());
+            pgRepo.updateUserInventory(playerData);
         } catch (SQLException exception) {
             Logger.warning(exception.getMessage());
         }
         spigotRepo.clearPlayerState(player);
 
-        redisRepo.deleteAddress(address);
+        redisRepo.deleteAddress(parsedAddress);
         redisRepo.deletePlayerInfo(playerUUID);
     }
 }
