@@ -3,8 +3,12 @@ package com.boomchanotai.mine3.Repository;
 import static com.boomchanotai.mine3.Config.Config.COLOR_CODE_PREFIX;
 import static com.boomchanotai.mine3.Config.Config.TITLE;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.boomchanotai.mine3.Mine3;
 import com.boomchanotai.mine3.Entity.PlayerData;
 
 import net.md_5.bungee.api.ChatColor;
@@ -35,6 +39,7 @@ public class SpigotRepository {
         player.setExp(0.0F);
         player.getInventory().clear();
         player.getEnderChest().clear();
+        player.spigot().respawn();
     }
 
     public void restorePlayerState(Player player, PlayerData playerData) {
@@ -51,13 +56,21 @@ public class SpigotRepository {
         player.getInventory().setContents(playerData.getInventory());
         player.getEnderChest().setContents(playerData.getEnderchest());
 
-        // Set Location
-        player.getLocation().setX(playerData.getPlayerLocation().getX());
-        player.getLocation().setY(playerData.getPlayerLocation().getY());
-        player.getLocation().setZ(playerData.getPlayerLocation().getZ());
-        player.getLocation().setYaw(playerData.getPlayerLocation().getYaw());
-        player.getLocation().setPitch(playerData.getPlayerLocation().getPitch());
-        player.getLocation().setWorld(playerData.getPlayerLocation().getWorld());
+        // Teleport Player to Last Location
+        Location lastLocation = new Location(
+                playerData.getPlayerLocation().getWorld(),
+                playerData.getPlayerLocation().getX(),
+                playerData.getPlayerLocation().getY(),
+                playerData.getPlayerLocation().getZ(),
+                playerData.getPlayerLocation().getYaw(),
+                playerData.getPlayerLocation().getPitch());
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                player.teleport(lastLocation, TeleportCause.PLUGIN);
+            }
+        };
+        runnable.runTaskLater(Mine3.getInstance(), 0);
     }
 
     public void setPlayerIdleState(Player player) {
