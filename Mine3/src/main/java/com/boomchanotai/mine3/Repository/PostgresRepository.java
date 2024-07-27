@@ -66,7 +66,6 @@ public class PostgresRepository {
 
                 ObjectMapper objectMapper = new ObjectMapper();
 
-                System.out.println("here1");
                 ArrayList<ItemStack> inventoryList = new ArrayList<>();
                 PGobject inventoryObject = (PGobject) res.getObject("inventory");
                 if (inventoryObject != null) {
@@ -89,17 +88,12 @@ public class PostgresRepository {
                         inventoryList.add(ItemStack.deserialize(itemMap));
                     }
                 }
-                System.out.println("here2");
 
                 ItemStack[] inventory = inventoryList.toArray(new ItemStack[inventoryList.size()]);
-                System.out.println(inventoryList);
-                System.out.println(inventory);
 
-                System.out.println("here3");
                 PlayerData playerData = new PlayerData(parsedAddress, isLoggedIn, xpLevel, xpExp, health, foodLevel,
                         inventory, new ItemStack[0], playerLocation);
 
-                System.out.println("here4");
                 return playerData;
             }
         } catch (Exception e) {
