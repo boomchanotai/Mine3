@@ -4,7 +4,6 @@ import com.boomchanotai.mine3.Database.Database;
 import com.boomchanotai.mine3.Entity.PlayerData;
 import com.boomchanotai.mine3.Entity.PlayerLocation;
 import com.boomchanotai.mine3.Logger.Logger;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.boomchanotai.mine3.Mine3;
@@ -17,7 +16,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class PostgresRepository {
     public boolean isPlayerExist(String address) {
@@ -66,6 +64,7 @@ public class PostgresRepository {
 
                 ObjectMapper objectMapper = new ObjectMapper();
 
+                // Inventory List
                 ArrayList<ItemStack> inventoryList = new ArrayList<>();
                 PGobject inventoryObject = (PGobject) res.getObject("inventory");
                 if (inventoryObject != null) {
@@ -82,17 +81,36 @@ public class PostgresRepository {
                             continue;
                         }
 
-                        TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
-                        };
-                        Map<String, Object> itemMap = objectMapper.convertValue(itemNode, typeRef);
-                        inventoryList.add(ItemStack.deserialize(itemMap));
+                        inventoryList.add(ItemStackAdapter.deserializeFromJson(itemNode));
+                    }
+                }
+
+                // Ender Chest List
+                ArrayList<ItemStack> enderChestList = new ArrayList<>();
+                PGobject enderChestObject = (PGobject) res.getObject("ender_chest");
+                if (enderChestObject != null) {
+                    String enderChestString = enderChestObject.getValue();
+                    JsonNode enderChestNode = objectMapper.readTree(enderChestString);
+
+                    if (!enderChestNode.isArray()) {
+                        Logger.warning("Ender Chest is not an array");
+                    }
+
+                    for (JsonNode itemNode : enderChestNode) {
+                        if (itemNode.isNull()) {
+                            enderChestList.add(null);
+                            continue;
+                        }
+
+                        enderChestList.add(ItemStackAdapter.deserializeFromJson(itemNode));
                     }
                 }
 
                 ItemStack[] inventory = inventoryList.toArray(new ItemStack[inventoryList.size()]);
+                ItemStack[] enderChest = enderChestList.toArray(new ItemStack[enderChestList.size()]);
 
                 PlayerData playerData = new PlayerData(parsedAddress, isLoggedIn, xpLevel, xpExp, health, foodLevel,
-                        inventory, new ItemStack[0], playerLocation);
+                        inventory, enderChest, playerLocation);
 
                 return playerData;
             }
