@@ -124,16 +124,18 @@ public class PlayerService {
         }
 
         // 8. Create User in Database
-        PlayerLocation playerLocation = new PlayerLocation(
-                player.getLocation().getX(),
-                player.getLocation().getY(),
-                player.getLocation().getZ(),
-                player.getLocation().getYaw(),
-                player.getLocation().getPitch(),
-                Objects.requireNonNull(player.getLocation().getWorld()));
 
-        PlayerData createPlayerData = new PlayerData(parsedAddress, playerLocation);
         if (!pgRepo.isAddressExist(parsedAddress)) {
+            PlayerLocation playerLocation = new PlayerLocation(
+                    player.getLocation().getX(),
+                    player.getLocation().getY(),
+                    player.getLocation().getZ(),
+                    player.getLocation().getYaw(),
+                    player.getLocation().getPitch(),
+                    Objects.requireNonNull(player.getLocation().getWorld()));
+
+            PlayerData createPlayerData = new PlayerData(parsedAddress, playerLocation);
+
             try {
                 pgRepo.createNewPlayer(createPlayerData);
             } catch (SQLException exception) {

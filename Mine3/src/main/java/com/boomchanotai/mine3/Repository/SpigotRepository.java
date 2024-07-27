@@ -38,6 +38,10 @@ public class SpigotRepository {
     }
 
     public void restorePlayerState(Player player, PlayerData playerData) {
+        // Set Display Name
+        player.setDisplayName(playerData.getAddress());
+        player.setPlayerListName(playerData.getAddress());
+
         // Set Player State
         player.setLevel(playerData.getXpLevel());
         player.setExp(playerData.getXpExp());
