@@ -2,7 +2,9 @@ package com.boomchanotai.mine3.Repository;
 
 import java.util.Map;
 
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.boomchanotai.mine3.Logger.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,8 +13,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ItemStackAdapter {
-    static ObjectMapper objectMapper = new ObjectMapper();
-    static TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
+    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
     };
 
     public static Map<String, Object> serialize(ItemStack itemStack) {
@@ -42,9 +44,12 @@ public class ItemStackAdapter {
         Map<String, Object> itemMap = objectMapper.convertValue(itemNode, typeRef);
         ItemStack itemStack = ItemStack.deserialize(itemMap);
 
-        if (itemNode.has("meta")) {
+        if (itemMap.get("meta") != null) {
             Map<String, Object> metaMap = objectMapper.convertValue(itemNode.get("meta"), typeRef);
-            System.out.println(metaMap);
+
+            ItemMeta itemMeta = (ItemMeta) ConfigurationSerialization.deserializeObject(metaMap,
+                    ConfigurationSerialization.getClassByAlias("ItemMeta"));
+            itemStack.setItemMeta(itemMeta);
         }
 
         return itemStack;
