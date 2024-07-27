@@ -85,28 +85,26 @@ public class PostgresRepository {
         return null;
     }
 
-    public void createNewPlayer(String address, double lastLocationX, double lastLocationY, double lastLocationZ,
-            float lastLocationYaw, float lastLocationPitch, String lastLocationWorld) throws SQLException {
+    public void createNewPlayer(PlayerData playerData) throws SQLException {
         PreparedStatement preparedStatement = Database.getConnection().prepareStatement(
                 "INSERT INTO users(address, is_logged_in, last_location_x, last_location_y, last_location_z, last_location_yaw, last_location_pitch, last_location_world) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING");
 
         // set address
-        String parsedAddress = Keys.toChecksumAddress(address);
-        preparedStatement.setString(1, parsedAddress);
+        preparedStatement.setString(1, playerData.getAddress());
         // set is_logged_in
         preparedStatement.setBoolean(2, true);
         // set last_location_x
-        preparedStatement.setDouble(3, lastLocationX);
+        preparedStatement.setDouble(3, playerData.getPlayerLocation().getX());
         // set last_location_y
-        preparedStatement.setDouble(4, lastLocationY);
+        preparedStatement.setDouble(4, playerData.getPlayerLocation().getY());
         // set last_location_z
-        preparedStatement.setDouble(5, lastLocationZ);
+        preparedStatement.setDouble(5, playerData.getPlayerLocation().getZ());
         // set last_location_yaw
-        preparedStatement.setFloat(6, lastLocationYaw);
+        preparedStatement.setFloat(6, playerData.getPlayerLocation().getYaw());
         // set last_location_pitch
-        preparedStatement.setFloat(7, lastLocationPitch);
+        preparedStatement.setFloat(7, playerData.getPlayerLocation().getPitch());
         // set last_location_world
-        preparedStatement.setString(8, lastLocationWorld);
+        preparedStatement.setString(8, playerData.getPlayerLocation().getWorld().getName());
         preparedStatement.executeUpdate();
     }
 

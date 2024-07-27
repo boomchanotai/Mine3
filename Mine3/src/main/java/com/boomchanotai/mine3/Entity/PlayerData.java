@@ -26,6 +26,11 @@ public class PlayerData {
         this.playerLocation = playerLocation;
     }
 
+    public PlayerData(String address, PlayerLocation playerLocation) {
+        this.address = address;
+        this.playerLocation = playerLocation;
+    }
+
     public String getAddress() {
         return address;
     }
