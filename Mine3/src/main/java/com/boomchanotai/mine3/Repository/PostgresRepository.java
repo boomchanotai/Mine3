@@ -4,8 +4,6 @@ import com.boomchanotai.mine3.Database.Database;
 import com.boomchanotai.mine3.Entity.PlayerData;
 import com.boomchanotai.mine3.Entity.PlayerLocation;
 import com.boomchanotai.mine3.Logger.Logger;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.boomchanotai.mine3.Mine3;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
@@ -15,9 +13,14 @@ import org.web3j.crypto.Keys;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class PostgresRepository {
+    private ItemStackAdapter itemStackAdapter;
+
+    public PostgresRepository(ItemStackAdapter itemStackAdapter) {
+        this.itemStackAdapter = itemStackAdapter;
+    }
+
     public boolean isPlayerExist(String address) {
         String parsedAddress = Keys.toChecksumAddress(address);
 
@@ -29,7 +32,7 @@ public class PostgresRepository {
 
             return res.next();
         } catch (Exception e) {
-            Logger.warning(e.getMessage());
+            Logger.warning(e.getMessage(), "failed to check if player exist");
         }
 
         return false;
@@ -62,52 +65,13 @@ public class PostgresRepository {
                 int health = res.getInt("health");
                 int foodLevel = res.getInt("food_level");
 
-                ObjectMapper objectMapper = new ObjectMapper();
-
                 // Inventory List
-                ArrayList<ItemStack> inventoryList = new ArrayList<>();
                 PGobject inventoryObject = (PGobject) res.getObject("inventory");
-                if (inventoryObject != null) {
-                    String inventoryString = inventoryObject.getValue();
-                    JsonNode inventoryNode = objectMapper.readTree(inventoryString);
-
-                    if (!inventoryNode.isArray()) {
-                        Logger.warning("Inventory is not an array");
-                    }
-
-                    for (JsonNode itemNode : inventoryNode) {
-                        if (itemNode.isNull()) {
-                            inventoryList.add(null);
-                            continue;
-                        }
-
-                        inventoryList.add(ItemStackAdapter.deserializeFromJson(itemNode));
-                    }
-                }
+                ItemStack[] inventory = itemStackAdapter.ParseItemStackListFromPGObject(inventoryObject);
 
                 // Ender Chest List
-                ArrayList<ItemStack> enderChestList = new ArrayList<>();
                 PGobject enderChestObject = (PGobject) res.getObject("ender_chest");
-                if (enderChestObject != null) {
-                    String enderChestString = enderChestObject.getValue();
-                    JsonNode enderChestNode = objectMapper.readTree(enderChestString);
-
-                    if (!enderChestNode.isArray()) {
-                        Logger.warning("Ender Chest is not an array");
-                    }
-
-                    for (JsonNode itemNode : enderChestNode) {
-                        if (itemNode.isNull()) {
-                            enderChestList.add(null);
-                            continue;
-                        }
-
-                        enderChestList.add(ItemStackAdapter.deserializeFromJson(itemNode));
-                    }
-                }
-
-                ItemStack[] inventory = inventoryList.toArray(new ItemStack[inventoryList.size()]);
-                ItemStack[] enderChest = enderChestList.toArray(new ItemStack[enderChestList.size()]);
+                ItemStack[] enderChest = itemStackAdapter.ParseItemStackListFromPGObject(enderChestObject);
 
                 PlayerData playerData = new PlayerData(parsedAddress, isLoggedIn, xpLevel, xpExp, health, foodLevel,
                         inventory, enderChest, playerLocation);
@@ -115,13 +79,12 @@ public class PostgresRepository {
                 return playerData;
             }
         } catch (Exception e) {
-            Logger.warning(e.getMessage());
+            Logger.warning(e.getMessage(), "failed to get player data");
         }
 
         return null;
     }
 
-    // TODO: Use playerData to create player
     public void createNewPlayer(String address, double lastLocationX, double lastLocationY, double lastLocationZ,
             float lastLocationYaw, float lastLocationPitch, String lastLocationWorld) throws SQLException {
         PreparedStatement preparedStatement = Database.getConnection().prepareStatement(
@@ -147,35 +110,12 @@ public class PostgresRepository {
         preparedStatement.executeUpdate();
     }
 
-    // TODO: Use playerData to update player
     public void updateUserInventory(String address, int xpLevel, float xpExp, double health, int foodLevel,
             ItemStack[] armor, ItemStack[] inventory, ItemStack[] enderChest, double lastLocationX,
             double lastLocationY, double lastLocationZ, float lastLocationYaw, float lastLocationPitch,
             String lastLocationWorld) throws SQLException {
         PreparedStatement preparedStatement = Database.getConnection().prepareStatement(
                 "UPDATE users SET is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?");
-
-        ArrayList<String> inventoryList = new ArrayList<>();
-        for (ItemStack item : inventory) {
-            if (item == null) {
-                inventoryList.add(null);
-                continue;
-            }
-
-            String itemString = ItemStackAdapter.serializeToJsonString(item);
-            inventoryList.add(itemString);
-        }
-
-        ArrayList<String> enderchestList = new ArrayList<>();
-        for (ItemStack item : enderChest) {
-            if (item == null) {
-                enderchestList.add(null);
-                continue;
-            }
-
-            String itemString = ItemStackAdapter.serializeToJsonString(item);
-            enderchestList.add(itemString);
-        }
 
         // set is_logged_in
         preparedStatement.setBoolean(1, false);
@@ -188,14 +128,10 @@ public class PostgresRepository {
         // set food level
         preparedStatement.setInt(5, foodLevel);
         // set inventory
-        PGobject inventoryObject = new PGobject();
-        inventoryObject.setType("json");
-        inventoryObject.setValue(inventoryList.toString());
+        PGobject inventoryObject = itemStackAdapter.ParsePGObjectFromItemStackList(inventory);
         preparedStatement.setObject(6, inventoryObject);
         // set ender chest
-        PGobject enderchestObject = new PGobject();
-        enderchestObject.setType("json");
-        enderchestObject.setValue(enderchestList.toString());
+        PGobject enderchestObject = itemStackAdapter.ParsePGObjectFromItemStackList(enderChest);
         preparedStatement.setObject(7, enderchestObject);
         // set last_location_x
         preparedStatement.setDouble(8, lastLocationX);

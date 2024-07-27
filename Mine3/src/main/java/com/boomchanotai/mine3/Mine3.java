@@ -6,6 +6,7 @@ import com.boomchanotai.mine3.Config.Config;
 import com.boomchanotai.mine3.Database.Database;
 import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3.Logger.Logger;
+import com.boomchanotai.mine3.Repository.ItemStackAdapter;
 import com.boomchanotai.mine3.Repository.PostgresRepository;
 import com.boomchanotai.mine3.Repository.RedisRepository;
 import com.boomchanotai.mine3.Repository.SpigotRepository;
@@ -41,7 +42,9 @@ public final class Mine3 extends JavaPlugin {
         Redis.connect();
 
         // Dependencies
-        PostgresRepository pgRepo = new PostgresRepository();
+        ItemStackAdapter itemStackAdapter = new ItemStackAdapter();
+
+        PostgresRepository pgRepo = new PostgresRepository(itemStackAdapter);
         RedisRepository redisRepo = new RedisRepository();
         SpigotRepository spigotRepo = new SpigotRepository();
 
