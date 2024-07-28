@@ -1,5 +1,6 @@
 package com.boomchanotai.mine3.Commands;
 
+import com.boomchanotai.mine3.Mine3;
 import com.boomchanotai.mine3.Entity.PlayerCacheData;
 import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Repository.RedisRepository;
@@ -23,21 +24,33 @@ public class AddressCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
+        if (args.length == 0 && !(sender instanceof Player)) {
             return false;
         }
 
-        Player player = (Player) sender;
+        Player player = null;
+        if (args.length == 0) {
+            player = (Player) sender;
+        }
+
+        if (args.length == 1) {
+            player = Mine3.getInstance().getServer().getPlayer(args[0]);
+        }
+
+        if (player == null) {
+            return false;
+        }
+
         PlayerCacheData playerCacheData = redisRepo.getPlayerInfo(player.getUniqueId());
         if (playerCacheData == null) {
             Logger.warning(
-                    "Unexpected Event: Not found playerInfo!, UUID: " + player.getUniqueId() + ", Command: /address");
+                    "Unexpected Event: Not found playerInfo!, UUID: " + player.getUniqueId()
+                            + ", Command: /address");
             return false;
         }
 
         String address = playerCacheData.getAddress();
-        spigotRepo.sendMessage(player, address);
-
+        spigotRepo.sendMessage(sender, address);
         return true;
     }
 }

@@ -8,7 +8,10 @@ website: https://github.com/boomchanotai/Mine3
 commands:
   address:
     description: get address
-    usage: /<command>
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - get player's address
+      /<command> <player> - get other player's address
   logout:
     description: logout
     usage: /<command>

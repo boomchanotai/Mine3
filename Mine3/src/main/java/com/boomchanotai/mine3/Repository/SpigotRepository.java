@@ -3,13 +3,14 @@ package com.boomchanotai.mine3.Repository;
 import static com.boomchanotai.mine3.Config.Config.COLOR_CODE_PREFIX;
 import static com.boomchanotai.mine3.Config.Config.TITLE;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class SpigotRepository {
-    public void sendMessage(Player player, String message) {
+    public void sendMessage(CommandSender player, String message) {
         player.sendMessage(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE + message));
     }
 
