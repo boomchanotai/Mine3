@@ -80,6 +80,8 @@ docker compose up -d
 
 ## Screenshots
 
+See demo video [here](https://www.youtube.com/watch?v=nqnzk2r-nzQ).
+
 ![login](/screenshots/mine3-1.png)
 ![sign-wallet](/screenshots/mine3-2.png)
 ![login-success](/screenshots/mine3-3.png)
