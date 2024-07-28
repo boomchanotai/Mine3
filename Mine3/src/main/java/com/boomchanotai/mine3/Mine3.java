@@ -10,6 +10,7 @@ import com.boomchanotai.mine3.Database.Database;
 import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3.Repository.ItemStackAdapter;
 import com.boomchanotai.mine3.Repository.PostgresRepository;
+import com.boomchanotai.mine3.Repository.PotionEffectAdapter;
 import com.boomchanotai.mine3.Repository.RedisRepository;
 import com.boomchanotai.mine3.Repository.SpigotRepository;
 import com.boomchanotai.mine3.Server.Server;
@@ -43,8 +44,9 @@ public final class Mine3 extends JavaPlugin {
 
         // Dependencies
         ItemStackAdapter itemStackAdapter = new ItemStackAdapter();
+        PotionEffectAdapter potionEffectAdapter = new PotionEffectAdapter();
 
-        PostgresRepository pgRepo = new PostgresRepository(itemStackAdapter);
+        PostgresRepository pgRepo = new PostgresRepository(itemStackAdapter, potionEffectAdapter);
         RedisRepository redisRepo = new RedisRepository();
         SpigotRepository spigotRepo = new SpigotRepository();
 

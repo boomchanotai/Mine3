@@ -19,6 +19,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONObject;
 import org.web3j.crypto.Keys;
@@ -254,6 +255,10 @@ public class PlayerService {
         player.setOp(false);
         player.getInventory().clear();
         player.getEnderChest().clear();
+
+        for (PotionEffect potionEffect : player.getActivePotionEffects()) {
+            player.removePotionEffect(potionEffect.getType());
+        }
     }
 
     // restorePlayerState is restore player state from database
@@ -277,6 +282,10 @@ public class PlayerService {
                 player.setOp(playerData.isOp());
                 player.getInventory().setContents(playerData.getInventory());
                 player.getEnderChest().setContents(playerData.getEnderchest());
+
+                for (PotionEffect potionEffect : playerData.getPotionEffects()) {
+                    player.addPotionEffect(potionEffect);
+                }
 
                 // Teleport Player to Last Location
                 Location lastLocation = new Location(

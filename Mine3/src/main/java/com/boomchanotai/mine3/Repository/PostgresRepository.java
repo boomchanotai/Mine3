@@ -20,9 +20,11 @@ import java.util.Collection;
 
 public class PostgresRepository {
     private ItemStackAdapter itemStackAdapter;
+    private PotionEffectAdapter potionEffectAdapter;
 
-    public PostgresRepository(ItemStackAdapter itemStackAdapter) {
+    public PostgresRepository(ItemStackAdapter itemStackAdapter, PotionEffectAdapter potionEffectAdapter) {
         this.itemStackAdapter = itemStackAdapter;
+        this.potionEffectAdapter = potionEffectAdapter;
     }
 
     public boolean isAddressExist(String address) {
@@ -75,7 +77,9 @@ public class PostgresRepository {
                 boolean isOp = res.getBoolean("is_op");
 
                 // Potion Effects
-                Collection<PotionEffect> potionEffects = null;
+                PGobject potionEffectsObject = (PGobject) res.getObject("potion_effects");
+                Collection<PotionEffect> potionEffects = potionEffectAdapter
+                        .ParsePotionEffectsFromPGObject(potionEffectsObject);
 
                 // Inventory List
                 PGobject inventoryObject = (PGobject) res.getObject("inventory");
@@ -146,9 +150,8 @@ public class PostgresRepository {
         // set is op
         preparedStatement.setBoolean(10, playerData.isOp());
         // set potion effects
-        PGobject potionEffectsObject = new PGobject();
-        potionEffectsObject.setType("json");
-        potionEffectsObject.setValue("[]");
+        PGobject potionEffectsObject = potionEffectAdapter
+                .ParsePGObjectFromPotionEffects(playerData.getPotionEffects());
         preparedStatement.setObject(11, potionEffectsObject);
         // set inventory
         PGobject inventoryObject = itemStackAdapter.ParsePGObjectFromItemStackList(playerData.getInventory());
