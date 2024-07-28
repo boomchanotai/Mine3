@@ -65,6 +65,17 @@ public class PlayerService {
         redisRepo.setToken(token, playerUUID);
 
         // Send Message to player
+        sendLoginURL(player, token);
+
+        spigotRepo.sendTitle(player,
+                AUTH_JOIN_SERVER_TITLE_TITLE,
+                AUTH_JOIN_SERVER_TITLE_SUBTITLE,
+                AUTH_JOIN_SERVER_TITLE_FADE_OUT,
+                AUTH_JOIN_SERVER_TITLE_STAY,
+                AUTH_JOIN_SERVER_TITLE_FADE_IN);
+    }
+
+    public void sendLoginURL(Player player, String token) {
         TextComponent titleComponent = new TextComponent(
                 ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE));
         titleComponent.setColor(ChatColor.BLUE);
@@ -80,13 +91,6 @@ public class PlayerService {
                 player,
                 titleComponent,
                 urlComponent);
-
-        spigotRepo.sendTitle(player,
-                AUTH_JOIN_SERVER_TITLE_TITLE,
-                AUTH_JOIN_SERVER_TITLE_SUBTITLE,
-                AUTH_JOIN_SERVER_TITLE_FADE_OUT,
-                AUTH_JOIN_SERVER_TITLE_STAY,
-                AUTH_JOIN_SERVER_TITLE_FADE_IN);
     }
 
     public void playerLogin(String token, String address) throws Exception {
