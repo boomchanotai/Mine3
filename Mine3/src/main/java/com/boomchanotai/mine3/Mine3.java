@@ -1,6 +1,8 @@
 package com.boomchanotai.mine3;
 
 import com.boomchanotai.mine3.Commands.Address;
+import com.boomchanotai.mine3.Commands.Admin;
+import com.boomchanotai.mine3.Commands.AdminTabCompletion;
 import com.boomchanotai.mine3.Commands.Logout;
 import com.boomchanotai.mine3.Config.Config;
 import com.boomchanotai.mine3.Database.Database;
@@ -58,6 +60,8 @@ public final class Mine3 extends JavaPlugin {
 
         getCommand("address").setExecutor(new Address(redisRepo, spigotRepo));
         getCommand("logout").setExecutor(new Logout(playerService));
+        getCommand("mine3").setExecutor(new Admin(spigotRepo));
+        getCommand("mine3").setTabCompleter(new AdminTabCompletion());
 
         // Connect all players if in game
         getServer().getOnlinePlayers().forEach(playerService::connectPlayer);

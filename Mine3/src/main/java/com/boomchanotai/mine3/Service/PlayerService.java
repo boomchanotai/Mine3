@@ -169,6 +169,7 @@ public class PlayerService {
                 AUTH_LOGGED_IN_TITLE_FADE_IN,
                 AUTH_LOGGED_IN_TITLE_STAY,
                 AUTH_LOGGED_IN_TITLE_FADE_OUT);
+        spigotRepo.sendMessage(player, "Login as " + parsedAddress);
     }
 
     public void disconnectPlayer(Player player) {

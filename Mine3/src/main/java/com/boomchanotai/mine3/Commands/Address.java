@@ -27,15 +27,16 @@ public class Address implements CommandExecutor {
             return false;
         }
 
-        Player p = (Player) sender;
-        PlayerCacheData playerCacheData = redisRepo.getPlayerInfo(p.getUniqueId());
+        Player player = (Player) sender;
+        PlayerCacheData playerCacheData = redisRepo.getPlayerInfo(player.getUniqueId());
         if (playerCacheData == null) {
-            Logger.warning("Unexpected Event: Not found playerInfo!, UUID: " + p.getUniqueId() + ", Command: /address");
+            Logger.warning(
+                    "Unexpected Event: Not found playerInfo!, UUID: " + player.getUniqueId() + ", Command: /address");
             return false;
         }
 
         String address = playerCacheData.getAddress();
-        spigotRepo.sendMessage(p, address);
+        spigotRepo.sendMessage(player, address);
 
         return true;
     }
