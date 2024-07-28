@@ -36,6 +36,7 @@ public final class Mine3 extends JavaPlugin {
 
         // Spawn.yml
         SpawnConfig.saveDefaultSpawnConfig();
+        SpawnConfig.loadConfig();
 
         Database.connect();
         Redis.connect();
