@@ -178,38 +178,53 @@ public class PlayerService {
         PreventPlayerActionWhenNotLoggedIn.playerDisconnected(playerUUID);
 
         PlayerCacheData playerCacheData = redisRepo.getPlayerInfo(playerUUID);
-        if (playerCacheData == null)
+        // If Player not login
+        if (playerCacheData == null) {
             return;
+        }
+
         String address = playerCacheData.getAddress();
         String parsedAddress = Keys.toChecksumAddress(address);
 
-        PlayerLocation playerLocation = new PlayerLocation(
-                player.getLocation().getX(),
-                player.getLocation().getY(),
-                player.getLocation().getZ(),
-                player.getLocation().getYaw(),
-                player.getLocation().getPitch(),
-                Objects.requireNonNull(player.getLocation().getWorld()));
-
-        PlayerData playerData = new PlayerData(
-                parsedAddress,
-                false,
-                player.getLevel(),
-                player.getExp(),
-                player.getHealth(),
-                player.getFoodLevel(),
-                player.getInventory().getContents(),
-                player.getEnderChest().getContents(),
-                playerLocation);
-
+        // Update user inventory
         try {
+            PlayerLocation playerLocation = new PlayerLocation(
+                    player.getLocation().getX(),
+                    player.getLocation().getY(),
+                    player.getLocation().getZ(),
+                    player.getLocation().getYaw(),
+                    player.getLocation().getPitch(),
+                    Objects.requireNonNull(player.getLocation().getWorld()));
+
+            PlayerData playerData = new PlayerData(
+                    parsedAddress,
+                    false,
+                    player.getLevel(),
+                    player.getExp(),
+                    player.getHealth(),
+                    player.getFoodLevel(),
+                    player.getInventory().getContents(),
+                    player.getEnderChest().getContents(),
+                    playerLocation);
+
             pgRepo.updateUserInventory(playerData);
         } catch (SQLException exception) {
-            Logger.warning(exception.getMessage());
+            Logger.warning(exception.getMessage(), "Failed to update user inventory.", parsedAddress);
         }
         spigotRepo.clearPlayerState(player);
 
-        redisRepo.deleteAddress(parsedAddress);
-        redisRepo.deletePlayerInfo(playerUUID);
+        // Delete player address in cache
+        try {
+            redisRepo.deleteAddress(parsedAddress);
+        } catch (Exception e) {
+            Logger.warning(e.getMessage(), "Failed to delete address.", parsedAddress);
+        }
+
+        // Delete player info in cache
+        try {
+            redisRepo.deletePlayerInfo(playerUUID);
+        } catch (Exception e) {
+            Logger.warning(e.getMessage(), "Failed to delete player info.", parsedAddress);
+        }
     }
 }

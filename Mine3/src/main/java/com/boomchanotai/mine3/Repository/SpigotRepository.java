@@ -4,11 +4,13 @@ import static com.boomchanotai.mine3.Config.Config.COLOR_CODE_PREFIX;
 import static com.boomchanotai.mine3.Config.Config.TITLE;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.boomchanotai.mine3.Mine3;
+import com.boomchanotai.mine3.Config.SpawnConfig;
 import com.boomchanotai.mine3.Entity.PlayerData;
 
 import net.md_5.bungee.api.ChatColor;
@@ -39,7 +41,6 @@ public class SpigotRepository {
         player.setExp(0.0F);
         player.getInventory().clear();
         player.getEnderChest().clear();
-        player.spigot().respawn();
     }
 
     public void restorePlayerState(Player player, PlayerData playerData) {
@@ -74,7 +75,19 @@ public class SpigotRepository {
     }
 
     public void setPlayerIdleState(Player player) {
+        clearPlayerState(player);
         player.setInvulnerable(true);
+
+        World world = Mine3.getInstance().getServer()
+                .getWorld(SpawnConfig.getSpawnConfig().getString("spawn.world"));
+        Location spawnLocation = new Location(
+                world,
+                SpawnConfig.getSpawnConfig().getDouble("spawn.x"),
+                SpawnConfig.getSpawnConfig().getDouble("spawn.y"),
+                SpawnConfig.getSpawnConfig().getDouble("spawn.z"),
+                (float) SpawnConfig.getSpawnConfig().getDouble("spawn.yaw"),
+                (float) SpawnConfig.getSpawnConfig().getDouble("spawn.pitch"));
+        player.teleport(spawnLocation);
     }
 
     public void setPlayerActiveState(Player player) {

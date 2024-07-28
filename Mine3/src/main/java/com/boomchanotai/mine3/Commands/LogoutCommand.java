@@ -7,10 +7,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class Logout implements CommandExecutor {
+public class LogoutCommand implements CommandExecutor {
     private PlayerService playerService;
 
-    public Logout(PlayerService playerService) {
+    public LogoutCommand(PlayerService playerService) {
         this.playerService = playerService;
     }
 

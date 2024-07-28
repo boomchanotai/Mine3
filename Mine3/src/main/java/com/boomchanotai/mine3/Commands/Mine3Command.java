@@ -14,10 +14,10 @@ import com.boomchanotai.mine3.Repository.SpigotRepository;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class Admin implements CommandExecutor {
+public class Mine3Command implements CommandExecutor {
     private SpigotRepository spigotRepo;
 
-    public Admin(SpigotRepository spigotRepo) {
+    public Mine3Command(SpigotRepository spigotRepo) {
         this.spigotRepo = spigotRepo;
     }
 
@@ -75,7 +75,6 @@ public class Admin implements CommandExecutor {
             spigotRepo.sendMessage(player, "Teleported to spawn location.");
 
             return true;
-
         }
 
         return false;

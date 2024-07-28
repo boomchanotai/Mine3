@@ -11,11 +11,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class Address implements CommandExecutor {
+public class AddressCommand implements CommandExecutor {
     private RedisRepository redisRepo;
     private SpigotRepository spigotRepo;
 
-    public Address(RedisRepository redisRepo, SpigotRepository spigotRepo) {
+    public AddressCommand(RedisRepository redisRepo, SpigotRepository spigotRepo) {
         this.redisRepo = redisRepo;
         this.spigotRepo = spigotRepo;
     }
