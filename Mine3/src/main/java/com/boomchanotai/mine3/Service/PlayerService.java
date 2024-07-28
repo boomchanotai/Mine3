@@ -203,6 +203,12 @@ public class PlayerService {
                     player.getExp(),
                     player.getHealth(),
                     player.getFoodLevel(),
+                    player.getGameMode(),
+                    player.getFlySpeed(),
+                    player.getWalkSpeed(),
+                    player.isFlying(),
+                    player.isOp(),
+                    player.getActivePotionEffects(),
                     player.getInventory().getContents(),
                     player.getEnderChest().getContents(),
                     playerLocation);

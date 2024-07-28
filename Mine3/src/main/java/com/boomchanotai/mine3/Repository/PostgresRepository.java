@@ -5,14 +5,18 @@ import com.boomchanotai.mine3.Entity.PlayerData;
 import com.boomchanotai.mine3.Entity.PlayerLocation;
 import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Mine3;
+
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.postgresql.util.PGobject;
 import org.web3j.crypto.Keys;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 
 public class PostgresRepository {
     private ItemStackAdapter itemStackAdapter;
@@ -64,6 +68,14 @@ public class PostgresRepository {
                 float xpExp = res.getFloat("xp_exp");
                 int health = res.getInt("health");
                 int foodLevel = res.getInt("food_level");
+                GameMode gameMode = GameMode.valueOf(res.getString("game_mode"));
+                float flySpeed = res.getFloat("fly_speed");
+                float walkSpeed = res.getFloat("walk_speed");
+                boolean isFlying = res.getBoolean("is_flying");
+                boolean isOp = res.getBoolean("is_op");
+
+                // Potion Effects
+                Collection<PotionEffect> potionEffects = null;
 
                 // Inventory List
                 PGobject inventoryObject = (PGobject) res.getObject("inventory");
@@ -74,7 +86,8 @@ public class PostgresRepository {
                 ItemStack[] enderChest = itemStackAdapter.ParseItemStackListFromPGObject(enderChestObject);
 
                 PlayerData playerData = new PlayerData(parsedAddress, isLoggedIn, xpLevel, xpExp, health, foodLevel,
-                        inventory, enderChest, playerLocation);
+                        gameMode, flySpeed, walkSpeed, isFlying, isOp, potionEffects, inventory, enderChest,
+                        playerLocation);
 
                 return playerData;
             }
@@ -110,7 +123,7 @@ public class PostgresRepository {
 
     public void updateUserInventory(PlayerData playerData) throws SQLException {
         PreparedStatement preparedStatement = Database.getConnection().prepareStatement(
-                "UPDATE users SET is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?");
+                "UPDATE users SET is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, game_mode = ?, fly_speed = ?, walk_speed = ?, is_flying = ?, is_op = ?, potion_effects = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?");
 
         // set is_logged_in
         preparedStatement.setBoolean(1, false);
@@ -122,27 +135,42 @@ public class PostgresRepository {
         preparedStatement.setDouble(4, playerData.getHealth());
         // set food level
         preparedStatement.setInt(5, playerData.getFoodLevel());
+        // set game mode
+        preparedStatement.setString(6, playerData.getGameMode().toString());
+        // set fly speed
+        preparedStatement.setFloat(7, playerData.getFlySpeed());
+        // set walk speed
+        preparedStatement.setFloat(8, playerData.getWalkSpeed());
+        // set is flying
+        preparedStatement.setBoolean(9, playerData.isFlying());
+        // set is op
+        preparedStatement.setBoolean(10, playerData.isOp());
+        // set potion effects
+        PGobject potionEffectsObject = new PGobject();
+        potionEffectsObject.setType("json");
+        potionEffectsObject.setValue("[]");
+        preparedStatement.setObject(11, potionEffectsObject);
         // set inventory
         PGobject inventoryObject = itemStackAdapter.ParsePGObjectFromItemStackList(playerData.getInventory());
-        preparedStatement.setObject(6, inventoryObject);
+        preparedStatement.setObject(12, inventoryObject);
         // set ender chest
         PGobject enderchestObject = itemStackAdapter.ParsePGObjectFromItemStackList(playerData.getEnderchest());
-        preparedStatement.setObject(7, enderchestObject);
+        preparedStatement.setObject(13, enderchestObject);
         // set last_location_x
-        preparedStatement.setDouble(8, playerData.getPlayerLocation().getX());
+        preparedStatement.setDouble(14, playerData.getPlayerLocation().getX());
         // set last_location_y
-        preparedStatement.setDouble(9, playerData.getPlayerLocation().getY());
+        preparedStatement.setDouble(15, playerData.getPlayerLocation().getY());
         // set last_location_z
-        preparedStatement.setDouble(10, playerData.getPlayerLocation().getZ());
+        preparedStatement.setDouble(16, playerData.getPlayerLocation().getZ());
         // set last_location_yaw
-        preparedStatement.setFloat(11, playerData.getPlayerLocation().getYaw());
+        preparedStatement.setFloat(17, playerData.getPlayerLocation().getYaw());
         // set last_location_pitch
-        preparedStatement.setFloat(12, playerData.getPlayerLocation().getPitch());
+        preparedStatement.setFloat(18, playerData.getPlayerLocation().getPitch());
         // set last_location_world
-        preparedStatement.setString(13, playerData.getPlayerLocation().getWorld().getName());
+        preparedStatement.setString(19, playerData.getPlayerLocation().getWorld().getName());
         // set address
         String parsedAddress = Keys.toChecksumAddress(playerData.getAddress());
-        preparedStatement.setString(14, parsedAddress);
+        preparedStatement.setString(20, parsedAddress);
         preparedStatement.executeUpdate();
     }
 
