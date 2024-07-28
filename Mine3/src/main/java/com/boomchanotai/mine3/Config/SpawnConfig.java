@@ -1,6 +1,7 @@
 package com.boomchanotai.mine3.Config;
 
 import java.io.File;
+import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -47,6 +48,13 @@ public class SpawnConfig {
         }
 
         getSpawnConfig().set("spawn.init", true);
+        List<World> worlds = Mine3.getInstance().getServer().getWorlds();
+
+        if (worlds.size() < 1) {
+            Logger.warning("No world found", "Fail to set spawn location");
+            return;
+        }
+
         Location defaultSpawnLocation = Mine3.getInstance().getServer().getWorlds().get(0).getSpawnLocation();
         setSpawnLocation(defaultSpawnLocation);
     }

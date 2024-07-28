@@ -266,10 +266,6 @@ public class PlayerService {
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                // Set Display Name
-                player.setDisplayName(playerData.getAddress());
-                player.setPlayerListName(playerData.getAddress());
-
                 // Set Player State
                 player.setLevel(playerData.getXpLevel());
                 player.setExp(playerData.getXpExp());
