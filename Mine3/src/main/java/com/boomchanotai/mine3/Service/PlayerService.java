@@ -3,6 +3,7 @@ package com.boomchanotai.mine3.Service;
 import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3.Logger.Logger;
 import com.boomchanotai.mine3.Mine3;
+import com.boomchanotai.mine3.Config.SpawnConfig;
 import com.boomchanotai.mine3.Entity.PlayerCacheData;
 import com.boomchanotai.mine3.Entity.PlayerData;
 import com.boomchanotai.mine3.Entity.PlayerLocation;
@@ -12,7 +13,13 @@ import com.boomchanotai.mine3.Repository.SpigotRepository;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONObject;
 import org.web3j.crypto.Keys;
 
@@ -49,7 +56,7 @@ public class PlayerService {
     }
 
     public void connectPlayer(Player player) {
-        spigotRepo.setPlayerIdleState(player);
+        setPlayerIdleState(player);
 
         UUID playerUUID = player.getUniqueId();
 
@@ -158,8 +165,8 @@ public class PlayerService {
             Logger.warning("PlayerData is null", "Failed to get player data in database.", parsedAddress);
             return;
         }
-        spigotRepo.setPlayerActiveState(player);
-        spigotRepo.restorePlayerState(player, playerData);
+        setPlayerActiveState(player);
+        restorePlayerState(player, playerData);
 
         // 11. Send Title
         spigotRepo.sendTitle(
@@ -217,7 +224,7 @@ public class PlayerService {
         } catch (SQLException exception) {
             Logger.warning(exception.getMessage(), "Failed to update user inventory.", parsedAddress);
         }
-        spigotRepo.clearPlayerState(player);
+        clearPlayerState(player);
 
         // Delete player address in cache
         try {
@@ -232,5 +239,78 @@ public class PlayerService {
         } catch (Exception e) {
             Logger.warning(e.getMessage(), "Failed to delete player info.", parsedAddress);
         }
+    }
+
+    // clearPlayerState is clear player state for waiting login
+    public void clearPlayerState(Player player) {
+        player.setHealth(20.0);
+        player.setFoodLevel(20);
+        player.setLevel(0);
+        player.setExp(0.0F);
+        player.setGameMode(GameMode.SURVIVAL);
+        player.setFlySpeed(0.1F);
+        player.setWalkSpeed(0.2F);
+        player.setFlying(false);
+        player.setOp(false);
+        player.getInventory().clear();
+        player.getEnderChest().clear();
+    }
+
+    // restorePlayerState is restore player state from database
+    public void restorePlayerState(Player player, PlayerData playerData) {
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                // Set Display Name
+                player.setDisplayName(playerData.getAddress());
+                player.setPlayerListName(playerData.getAddress());
+
+                // Set Player State
+                player.setLevel(playerData.getXpLevel());
+                player.setExp(playerData.getXpExp());
+                player.setHealth(playerData.getHealth());
+                player.setFoodLevel(playerData.getFoodLevel());
+                player.setGameMode(playerData.getGameMode());
+                player.setFlySpeed(playerData.getFlySpeed());
+                player.setWalkSpeed(playerData.getWalkSpeed());
+                player.setFlying(playerData.isFlying());
+                player.setOp(playerData.isOp());
+                player.getInventory().setContents(playerData.getInventory());
+                player.getEnderChest().setContents(playerData.getEnderchest());
+
+                // Teleport Player to Last Location
+                Location lastLocation = new Location(
+                        playerData.getPlayerLocation().getWorld(),
+                        playerData.getPlayerLocation().getX(),
+                        playerData.getPlayerLocation().getY(),
+                        playerData.getPlayerLocation().getZ(),
+                        playerData.getPlayerLocation().getYaw(),
+                        playerData.getPlayerLocation().getPitch());
+                player.teleport(lastLocation, TeleportCause.PLUGIN);
+            }
+        };
+        runnable.runTaskLater(Mine3.getInstance(), 0);
+    }
+
+    // setPlayerIdleState is set player state for waiting login complete
+    public void setPlayerIdleState(Player player) {
+        clearPlayerState(player);
+        player.setInvulnerable(true);
+
+        World world = Mine3.getInstance().getServer()
+                .getWorld(SpawnConfig.getSpawnConfig().getString("spawn.world"));
+        Location spawnLocation = new Location(
+                world,
+                SpawnConfig.getSpawnConfig().getDouble("spawn.x"),
+                SpawnConfig.getSpawnConfig().getDouble("spawn.y"),
+                SpawnConfig.getSpawnConfig().getDouble("spawn.z"),
+                (float) SpawnConfig.getSpawnConfig().getDouble("spawn.yaw"),
+                (float) SpawnConfig.getSpawnConfig().getDouble("spawn.pitch"));
+        player.teleport(spawnLocation);
+    }
+
+    // setPlayerActiveState is set player state for active player
+    public void setPlayerActiveState(Player player) {
+        player.setInvulnerable(false);
     }
 }
