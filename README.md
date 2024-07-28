@@ -58,21 +58,26 @@ We've already provided `docker-compose.yml` for additional services for your Min
 cd /your_folder_path/Mine3
 ```
 
-3. Run `docker-compose.yml`:
+3. Create project in [Rainbowkit](https://www.rainbowkit.com/) and create `.env.local` file in `/mine3-frontend` (example in `.env.example`)
+
+- `VITE_PROJECT_ID` is Rainbowkit's project id.
+- `VITE_API_BASE_URL` is Mine3's HTTP handler url (this url same as your server IP Address but you can config port at plugin configuration file)
+
+4. Run `docker-compose.yml`:
 
 ```bash
 docker compose up -d
 ```
 
-4. Create your own Spigot server
-5. Move `Mine3-1.0-SNAPSHOT.jar` to your `plugins` folder
-6. Start your server.
-7. Configure your **Mine3** settings in `plugins/Mine3/config.yml` as follows:
+5. Create your own Spigot server
+6. Move `Mine3-1.0-SNAPSHOT.jar` to your `plugins` folder
+7. Start your server.
+8. Configure your **Mine3** settings in `plugins/Mine3/config.yml` as follows:
 
 - Set your Redis host and port.
 - Set your PostgreSQL URL.
 - Set your HTTP server port.
-- Set `auth.website_token_base_url` to your server domain or IP address.
+- Set `auth.website_token_base_url` to your server domain or IP address. (frontend url)
 
 ## Authors
 
