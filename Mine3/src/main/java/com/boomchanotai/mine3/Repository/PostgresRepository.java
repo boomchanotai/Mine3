@@ -1,6 +1,6 @@
 package com.boomchanotai.mine3.Repository;
 
-import com.boomchanotai.mine3.Database.Database;
+import com.boomchanotai.mine3.Postgres.Postgres;
 import com.boomchanotai.mine3.Entity.PlayerData;
 import com.boomchanotai.mine3.Entity.PlayerLocation;
 import com.boomchanotai.mine3.Logger.Logger;
@@ -31,7 +31,7 @@ public class PostgresRepository {
         String parsedAddress = Keys.toChecksumAddress(address);
 
         try {
-            PreparedStatement preparedStatement = Database.getConnection()
+            PreparedStatement preparedStatement = Postgres.getConnection()
                     .prepareStatement("SELECT * FROM users WHERE address = ?");
             preparedStatement.setString(1, parsedAddress);
             ResultSet res = preparedStatement.executeQuery();
@@ -48,7 +48,7 @@ public class PostgresRepository {
         String parsedAddress = Keys.toChecksumAddress(address);
 
         try {
-            PreparedStatement preparedStatement = Database.getConnection()
+            PreparedStatement preparedStatement = Postgres.getConnection()
                     .prepareStatement("SELECT * FROM users WHERE address = ?");
             preparedStatement.setString(1, parsedAddress);
             ResultSet res = preparedStatement.executeQuery();
@@ -103,7 +103,7 @@ public class PostgresRepository {
     }
 
     public void createNewPlayer(PlayerData playerData) throws SQLException {
-        PreparedStatement preparedStatement = Database.getConnection().prepareStatement(
+        PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(
                 "INSERT INTO users(address, is_logged_in, last_location_x, last_location_y, last_location_z, last_location_yaw, last_location_pitch, last_location_world) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING");
 
         // set address
@@ -126,7 +126,7 @@ public class PostgresRepository {
     }
 
     public void updateUserInventory(PlayerData playerData) throws SQLException {
-        PreparedStatement preparedStatement = Database.getConnection().prepareStatement(
+        PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(
                 "UPDATE users SET is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, game_mode = ?, fly_speed = ?, walk_speed = ?, is_flying = ?, is_op = ?, potion_effects = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?");
 
         // set is_logged_in
@@ -178,7 +178,7 @@ public class PostgresRepository {
     }
 
     public void setUserLoggedIn(String address) throws SQLException {
-        PreparedStatement preparedStatement = Database.getConnection().prepareStatement(
+        PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(
                 "UPDATE users SET is_logged_in = true, last_login = CURRENT_TIMESTAMP WHERE address = ?");
 
         // set address

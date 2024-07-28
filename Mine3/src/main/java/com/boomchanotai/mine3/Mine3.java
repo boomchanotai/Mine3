@@ -6,7 +6,7 @@ import com.boomchanotai.mine3.Commands.Mine3CommandTabCompletion;
 import com.boomchanotai.mine3.Commands.LogoutCommand;
 import com.boomchanotai.mine3.Config.Config;
 import com.boomchanotai.mine3.Config.SpawnConfig;
-import com.boomchanotai.mine3.Database.Database;
+import com.boomchanotai.mine3.Postgres.Postgres;
 import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3.Repository.ItemStackAdapter;
 import com.boomchanotai.mine3.Repository.PostgresRepository;
@@ -39,7 +39,7 @@ public final class Mine3 extends JavaPlugin {
         SpawnConfig.saveDefaultSpawnConfig();
         SpawnConfig.loadConfig();
 
-        Database.connect();
+        Postgres.connect();
         Redis.connect();
 
         // Dependencies
@@ -77,6 +77,6 @@ public final class Mine3 extends JavaPlugin {
         PreventPlayerActionWhenNotLoggedIn.disconnectAll();
         Server.stopServer();
         Redis.close();
-        Database.disconnect();
+        Postgres.disconnect();
     }
 }

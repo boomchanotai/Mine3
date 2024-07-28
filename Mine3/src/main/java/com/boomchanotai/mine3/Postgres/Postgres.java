@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3.Database;
+package com.boomchanotai.mine3.Postgres;
 
 import com.boomchanotai.mine3.Logger.Logger;
 import org.postgresql.Driver;
@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 import static com.boomchanotai.mine3.Config.Config.*;
 
-public class Database {
+public class Postgres {
     private static Connection connection;
 
     public static Connection getConnection() throws SQLException {
