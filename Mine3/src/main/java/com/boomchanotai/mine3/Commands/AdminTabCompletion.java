@@ -17,8 +17,12 @@ public class AdminTabCompletion implements TabCompleter {
         }
 
         List<String> subCommand = new ArrayList<>();
-        if (args.length == 1 && sender.hasPermission("mine3.setspawn")) {
-            subCommand.add("setspawn");
+        if (args.length == 1) {
+            if (sender.hasPermission("mine3.setspawn")) {
+                subCommand.add("setspawn");
+            }
+
+            subCommand.add("spawn");
         }
 
         return subCommand;

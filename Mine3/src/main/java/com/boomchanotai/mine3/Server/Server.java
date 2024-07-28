@@ -48,6 +48,11 @@ public class Server {
     }
 
     public static void stopServer() {
+        Javalin app = getApp();
+        if (app == null) {
+            return;
+        }
+
         getApp().stop();
         Logger.info("Http server has been stopped!");
     }

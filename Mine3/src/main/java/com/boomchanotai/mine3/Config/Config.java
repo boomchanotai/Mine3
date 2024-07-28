@@ -45,6 +45,10 @@ public class Config {
     public static int AUTH_LOGGED_IN_TITLE_STAY;
     public static int AUTH_LOGGED_IN_TITLE_FADE_OUT;
 
+    public static void saveDefaultConfig() {
+        Mine3.getInstance().saveDefaultConfig();
+    }
+
     public static void loadConfig() {
         FileConfiguration config = Mine3.getInstance().getConfig();
         TITLE = config.getString("title");

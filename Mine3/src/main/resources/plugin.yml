@@ -16,7 +16,11 @@ commands:
     description: mine3 command
     usage: |
       Use /help <command> [subcommand] for more information
-      /<command> setspawn - set spawn point
+      /<command> spawn - go to spawn point
+      /<command> setspawn - set spawn point (admin only)
+  mine3 spawn:
+    description: go to spawn point
+    usage: /<command> spawn
   mine3 setspawn:
     description: set spawn point on player join
     usage: /<command> setspawn

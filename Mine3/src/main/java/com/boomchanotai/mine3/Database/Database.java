@@ -21,17 +21,24 @@ public class Database {
         return connection;
     }
 
-    public static void connect() throws SQLException {
-        DriverManager.registerDriver(new Driver());
-        connection = DriverManager.getConnection(POSTGRES_HOST, POSTGRES_USERNAME, POSTGRES_PASSWORD);
-
-        initializeDatabase();
+    public static void connect() {
+        try {
+            DriverManager.registerDriver(new Driver());
+            connection = DriverManager.getConnection(POSTGRES_HOST, POSTGRES_USERNAME, POSTGRES_PASSWORD);
+            initializeDatabase();
+        } catch (SQLException e) {
+            Logger.warning(e.getMessage(), "Fail to connect database.");
+        }
 
         Logger.info("Connected to database!");
     }
 
-    public static void disconnect() throws SQLException {
-        connection.close();
+    public static void disconnect() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            Logger.warning(e.getMessage(), "Fail to disconnect database.");
+        }
 
         Logger.info("Disconnected to database!");
     }
