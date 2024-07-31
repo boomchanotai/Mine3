@@ -1,22 +1,23 @@
 package com.boomchanotai.mine3;
 
-import com.boomchanotai.mine3.Commands.AddressCommand;
-import com.boomchanotai.mine3.Commands.Mine3Command;
-import com.boomchanotai.mine3.Commands.Mine3CommandTabCompletion;
-import com.boomchanotai.mine3.Commands.LogoutCommand;
-import com.boomchanotai.mine3.Config.Config;
-import com.boomchanotai.mine3.Config.SpawnConfig;
-import com.boomchanotai.mine3.Postgres.Postgres;
-import com.boomchanotai.mine3.Listeners.PreventPlayerActionWhenNotLoggedIn;
-import com.boomchanotai.mine3.Repository.ItemStackAdapter;
-import com.boomchanotai.mine3.Repository.PostgresRepository;
-import com.boomchanotai.mine3.Repository.PotionEffectAdapter;
-import com.boomchanotai.mine3.Repository.RedisRepository;
-import com.boomchanotai.mine3.Repository.SpigotRepository;
-import com.boomchanotai.mine3.Server.Server;
-import com.boomchanotai.mine3.Listeners.PlayerJoinQuitEvent;
-import com.boomchanotai.mine3.Redis.Redis;
-import com.boomchanotai.mine3.Service.PlayerService;
+import com.boomchanotai.mine3.commands.AddressCommand;
+import com.boomchanotai.mine3.commands.LogoutCommand;
+import com.boomchanotai.mine3.commands.Mine3Command;
+import com.boomchanotai.mine3.commands.Mine3CommandTabCompletion;
+import com.boomchanotai.mine3.config.Config;
+import com.boomchanotai.mine3.config.SpawnConfig;
+import com.boomchanotai.mine3.listeners.PlayerJoinQuitEvent;
+import com.boomchanotai.mine3.listeners.PreventPlayerActionWhenNotLoggedIn;
+import com.boomchanotai.mine3.postgres.Postgres;
+import com.boomchanotai.mine3.redis.Redis;
+import com.boomchanotai.mine3.repository.ItemStackAdapter;
+import com.boomchanotai.mine3.repository.PostgresRepository;
+import com.boomchanotai.mine3.repository.PotionEffectAdapter;
+import com.boomchanotai.mine3.repository.RedisRepository;
+import com.boomchanotai.mine3.repository.SpigotRepository;
+import com.boomchanotai.mine3.server.Server;
+import com.boomchanotai.mine3.service.PlayerService;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Mine3 extends JavaPlugin {
