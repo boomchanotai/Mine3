@@ -9,14 +9,6 @@ redis:
   host: "localhost"
   port: 6379
 
-# Postgres Settings
-# you can disable this if you don't want to use postgres
-postgres:
-  enable: true
-  host: "jdbc:postgresql://localhost:5432/postgres"
-  username: "postgres"
-  password: "password"
-
 # Player data settings
 player:
   address_key: "mine3:auth:address" # redis key (hash) key: address, value: uuid
