@@ -1,0 +1,14 @@
+name: Mine3Standard
+version: "1.0-SNAPSHOT"
+main: com.boomchanotai.mine3Standard.Mine3Standard
+api-version: "1.21"
+authors: [BoomChanotai]
+description: Mine3Lib
+website: https://boomchanotai.com
+commands:
+  tp:
+    description: Teleport to player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <player> - teleport to other player
+      /<command> <player> <player> - teleport player to player
