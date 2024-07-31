@@ -19,6 +19,34 @@ import redis.clients.jedis.Jedis;
 public class Mine3Repository {
     ObjectMapper mapper = new ObjectMapper();
 
+    public static String[] getAllAddress() {
+        String[] addresses = null;
+        try (Jedis j = Redis.getPool().getResource()) {
+            addresses = j.hkeys(PLAYER_ADDRESS_KEY).toArray(new String[0]);
+        } catch (Exception e) {
+            Logger.warning(e.getMessage(), "failed to get all address");
+            return null;
+        }
+
+        return addresses;
+    }
+
+    public static String getAddress(UUID uuid) {
+        String playerInfo = null;
+        try (Jedis j = Redis.getPool().getResource()) {
+            playerInfo = j.hget(PLAYER_PLAYER_KEY, uuid.toString());
+        } catch (Exception e) {
+            Logger.warning(e.getMessage(), "failed to get player from uuid", uuid.toString());
+            return null;
+        }
+
+        if (playerInfo == null || playerInfo.isEmpty())
+            return null;
+
+        JSONObject player = new JSONObject(playerInfo);
+        return player.getString("address");
+    }
+
     public static Player getPlayer(String address) {
         String parsedAddress = Keys.toChecksumAddress(address);
 
