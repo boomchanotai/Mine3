@@ -23,7 +23,7 @@ public class Teleportcommand implements CommandExecutor {
             return false;
         }
 
-        if (args.length == 1 && sender instanceof Player) {
+        if (args.length == 1 && sender instanceof Player && sender.hasPermission("mine3.tp")) {
             String toAddress = args[0];
 
             // Teleport to the player
@@ -45,7 +45,7 @@ public class Teleportcommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 2) {
+        if (args.length == 2 && sender.hasPermission("mine3.tp.others")) {
             String fromAddress = args[0];
             String toAddress = args[1];
 
