@@ -8,8 +8,6 @@ import com.boomchanotai.mine3.config.Config;
 import com.boomchanotai.mine3.config.SpawnConfig;
 import com.boomchanotai.mine3.listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3.listeners.PreventPlayerActionWhenNotLoggedIn;
-import com.boomchanotai.mine3.postgres.Postgres;
-import com.boomchanotai.mine3.redis.Redis;
 import com.boomchanotai.mine3.repository.ItemStackAdapter;
 import com.boomchanotai.mine3.repository.PostgresRepository;
 import com.boomchanotai.mine3.repository.PotionEffectAdapter;
@@ -39,9 +37,6 @@ public final class Mine3 extends JavaPlugin {
         // Spawn.yml
         SpawnConfig.saveDefaultSpawnConfig();
         SpawnConfig.loadConfig();
-
-        Postgres.connect();
-        Redis.connect();
 
         // Dependencies
         ItemStackAdapter itemStackAdapter = new ItemStackAdapter();
@@ -77,7 +72,5 @@ public final class Mine3 extends JavaPlugin {
 
         PreventPlayerActionWhenNotLoggedIn.disconnectAll();
         Server.stopServer();
-        Redis.close();
-        Postgres.disconnect();
     }
 }

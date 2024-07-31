@@ -2,7 +2,7 @@ package com.boomchanotai.mine3.repository;
 
 import com.boomchanotai.mine3.entity.PlayerCacheData;
 import com.boomchanotai.mine3.logger.Logger;
-import com.boomchanotai.mine3.redis.Redis;
+import com.boomchanotai.mine3Lib.redis.Redis;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.web3j.crypto.Keys;

@@ -3,7 +3,7 @@ package com.boomchanotai.mine3.repository;
 import com.boomchanotai.mine3.entity.PlayerData;
 import com.boomchanotai.mine3.entity.PlayerLocation;
 import com.boomchanotai.mine3.logger.Logger;
-import com.boomchanotai.mine3.postgres.Postgres;
+import com.boomchanotai.mine3Lib.postgres.Postgres;
 import com.boomchanotai.mine3.Mine3;
 
 import org.bukkit.GameMode;

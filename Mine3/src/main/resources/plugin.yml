@@ -5,6 +5,7 @@ api-version: "1.21"
 description: "minecraft authentication system with evm wallet"
 author: boomchanotai
 website: https://github.com/boomchanotai/Mine3
+depend: [Mine3Lib]
 commands:
   address:
     description: get address
