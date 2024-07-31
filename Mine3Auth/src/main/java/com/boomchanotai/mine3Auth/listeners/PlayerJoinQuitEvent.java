@@ -6,25 +6,25 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.boomchanotai.mine3Auth.service.PlayerService;
+import com.boomchanotai.mine3Auth.service.AuthService;
 
 public class PlayerJoinQuitEvent implements Listener {
 
-    private PlayerService playerService;
+    private AuthService authService;
 
-    public PlayerJoinQuitEvent(PlayerService playerService) {
-        this.playerService = playerService;
+    public PlayerJoinQuitEvent(AuthService authService) {
+        this.authService = authService;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        playerService.connectPlayer(player);
+        authService.connect(player);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        playerService.disconnectPlayer(player);
+        authService.disconnect(player);
     }
 }

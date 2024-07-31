@@ -6,13 +6,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import com.boomchanotai.mine3Auth.service.PlayerService;
+import com.boomchanotai.mine3Auth.service.AuthService;
 
 public class LogoutCommand implements CommandExecutor {
-    private PlayerService playerService;
+    private AuthService authService;
 
-    public LogoutCommand(PlayerService playerService) {
-        this.playerService = playerService;
+    public LogoutCommand(AuthService authService) {
+        this.authService = authService;
     }
 
     @Override
@@ -23,8 +23,8 @@ public class LogoutCommand implements CommandExecutor {
         }
 
         Player p = (Player) sender;
-        playerService.disconnectPlayer(p);
-        playerService.connectPlayer(p);
+        authService.disconnect(p);
+        authService.connect(p);
 
         return true;
     }

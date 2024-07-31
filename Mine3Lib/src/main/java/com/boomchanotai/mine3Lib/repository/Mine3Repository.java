@@ -60,6 +60,24 @@ public class Mine3Repository {
         }
     }
 
+    public static void removePlayer(String address) {
+        String parsedAddress = Keys.toChecksumAddress(address);
+
+        Player player = getPlayer(address);
+
+        try (Jedis j = Redis.getPool().getResource()) {
+            j.hdel(PLAYER_ADDRESS_KEY, parsedAddress);
+        } catch (Exception e) {
+            Logger.warning(e.getMessage(), "failed to remove player address key", parsedAddress);
+        }
+
+        try (Jedis j = Redis.getPool().getResource()) {
+            j.hdel(PLAYER_PLAYER_KEY, player.getUniqueId().toString());
+        } catch (Exception e) {
+            Logger.warning(e.getMessage(), "failed to remove player player key", player.getUniqueId().toString());
+        }
+    }
+
     public static void clearPlayer() {
         try (Jedis j = Redis.getPool().getResource()) {
             j.del(PLAYER_ADDRESS_KEY);

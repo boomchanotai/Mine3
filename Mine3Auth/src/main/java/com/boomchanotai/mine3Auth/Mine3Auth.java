@@ -14,13 +14,16 @@ import com.boomchanotai.mine3Auth.repository.PotionEffectAdapter;
 import com.boomchanotai.mine3Auth.repository.RedisRepository;
 import com.boomchanotai.mine3Auth.repository.SpigotRepository;
 import com.boomchanotai.mine3Auth.server.Server;
+import com.boomchanotai.mine3Auth.service.AuthService;
 import com.boomchanotai.mine3Auth.service.PlayerService;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Mine3Auth extends JavaPlugin {
     private static Mine3Auth instance;
+
     PlayerService playerService;
+    AuthService authService;
 
     public static Mine3Auth getInstance() {
         return instance;
@@ -30,11 +33,11 @@ public final class Mine3Auth extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        // Config.yml
+        // Configuration
         Config.saveDefaultConfig();
         Config.loadConfig();
 
-        // Spawn.yml
+        // Spawn Configuration
         SpawnConfig.saveDefaultSpawnConfig();
         SpawnConfig.loadConfig();
 
@@ -46,31 +49,33 @@ public final class Mine3Auth extends JavaPlugin {
         RedisRepository redisRepo = new RedisRepository();
         SpigotRepository spigotRepo = new SpigotRepository();
 
-        playerService = new PlayerService(pgRepo, redisRepo, spigotRepo);
+        playerService = new PlayerService(spigotRepo);
+        authService = new AuthService(playerService, pgRepo, redisRepo, spigotRepo);
 
-        Server server = new Server(playerService);
+        Server server = new Server(authService);
         server.startServer();
 
         // Register Events
-        getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(playerService), this);
-        getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(spigotRepo), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(authService), this);
+        getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(playerService), this);
 
         // Register Commands
         getCommand("address").setExecutor(new AddressCommand(redisRepo, spigotRepo));
-        getCommand("logout").setExecutor(new LogoutCommand(playerService));
+        getCommand("logout").setExecutor(new LogoutCommand(authService));
         getCommand("mine3").setExecutor(new Mine3Command(spigotRepo));
         getCommand("mine3").setTabCompleter(new Mine3CommandTabCompletion());
 
         // Connect all players if in game
-        getServer().getOnlinePlayers().forEach(playerService::connectPlayer);
+        getServer().getOnlinePlayers().forEach(authService::connect);
     }
 
     @Override
     public void onDisable() {
         // Disconnect all players when server stop / reload
-        getServer().getOnlinePlayers().forEach(playerService::disconnectPlayer);
+        getServer().getOnlinePlayers().forEach(authService::disconnect);
+        playerService.removeAll();
 
-        PreventPlayerActionWhenNotLoggedIn.disconnectAll();
+        // Stop HTTP Server
         Server.stopServer();
     }
 }

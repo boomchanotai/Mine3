@@ -1,6 +1,6 @@
 package com.boomchanotai.mine3Auth.server;
 
-import com.boomchanotai.mine3Auth.service.PlayerService;
+import com.boomchanotai.mine3Auth.service.AuthService;
 import com.boomchanotai.mine3Auth.Mine3Auth;
 import com.boomchanotai.mine3Auth.logger.Logger;
 
@@ -16,10 +16,10 @@ import org.web3j.crypto.Keys;
 
 public class Server {
     private static Javalin app = null;
-    private static PlayerService playerService;
+    private static AuthService authService;
 
-    public Server(PlayerService playerService) {
-        Server.playerService = playerService;
+    public Server(AuthService authService) {
+        Server.authService = authService;
     }
 
     public static Javalin getApp() {
@@ -98,7 +98,7 @@ public class Server {
         }
 
         try {
-            playerService.playerLogin(loginRequest.token, loginRequest.address);
+            authService.authenticate(loginRequest.token, loginRequest.address);
         } catch (Exception e) {
             JSONObject res = new JSONObject();
             res.put("error", e.getMessage());
