@@ -3,7 +3,7 @@ package com.boomchanotai.mine3Auth;
 import com.boomchanotai.mine3Auth.commands.AddressCommand;
 import com.boomchanotai.mine3Auth.commands.LogoutCommand;
 import com.boomchanotai.mine3Auth.commands.Mine3Command;
-import com.boomchanotai.mine3Auth.commands.Mine3CommandTabCompletion;
+import com.boomchanotai.mine3Auth.commands.Mine3TabCompletion;
 import com.boomchanotai.mine3Auth.config.Config;
 import com.boomchanotai.mine3Auth.config.SpawnConfig;
 import com.boomchanotai.mine3Auth.listeners.PlayerJoinQuitEvent;
@@ -63,7 +63,7 @@ public final class Mine3Auth extends JavaPlugin {
         getCommand("address").setExecutor(new AddressCommand(redisRepo, spigotRepo));
         getCommand("logout").setExecutor(new LogoutCommand(authService));
         getCommand("mine3").setExecutor(new Mine3Command(spigotRepo));
-        getCommand("mine3").setTabCompleter(new Mine3CommandTabCompletion());
+        getCommand("mine3").setTabCompleter(new Mine3TabCompletion());
 
         // Connect all players if in game
         getServer().getOnlinePlayers().forEach(authService::connect);
