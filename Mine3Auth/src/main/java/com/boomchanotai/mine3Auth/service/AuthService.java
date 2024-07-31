@@ -11,7 +11,7 @@ import com.boomchanotai.mine3Auth.Mine3Auth;
 import com.boomchanotai.mine3Auth.entity.PlayerCacheData;
 import com.boomchanotai.mine3Auth.entity.PlayerData;
 import com.boomchanotai.mine3Auth.entity.PlayerLocation;
-import com.boomchanotai.mine3Auth.logger.Logger;
+import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Auth.repository.PostgresRepository;
 import com.boomchanotai.mine3Auth.repository.RedisRepository;
 import com.boomchanotai.mine3Auth.repository.SpigotRepository;

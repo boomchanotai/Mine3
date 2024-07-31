@@ -2,7 +2,7 @@ package com.boomchanotai.mine3Auth.postgres;
 
 import org.postgresql.Driver;
 
-import com.boomchanotai.mine3Auth.logger.Logger;
+import com.boomchanotai.mine3Lib.logger.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

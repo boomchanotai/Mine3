@@ -1,6 +1,6 @@
 package com.boomchanotai.mine3Auth.redis;
 
-import com.boomchanotai.mine3Auth.logger.Logger;
+import com.boomchanotai.mine3Lib.logger.Logger;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

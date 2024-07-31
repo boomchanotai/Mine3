@@ -2,7 +2,7 @@ package com.boomchanotai.mine3Auth.server;
 
 import com.boomchanotai.mine3Auth.service.AuthService;
 import com.boomchanotai.mine3Auth.Mine3Auth;
-import com.boomchanotai.mine3Auth.logger.Logger;
+import com.boomchanotai.mine3Lib.logger.Logger;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;

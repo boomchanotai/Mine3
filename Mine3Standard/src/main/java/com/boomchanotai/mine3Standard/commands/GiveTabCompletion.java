@@ -19,7 +19,7 @@ public class GiveTabCompletion implements TabCompleter {
         if (args.length == 1) {
             String[] address = Mine3Repository.getAllAddress();
             for (String a : address) {
-                if (a.contains(args[0])) {
+                if (a.toLowerCase().contains(args[0].toLowerCase())) {
                     subCommand.add(a);
                 }
             }

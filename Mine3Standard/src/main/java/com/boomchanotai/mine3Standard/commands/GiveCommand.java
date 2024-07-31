@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.web3j.crypto.Keys;
 
+import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.Mine3Repository;
 import com.boomchanotai.mine3Standard.repository.SpigotRepository;
 
@@ -35,8 +36,18 @@ public class GiveCommand implements CommandExecutor {
         int amount = Integer.parseInt(args[2]);
 
         Player targetPlayer = Mine3Repository.getPlayer(targetAddress);
+        Material material = Material.getMaterial(item.toUpperCase());
 
-        Material material = Material.getMaterial(item);
+        if (material == null) {
+            if (sender instanceof Player) {
+                spigotRepository.sendMessage(sender, "Invalid item.");
+            } else {
+                Logger.warning("Invalid item.");
+            }
+
+            return true;
+        }
+
         ItemStack itemStack = new ItemStack(material, amount);
         targetPlayer.getInventory().addItem(itemStack);
 
