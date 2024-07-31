@@ -10,10 +10,17 @@ commands:
     description: Teleport to player
     usage: |
       Use /help <command> [subcommand] for more information
-      /<command> <player> - teleport to other player
-      /<command> <player> <player> - teleport player to player
+      /<command> <address> - teleport to other player
+      /<command> <address> <player> - teleport player to player
+  give:
+    description: Give item to player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <address> <item> <item> - give item to player
 permissions:
   mine3.tp:
     description: allow player to teleport to player
   mine3.tp.others:
     description: allow other player to teleport other player
+  mine3.give:
+    description: allow player to give item to player

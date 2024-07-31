@@ -11,10 +11,10 @@ import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.Mine3Repository;
 import com.boomchanotai.mine3Standard.repository.SpigotRepository;
 
-public class Teleportcommand implements CommandExecutor {
+public class TeleportCommand implements CommandExecutor {
     SpigotRepository spigotRepository;
 
-    public Teleportcommand(SpigotRepository spigotRepository) {
+    public TeleportCommand(SpigotRepository spigotRepository) {
         this.spigotRepository = spigotRepository;
     }
 
