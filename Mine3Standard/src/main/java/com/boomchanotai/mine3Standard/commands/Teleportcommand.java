@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.web3j.crypto.Keys;
 
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.Mine3Repository;
@@ -23,20 +24,25 @@ public class Teleportcommand implements CommandExecutor {
             return false;
         }
 
-        if (args.length == 1 && sender instanceof Player && sender.hasPermission("mine3.tp")) {
-            String toAddress = args[0];
+        // tp <address> - Teleport to the player
+        if (args.length == 1 && sender instanceof Player) {
+            Player player = (Player) sender;
+            if (!player.hasPermission("mine3.tp")) {
+                spigotRepository.sendMessage(sender, ChatColor.RED + "You don't have permission to use this command.");
+                return true;
+            }
+
+            String toAddress = Keys.toChecksumAddress(args[0]);
 
             // Teleport to the player
-            Player player = (Player) sender;
-
             Player toPlayer = Mine3Repository.getPlayer(toAddress);
             if (toPlayer == null) {
-                spigotRepository.sendMessage(sender, ChatColor.RED + "Player not found.");
+                spigotRepository.sendMessage(player, ChatColor.RED + "Player not found.");
                 return true;
             }
 
             if (player == toPlayer) {
-                spigotRepository.sendMessage(sender, ChatColor.RED + "You can't teleport to yourself.");
+                spigotRepository.sendMessage(player, ChatColor.RED + "You can't teleport to yourself.");
                 return true;
             }
 
@@ -45,9 +51,15 @@ public class Teleportcommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 2 && sender.hasPermission("mine3.tp.others")) {
-            String fromAddress = args[0];
-            String toAddress = args[1];
+        // tp <address> <address> - Teleport from the player to the player
+        if (args.length == 2) {
+            if (sender instanceof Player && !sender.hasPermission("mine3.tp.others")) {
+                spigotRepository.sendMessage(sender, ChatColor.RED + "You don't have permission to use this command.");
+                return true;
+            }
+
+            String fromAddress = Keys.toChecksumAddress(args[0]);
+            String toAddress = Keys.toChecksumAddress(args[1]);
 
             // Teleport from the player to the player
             Player fromPlayer = Mine3Repository.getPlayer(fromAddress);
