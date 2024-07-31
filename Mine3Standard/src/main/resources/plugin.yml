@@ -5,6 +5,7 @@ api-version: "1.21"
 authors: [BoomChanotai]
 description: Mine3Lib
 website: https://boomchanotai.com
+depend: [Mine3Lib]
 commands:
   tp:
     description: Teleport to player
