@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.boomchanotai.mine3Lib.config.Config;
 import com.boomchanotai.mine3Lib.postgres.Postgres;
 import com.boomchanotai.mine3Lib.redis.Redis;
+import com.boomchanotai.mine3Lib.repository.Mine3Repository;
 
 public final class Mine3Lib extends JavaPlugin {
     private static Mine3Lib plugin;
@@ -28,6 +29,7 @@ public final class Mine3Lib extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        Mine3Repository.clearPlayer();
         Redis.close();
         Postgres.disconnect();
     }

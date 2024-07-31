@@ -59,4 +59,13 @@ public class Mine3Repository {
             Logger.warning(e.getMessage(), "failed to set player player key", player.getUniqueId().toString());
         }
     }
+
+    public static void clearPlayer() {
+        try (Jedis j = Redis.getPool().getResource()) {
+            j.del(PLAYER_ADDRESS_KEY);
+            j.del(PLAYER_PLAYER_KEY);
+        } catch (Exception e) {
+            Logger.warning(e.getMessage(), "failed to clear player");
+        }
+    }
 }
