@@ -48,7 +48,7 @@ public class AddressCommand implements CommandExecutor {
         }
 
         String address = playerCacheData.getAddress();
-        PlayerRepository.sendMessage(sender, address);
+        PlayerRepository.sendMessage(player, address);
         return true;
     }
 }
