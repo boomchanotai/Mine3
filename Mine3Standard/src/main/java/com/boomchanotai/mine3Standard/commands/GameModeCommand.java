@@ -41,8 +41,12 @@ public class GameModeCommand implements CommandExecutor {
             return true;
         }
 
-        // gamemode <gamemode>
-        if (args.length == 1 && sender instanceof Player) {
+        // gamemode <gamemode> - (Player)
+        if (args.length == 1) {
+            if (!Utils.isPlayerUsingCommand(sender)) {
+                return true;
+            }
+
             if (!Utils.hasPermission(sender, "mine3.gamemode")) {
                 return true;
             }
@@ -52,7 +56,7 @@ public class GameModeCommand implements CommandExecutor {
             return true;
         }
 
-        // gamemode <gamemode> <address>
+        // gamemode <gamemode> <address> - (Player, Console)
         if (args.length == 2) {
             if (!Utils.hasPermission(sender, "mine3.gamemode.others")) {
                 return true;

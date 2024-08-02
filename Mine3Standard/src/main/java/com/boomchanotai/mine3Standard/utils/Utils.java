@@ -21,6 +21,15 @@ public class Utils {
         return true;
     }
 
+    public static boolean isPlayerUsingCommand(CommandSender sender) {
+        if (!(sender instanceof Player)) {
+            Logger.info("Only player can use this command!");
+            return false;
+        }
+
+        return true;
+    }
+
     public static void sendCommandReturnMessage(CommandSender sender, String message) {
         if (sender instanceof Player) {
             Player player = (Player) sender;

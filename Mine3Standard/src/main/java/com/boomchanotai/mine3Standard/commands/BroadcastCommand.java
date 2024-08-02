@@ -15,6 +15,7 @@ public class BroadcastCommand implements CommandExecutor {
             return false;
         }
 
+        // broadcast <message> - Broadcast a message to all players
         if (!Utils.hasPermission(sender, "mine3.broadcast")) {
             return true;
         }

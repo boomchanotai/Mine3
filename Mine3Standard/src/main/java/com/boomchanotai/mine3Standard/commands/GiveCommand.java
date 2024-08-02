@@ -23,7 +23,7 @@ public class GiveCommand implements CommandExecutor {
             return true;
         }
 
-        // give <address> <item> <amount> - Give the player an amount of money
+        // give <address> <item> <amount> - (Player, Console)
         String targetAddress = Keys.toChecksumAddress(args[0]);
         String item = args[1];
         int amount = Integer.parseInt(args[2]);

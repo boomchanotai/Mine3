@@ -1,6 +1,5 @@
 package com.boomchanotai.mine3Standard.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,40 +9,35 @@ import org.web3j.crypto.Keys;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class TeleportCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0) {
+        if (args.length == 0 || args.length > 2) {
             return false;
         }
 
-        // tp <address> - Teleport to the player
-        if (args.length == 1 && sender instanceof Player) {
+        Player fromPlayer = null;
+        Player toPlayer = null;
+
+        // tp <address> - (Player)
+        if (args.length == 1) {
+            if (!Utils.isPlayerUsingCommand(sender)) {
+                return true;
+            }
+
             if (!Utils.hasPermission(sender, "mine3.tp")) {
                 return true;
             }
 
-            Player player = (Player) sender;
             String toAddress = Keys.toChecksumAddress(args[0]);
 
-            // Teleport to the player
-            Player toPlayer = PlayerRepository.getPlayer(toAddress);
-            if (toPlayer == null) {
-                PlayerRepository.sendMessage(player, ChatColor.RED + "Address not found.");
-                return true;
-            }
-
-            if (player == toPlayer) {
-                PlayerRepository.sendMessage(player, ChatColor.RED + "You can't teleport to yourself.");
-                return true;
-            }
-
-            player.teleport(toPlayer);
-
-            return true;
+            fromPlayer = (Player) sender;
+            toPlayer = PlayerRepository.getPlayer(toAddress);
         }
 
-        // tp <address> <address> - Teleport from the player to the player
+        // tp <address> <address> - (Player, Console)
         if (args.length == 2) {
             if (!Utils.hasPermission(sender, "mine3.tp.others")) {
                 return true;
@@ -52,26 +46,23 @@ public class TeleportCommand implements CommandExecutor {
             String fromAddress = Keys.toChecksumAddress(args[0]);
             String toAddress = Keys.toChecksumAddress(args[1]);
 
-            // Teleport from the player to the player
-            Player fromPlayer = PlayerRepository.getPlayer(fromAddress);
-            Player toPlayer = PlayerRepository.getPlayer(toAddress);
+            fromPlayer = PlayerRepository.getPlayer(fromAddress);
+            toPlayer = PlayerRepository.getPlayer(toAddress);
+        }
 
-            if (fromPlayer == null || toPlayer == null) {
-                Utils.sendCommandReturnMessage(sender, "Address not found.");
-                return true;
-            }
-
-            if (fromPlayer == toPlayer) {
-                Utils.sendCommandReturnMessage(sender, "Address not found.");
-                return true;
-            }
-
-            fromPlayer.teleport(toPlayer);
-
+        if (fromPlayer == null || toPlayer == null) {
+            Utils.sendCommandReturnMessage(sender, "Address not found.");
             return true;
         }
 
-        return false;
+        if (fromPlayer == toPlayer) {
+            Utils.sendCommandReturnMessage(sender, ChatColor.RED + "You can't teleport to same address.");
+            return true;
+        }
+
+        fromPlayer.teleport(toPlayer);
+
+        return true;
     }
 
 }

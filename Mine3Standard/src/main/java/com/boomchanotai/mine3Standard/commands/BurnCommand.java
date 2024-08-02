@@ -16,8 +16,12 @@ public class BurnCommand implements CommandExecutor {
             return false;
         }
 
-        // burn - Burn the player
-        if (args.length == 0 && sender instanceof Player) {
+        // burn - (Player)
+        if (args.length == 0) {
+            if (!Utils.isPlayerUsingCommand(sender)) {
+                return true;
+            }
+
             if (!Utils.hasPermission(sender, "mine3.burn")) {
                 return true;
             }
@@ -27,7 +31,7 @@ public class BurnCommand implements CommandExecutor {
             return true;
         }
 
-        // burn <address> - Burn the player
+        // burn <address> - (Player, Console)
         if (args.length == 1) {
             if (!Utils.hasPermission(sender, "mine3.burn.others")) {
                 return true;
