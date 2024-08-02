@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
@@ -38,11 +37,7 @@ public class GameModeCommand implements CommandExecutor {
 
         GameMode gameMode = parsedGameMode(args[0], sender);
         if (gameMode == null) {
-            if (sender instanceof Player) {
-                PlayerRepository.sendMessage((Player) sender, "Invalid game mode.");
-            } else {
-                Logger.warning("Invalid game mode.");
-            }
+            Utils.sendCommandReturnMessage(sender, "Invalid game mode.");
             return true;
         }
 
@@ -65,11 +60,7 @@ public class GameModeCommand implements CommandExecutor {
 
             Player targetPlayer = PlayerRepository.getPlayer(args[1]);
             if (targetPlayer == null) {
-                if (sender instanceof Player) {
-                    PlayerRepository.sendMessage((Player) sender, "Address not found.");
-                } else {
-                    Logger.warning("Address not found.");
-                }
+                Utils.sendCommandReturnMessage(sender, "Address not found.");
                 return true;
             }
 

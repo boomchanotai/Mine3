@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.web3j.crypto.Keys;
 
-import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
@@ -31,23 +30,13 @@ public class GiveCommand implements CommandExecutor {
 
         Player targetPlayer = PlayerRepository.getPlayer(targetAddress);
         if (targetPlayer == null) {
-            if (sender instanceof Player) {
-                PlayerRepository.sendMessage((Player) sender, "Address not found.");
-            } else {
-                Logger.warning("Address not found.");
-            }
-
+            Utils.sendCommandReturnMessage(sender, "Address not found.");
             return true;
         }
 
         Material material = Material.getMaterial(item.toUpperCase());
         if (material == null) {
-            if (sender instanceof Player) {
-                PlayerRepository.sendMessage((Player) sender, "Invalid item.");
-            } else {
-                Logger.warning("Invalid item.");
-            }
-
+            Utils.sendCommandReturnMessage(sender, "Invalid item.");
             return true;
         }
 

@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.web3j.crypto.Keys;
 
-import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
@@ -58,21 +57,12 @@ public class TeleportCommand implements CommandExecutor {
             Player toPlayer = PlayerRepository.getPlayer(toAddress);
 
             if (fromPlayer == null || toPlayer == null) {
-                if (sender instanceof Player) {
-                    PlayerRepository.sendMessage((Player) sender, ChatColor.RED + "Address not found.");
-                } else {
-                    Logger.warning("Address not found.");
-                }
+                Utils.sendCommandReturnMessage(sender, "Address not found.");
                 return true;
             }
 
             if (fromPlayer == toPlayer) {
-                if (sender instanceof Player) {
-                    PlayerRepository.sendMessage((Player) sender,
-                            ChatColor.RED + "You can't teleport to same address.");
-                } else {
-                    Logger.warning("You can't teleport to same address.");
-                }
+                Utils.sendCommandReturnMessage(sender, "Address not found.");
                 return true;
             }
 

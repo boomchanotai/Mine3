@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
@@ -36,11 +35,7 @@ public class BurnCommand implements CommandExecutor {
 
             Player targetPlayer = PlayerRepository.getPlayer(args[0]);
             if (targetPlayer == null) {
-                if (sender instanceof Player) {
-                    PlayerRepository.sendMessage((Player) sender, "Address not found.");
-                } else {
-                    Logger.warning("Address not found.");
-                }
+                Utils.sendCommandReturnMessage(sender, "Address not found.");
                 return true;
             }
 
