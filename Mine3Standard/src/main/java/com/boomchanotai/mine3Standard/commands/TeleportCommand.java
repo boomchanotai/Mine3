@@ -9,6 +9,7 @@ import org.web3j.crypto.Keys;
 
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Standard.utils.Utils;
 
 public class TeleportCommand implements CommandExecutor {
     @Override
@@ -19,12 +20,11 @@ public class TeleportCommand implements CommandExecutor {
 
         // tp <address> - Teleport to the player
         if (args.length == 1 && sender instanceof Player) {
-            Player player = (Player) sender;
-            if (!player.hasPermission("mine3.tp")) {
-                PlayerRepository.sendMessage(player, ChatColor.RED + "You don't have permission to use this command.");
+            if (!Utils.hasPermission(sender, "mine3.tp")) {
                 return true;
             }
 
+            Player player = (Player) sender;
             String toAddress = Keys.toChecksumAddress(args[0]);
 
             // Teleport to the player
@@ -46,9 +46,7 @@ public class TeleportCommand implements CommandExecutor {
 
         // tp <address> <address> - Teleport from the player to the player
         if (args.length == 2) {
-            if (sender instanceof Player && !sender.hasPermission("mine3.tp.others")) {
-                PlayerRepository.sendMessage((Player) sender,
-                        ChatColor.RED + "You don't have permission to use this command.");
+            if (!Utils.hasPermission(sender, "mine3.tp.others")) {
                 return true;
             }
 

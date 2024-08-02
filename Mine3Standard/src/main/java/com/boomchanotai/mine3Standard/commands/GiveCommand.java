@@ -10,17 +10,17 @@ import org.web3j.crypto.Keys;
 
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Standard.utils.Utils;
 
 public class GiveCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length < 3) {
+        if (args.length < 3 || args.length > 3) {
             return false;
         }
 
-        if (sender instanceof Player && !sender.hasPermission("mine3.give")) {
-            PlayerRepository.sendMessage((Player) sender, "You don't have permission to use this command.");
+        if (!Utils.hasPermission(sender, "mine3.give")) {
             return true;
         }
 

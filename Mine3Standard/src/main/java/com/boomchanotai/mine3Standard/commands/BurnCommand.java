@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Standard.utils.Utils;
 
 public class BurnCommand implements CommandExecutor {
 
@@ -18,20 +19,18 @@ public class BurnCommand implements CommandExecutor {
 
         // burn - Burn the player
         if (args.length == 0 && sender instanceof Player) {
-            Player player = (Player) sender;
-            if (!player.hasPermission("mine3.burn")) {
-                player.sendMessage("You don't have permission to use this command.");
+            if (!Utils.hasPermission(sender, "mine3.burn")) {
                 return true;
             }
 
+            Player player = (Player) sender;
             player.setFireTicks(100);
             return true;
         }
 
         // burn <address> - Burn the player
         if (args.length == 1) {
-            if (sender instanceof Player && !sender.hasPermission("mine3.burn.others")) {
-                ((Player) sender).sendMessage("You don't have permission to use this command.");
+            if (!Utils.hasPermission(sender, "mine3.burn.others")) {
                 return true;
             }
 
