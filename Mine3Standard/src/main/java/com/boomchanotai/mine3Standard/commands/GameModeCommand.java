@@ -38,7 +38,7 @@ public class GameModeCommand implements CommandExecutor {
         GameMode gameMode = parsedGameMode(args[0], sender);
         if (gameMode == null) {
             if (sender instanceof Player) {
-                PlayerRepository.sendMessage(sender, "Invalid game mode.");
+                PlayerRepository.sendMessage((Player) sender, "Invalid game mode.");
             } else {
                 Logger.warning("Invalid game mode.");
             }
@@ -49,7 +49,7 @@ public class GameModeCommand implements CommandExecutor {
         if (args.length == 1 && sender instanceof Player) {
             Player player = (Player) sender;
             if (!player.hasPermission("mine3.gamemode")) {
-                PlayerRepository.sendMessage(sender, "You don't have permission to use this command.");
+                PlayerRepository.sendMessage(player, "You don't have permission to use this command.");
                 return true;
             }
 
@@ -61,14 +61,14 @@ public class GameModeCommand implements CommandExecutor {
         // gamemode <gamemode> <address>
         if (args.length == 2) {
             if (sender instanceof Player && !sender.hasPermission("mine3.gamemode.others")) {
-                PlayerRepository.sendMessage(sender, "You don't have permission to use this command.");
+                PlayerRepository.sendMessage((Player) sender, "You don't have permission to use this command.");
                 return true;
             }
 
             Player targetPlayer = PlayerRepository.getPlayer(args[1]);
             if (targetPlayer == null) {
                 if (sender instanceof Player) {
-                    PlayerRepository.sendMessage(sender, "Address not found.");
+                    PlayerRepository.sendMessage((Player) sender, "Address not found.");
                 } else {
                     Logger.warning("Address not found.");
                 }

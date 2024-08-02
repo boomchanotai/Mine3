@@ -20,7 +20,7 @@ public class GiveCommand implements CommandExecutor {
         }
 
         if (sender instanceof Player && !sender.hasPermission("mine3.give")) {
-            PlayerRepository.sendMessage(sender, "You don't have permission to use this command.");
+            PlayerRepository.sendMessage((Player) sender, "You don't have permission to use this command.");
             return true;
         }
 
@@ -32,7 +32,7 @@ public class GiveCommand implements CommandExecutor {
         Player targetPlayer = PlayerRepository.getPlayer(targetAddress);
         if (targetPlayer == null) {
             if (sender instanceof Player) {
-                PlayerRepository.sendMessage(sender, "Address not found.");
+                PlayerRepository.sendMessage((Player) sender, "Address not found.");
             } else {
                 Logger.warning("Address not found.");
             }
@@ -43,7 +43,7 @@ public class GiveCommand implements CommandExecutor {
         Material material = Material.getMaterial(item.toUpperCase());
         if (material == null) {
             if (sender instanceof Player) {
-                PlayerRepository.sendMessage(sender, "Invalid item.");
+                PlayerRepository.sendMessage((Player) sender, "Invalid item.");
             } else {
                 Logger.warning("Invalid item.");
             }

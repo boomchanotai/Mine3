@@ -21,7 +21,7 @@ public class TeleportCommand implements CommandExecutor {
         if (args.length == 1 && sender instanceof Player) {
             Player player = (Player) sender;
             if (!player.hasPermission("mine3.tp")) {
-                PlayerRepository.sendMessage(sender, ChatColor.RED + "You don't have permission to use this command.");
+                PlayerRepository.sendMessage(player, ChatColor.RED + "You don't have permission to use this command.");
                 return true;
             }
 
@@ -47,7 +47,8 @@ public class TeleportCommand implements CommandExecutor {
         // tp <address> <address> - Teleport from the player to the player
         if (args.length == 2) {
             if (sender instanceof Player && !sender.hasPermission("mine3.tp.others")) {
-                PlayerRepository.sendMessage(sender, ChatColor.RED + "You don't have permission to use this command.");
+                PlayerRepository.sendMessage((Player) sender,
+                        ChatColor.RED + "You don't have permission to use this command.");
                 return true;
             }
 
@@ -60,7 +61,7 @@ public class TeleportCommand implements CommandExecutor {
 
             if (fromPlayer == null || toPlayer == null) {
                 if (sender instanceof Player) {
-                    PlayerRepository.sendMessage(sender, ChatColor.RED + "Address not found.");
+                    PlayerRepository.sendMessage((Player) sender, ChatColor.RED + "Address not found.");
                 } else {
                     Logger.warning("Address not found.");
                 }
@@ -69,7 +70,8 @@ public class TeleportCommand implements CommandExecutor {
 
             if (fromPlayer == toPlayer) {
                 if (sender instanceof Player) {
-                    PlayerRepository.sendMessage(sender, ChatColor.RED + "You can't teleport to same address.");
+                    PlayerRepository.sendMessage((Player) sender,
+                            ChatColor.RED + "You can't teleport to same address.");
                 } else {
                     Logger.warning("You can't teleport to same address.");
                 }

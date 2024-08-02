@@ -5,7 +5,7 @@ import static com.boomchanotai.mine3Lib.config.Config.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.bukkit.command.CommandSender;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
 import org.web3j.crypto.Keys;
@@ -118,7 +118,7 @@ public class PlayerRepository {
         }
     }
 
-    public static void sendMessage(CommandSender player, String message) {
+    public static void sendMessage(Player player, String message) {
         player.sendMessage(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE + message));
     }
 
@@ -135,5 +135,9 @@ public class PlayerRepository {
 
         TextComponent[] componentsArray = components.toArray(new TextComponent[0]);
         player.spigot().sendMessage(componentsArray);
+    }
+
+    public static void broadcastMessage(String message) {
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE + message));
     }
 }
