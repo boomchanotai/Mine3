@@ -46,7 +46,11 @@ public class GodCommand implements CommandExecutor {
         }
 
         targetPlayer.setInvulnerable(!targetPlayer.isInvulnerable());
-        PlayerRepository.sendMessage(targetPlayer, "You have toggled god mode.");
+        if (targetPlayer.isInvulnerable()) {
+            PlayerRepository.sendMessage(targetPlayer, "You are now in god mode.");
+        } else {
+            PlayerRepository.sendMessage(targetPlayer, "You are no longer in god mode.");
+        }
 
         return true;
     }

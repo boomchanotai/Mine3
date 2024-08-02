@@ -46,7 +46,11 @@ public class FlyCommand implements CommandExecutor {
         }
 
         targetPlayer.setAllowFlight(!targetPlayer.getAllowFlight());
-        PlayerRepository.sendMessage(targetPlayer, "You have toggled fly mode.");
+        if (targetPlayer.getAllowFlight()) {
+            PlayerRepository.sendMessage(targetPlayer, "You are now in fly mode.");
+        } else {
+            PlayerRepository.sendMessage(targetPlayer, "You are no longer in fly mode.");
+        }
 
         return true;
     }

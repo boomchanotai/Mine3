@@ -46,7 +46,11 @@ public class VanishCommand implements CommandExecutor {
         }
 
         targetPlayer.setInvisible(!targetPlayer.isInvisible());
-        PlayerRepository.sendMessage(targetPlayer, "You have toggled vanish mode.");
+        if (targetPlayer.isInvisible()) {
+            PlayerRepository.sendMessage(targetPlayer, "You are now in vanish mode.");
+        } else {
+            PlayerRepository.sendMessage(targetPlayer, "You are no longer in vanish mode.");
+        }
 
         return true;
     }
