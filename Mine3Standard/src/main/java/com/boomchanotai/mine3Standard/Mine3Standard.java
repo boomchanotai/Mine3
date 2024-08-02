@@ -5,12 +5,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.boomchanotai.mine3Standard.commands.BroadcastCommand;
 import com.boomchanotai.mine3Standard.commands.BurnCommand;
 import com.boomchanotai.mine3Standard.commands.ClearInventoryCommand;
+import com.boomchanotai.mine3Standard.commands.EnderChestCommand;
 import com.boomchanotai.mine3Standard.commands.FeedCommand;
 import com.boomchanotai.mine3Standard.commands.FlyCommand;
 import com.boomchanotai.mine3Standard.commands.GameModeCommand;
 import com.boomchanotai.mine3Standard.commands.GiveCommand;
 import com.boomchanotai.mine3Standard.commands.GodCommand;
 import com.boomchanotai.mine3Standard.commands.HealCommand;
+import com.boomchanotai.mine3Standard.commands.InvseeCommand;
 import com.boomchanotai.mine3Standard.commands.KickCommand;
 import com.boomchanotai.mine3Standard.commands.KillCommand;
 import com.boomchanotai.mine3Standard.commands.SpeedCommand;
@@ -19,12 +21,14 @@ import com.boomchanotai.mine3Standard.commands.VanishCommand;
 import com.boomchanotai.mine3Standard.config.Config;
 import com.boomchanotai.mine3Standard.tabcompletion.BurnTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.ClearInventoryTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.EnderChestTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.FeedTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.FlyTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.GameModeTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.GiveTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.GodTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.HealTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.InvseeTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.KickTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.KillTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.SpeedTabCompletion;
@@ -100,6 +104,16 @@ public final class Mine3Standard extends JavaPlugin {
         // kick
         getCommand("kick").setExecutor(new KickCommand());
         getCommand("kick").setTabCompleter(new KickTabCompletion());
+
+        // invsee
+        getServer().getPluginManager().registerEvents(new InvseeCommand(), this);
+        getCommand("invsee").setExecutor(new InvseeCommand());
+        getCommand("invsee").setTabCompleter(new InvseeTabCompletion());
+
+        // enderchest
+        getServer().getPluginManager().registerEvents(new EnderChestCommand(), this);
+        getCommand("enderchest").setExecutor(new EnderChestCommand());
+        getCommand("enderchest").setTabCompleter(new EnderChestTabCompletion());
     }
 
     @Override

@@ -92,6 +92,17 @@ commands:
       /<command> all <reason> - kick player with reason
       /<command> <address> - kick player
       /<command> <address> <reason> - kick player with reason
+  invsee:
+    description: See other player inventory
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <address> - see other player inventory
+    aliases: [inv]
+  enderchest:
+    description: See other player enderchest
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <address> - see other player enderchest
 permissions:
   mine3.tp:
     description: allow player to teleport to player
@@ -141,3 +152,7 @@ permissions:
     description: allow player to kill
   mine3.kick:
     description: allow player to kick player
+  mine3.invsee:
+    description: allow player to see other player inventory
+  mine3.enderchest:
+    description: allow player to see other player enderchest
