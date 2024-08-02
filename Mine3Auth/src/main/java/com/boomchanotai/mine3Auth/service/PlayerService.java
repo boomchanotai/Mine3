@@ -58,8 +58,8 @@ public class PlayerService {
 
     public void sendWelcomeTitle(Player player) {
         player.sendTitle(
-                AUTH_JOIN_SERVER_TITLE_TITLE,
-                AUTH_JOIN_SERVER_TITLE_SUBTITLE,
+                ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_JOIN_SERVER_TITLE_TITLE),
+                ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_JOIN_SERVER_TITLE_SUBTITLE),
                 AUTH_JOIN_SERVER_TITLE_FADE_OUT,
                 AUTH_JOIN_SERVER_TITLE_STAY,
                 AUTH_JOIN_SERVER_TITLE_FADE_IN);
@@ -67,8 +67,8 @@ public class PlayerService {
 
     public void sendAuthenticatedTitle(Player player) {
         player.sendTitle(
-                AUTH_LOGGED_IN_TITLE_TITLE,
-                AUTH_LOGGED_IN_TITLE_SUBTITLE,
+                ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_LOGGED_IN_TITLE_TITLE),
+                ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_LOGGED_IN_TITLE_SUBTITLE),
                 AUTH_LOGGED_IN_TITLE_FADE_IN,
                 AUTH_LOGGED_IN_TITLE_STAY,
                 AUTH_LOGGED_IN_TITLE_FADE_OUT);
