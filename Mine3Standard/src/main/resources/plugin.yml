@@ -24,6 +24,7 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> <gamemode> - change their gamemode
       /<command> <gamemode> <address> - change other player gamemode
+    aliases: [gm]
   broadcast:
     description: Broadcast message
     usage: |
