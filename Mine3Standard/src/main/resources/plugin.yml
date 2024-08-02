@@ -22,13 +22,19 @@ commands:
     description: Change player gamemode
     usage: |
       Use /help <command> [subcommand] for more information
-      /<command> <gamemode> - change player gamemode
+      /<command> <gamemode> - change their gamemode
       /<command> <gamemode> <address> - change other player gamemode
   broadcast:
     description: Broadcast message
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <message> - broadcast message
+  burn:
+    description: Burn player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - burn themselves
+      /<command> <address> - burn other player
 permissions:
   mine3.tp:
     description: allow player to teleport to player
@@ -42,3 +48,7 @@ permissions:
     description: allow other player to change other player gamemode
   mine3.broadcast:
     description: allow player to broadcast message
+  mine3.burn:
+    description: allow player to burn themselves
+  mine3.burn.others:
+    description: allow other player to burn other player

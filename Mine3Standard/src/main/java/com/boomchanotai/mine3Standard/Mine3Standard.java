@@ -4,6 +4,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.boomchanotai.mine3Standard.commands.TeleportTabCompletion;
 import com.boomchanotai.mine3Standard.commands.BroadcastCommand;
+import com.boomchanotai.mine3Standard.commands.BurnCommand;
+import com.boomchanotai.mine3Standard.commands.BurnTabCompletion;
 import com.boomchanotai.mine3Standard.commands.GameModeCommand;
 import com.boomchanotai.mine3Standard.commands.GameModeTabCompletion;
 import com.boomchanotai.mine3Standard.commands.GiveCommand;
@@ -40,6 +42,10 @@ public final class Mine3Standard extends JavaPlugin {
 
         // broadcast
         getCommand("broadcast").setExecutor(new BroadcastCommand());
+
+        // burn
+        getCommand("burn").setExecutor(new BurnCommand());
+        getCommand("burn").setTabCompleter(new BurnTabCompletion());
     }
 
     @Override

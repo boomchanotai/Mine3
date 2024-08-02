@@ -54,7 +54,6 @@ public class GameModeCommand implements CommandExecutor {
             }
 
             player.setGameMode(gameMode);
-
             return true;
         }
 
@@ -78,7 +77,8 @@ public class GameModeCommand implements CommandExecutor {
             targetPlayer.setGameMode(gameMode);
             return true;
         }
-        return true;
+
+        return false;
     }
 
 }
