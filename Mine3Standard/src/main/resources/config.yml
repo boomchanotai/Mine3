@@ -4,7 +4,4 @@
 # Author: Boom Chanotai (https://www.boomchanotai.com/)
 
 # Plugins settings
-# Chat title when plugin send message to player
-title: "&9[Mine3] &7"
-# Color code prefix
-color_code_prefix: "&"
+teleport_timeout: 300 # Teleport timeout in seconds

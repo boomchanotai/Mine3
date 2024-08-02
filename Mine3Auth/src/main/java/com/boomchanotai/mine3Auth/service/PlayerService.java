@@ -3,7 +3,7 @@ package com.boomchanotai.mine3Auth.service;
 import com.boomchanotai.mine3Auth.Mine3Auth;
 import com.boomchanotai.mine3Auth.config.SpawnConfig;
 import com.boomchanotai.mine3Auth.entity.PlayerData;
-import com.boomchanotai.mine3Auth.repository.SpigotRepository;
+import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -22,13 +22,10 @@ import static com.boomchanotai.mine3Auth.config.Config.*;
 import java.util.*;
 
 public class PlayerService {
-    private SpigotRepository spigotRepo;
 
     private HashMap<UUID, Boolean> playerList;
 
-    public PlayerService(SpigotRepository spigotRepo) {
-        this.spigotRepo = spigotRepo;
-
+    public PlayerService() {
         playerList = new HashMap<>();
     }
 
@@ -60,14 +57,11 @@ public class PlayerService {
         urlComponent.setUnderlined(true);
         urlComponent.setColor(ChatColor.GRAY);
 
-        spigotRepo.sendMessage(
-                player,
-                titleComponent,
-                urlComponent);
+        PlayerRepository.sendMessage(player, titleComponent, urlComponent);
     }
 
     public void sendWelcomeTitle(Player player) {
-        spigotRepo.sendTitle(player,
+        player.sendTitle(
                 AUTH_JOIN_SERVER_TITLE_TITLE,
                 AUTH_JOIN_SERVER_TITLE_SUBTITLE,
                 AUTH_JOIN_SERVER_TITLE_FADE_OUT,
@@ -76,8 +70,7 @@ public class PlayerService {
     }
 
     public void sendAuthenticatedTitle(Player player) {
-        spigotRepo.sendTitle(
-                player,
+        player.sendTitle(
                 AUTH_LOGGED_IN_TITLE_TITLE,
                 AUTH_LOGGED_IN_TITLE_SUBTITLE,
                 AUTH_LOGGED_IN_TITLE_FADE_IN,
@@ -86,7 +79,7 @@ public class PlayerService {
     }
 
     public void sendPreventActionMessage(Player player) {
-        spigotRepo.sendMessage(player, AUTH_PREVENT_ACTION_MESSAGE);
+        PlayerRepository.sendMessage(player, AUTH_PREVENT_ACTION_MESSAGE);
     }
 
     // clearPlayerState is clear player state for waiting login

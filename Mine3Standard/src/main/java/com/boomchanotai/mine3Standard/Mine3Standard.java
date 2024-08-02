@@ -9,7 +9,6 @@ import com.boomchanotai.mine3Standard.commands.GiveCommand;
 import com.boomchanotai.mine3Standard.commands.GiveTabCompletion;
 import com.boomchanotai.mine3Standard.commands.TeleportCommand;
 import com.boomchanotai.mine3Standard.config.Config;
-import com.boomchanotai.mine3Standard.repository.SpigotRepository;
 
 public final class Mine3Standard extends JavaPlugin {
     private static Mine3Standard plugin;
@@ -26,18 +25,16 @@ public final class Mine3Standard extends JavaPlugin {
         Config.saveDefaultConfig();
         Config.loadConfig();
 
-        SpigotRepository spigotRepository = new SpigotRepository();
-
         // tp
-        getCommand("tp").setExecutor(new TeleportCommand(spigotRepository));
+        getCommand("tp").setExecutor(new TeleportCommand());
         getCommand("tp").setTabCompleter(new TeleportTabCompletion());
 
         // give
-        getCommand("give").setExecutor(new GiveCommand(spigotRepository));
+        getCommand("give").setExecutor(new GiveCommand());
         getCommand("give").setTabCompleter(new GiveTabCompletion());
 
         // gamemode
-        getCommand("gamemode").setExecutor(new GameModeCommand(spigotRepository));
+        getCommand("gamemode").setExecutor(new GameModeCommand());
         getCommand("gamemode").setTabCompleter(new GameModeTabCompletion());
     }
 

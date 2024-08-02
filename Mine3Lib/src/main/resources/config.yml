@@ -3,6 +3,12 @@
 # Repository: https://github.com/boomchanotai/Mine3
 # Author: BoomChanotai (https://www.boomchanotai.com/)
 
+# Plugins settings
+# Chat title when plugin send message to player
+title: "&9[Mine3] &7"
+# Color code prefix
+color_code_prefix: "&"
+
 # Redis Settings
 # you can't disable this because we store player data in redis
 redis:

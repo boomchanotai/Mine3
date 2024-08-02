@@ -3,8 +3,8 @@ package com.boomchanotai.mine3Auth.commands;
 import com.boomchanotai.mine3Auth.Mine3Auth;
 import com.boomchanotai.mine3Auth.entity.PlayerCacheData;
 import com.boomchanotai.mine3Lib.logger.Logger;
+import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Auth.repository.RedisRepository;
-import com.boomchanotai.mine3Auth.repository.SpigotRepository;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,11 +14,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class AddressCommand implements CommandExecutor {
     private RedisRepository redisRepo;
-    private SpigotRepository spigotRepo;
 
-    public AddressCommand(RedisRepository redisRepo, SpigotRepository spigotRepo) {
+    public AddressCommand(RedisRepository redisRepo) {
         this.redisRepo = redisRepo;
-        this.spigotRepo = spigotRepo;
     }
 
     @Override
@@ -50,7 +48,7 @@ public class AddressCommand implements CommandExecutor {
         }
 
         String address = playerCacheData.getAddress();
-        spigotRepo.sendMessage(sender, address);
+        PlayerRepository.sendMessage(sender, address);
         return true;
     }
 }

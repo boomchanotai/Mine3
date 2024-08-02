@@ -12,7 +12,6 @@ import com.boomchanotai.mine3Auth.repository.ItemStackAdapter;
 import com.boomchanotai.mine3Auth.repository.PostgresRepository;
 import com.boomchanotai.mine3Auth.repository.PotionEffectAdapter;
 import com.boomchanotai.mine3Auth.repository.RedisRepository;
-import com.boomchanotai.mine3Auth.repository.SpigotRepository;
 import com.boomchanotai.mine3Auth.server.Server;
 import com.boomchanotai.mine3Auth.service.AuthService;
 import com.boomchanotai.mine3Auth.service.PlayerService;
@@ -47,10 +46,9 @@ public final class Mine3Auth extends JavaPlugin {
 
         PostgresRepository pgRepo = new PostgresRepository(itemStackAdapter, potionEffectAdapter);
         RedisRepository redisRepo = new RedisRepository();
-        SpigotRepository spigotRepo = new SpigotRepository();
 
-        playerService = new PlayerService(spigotRepo);
-        authService = new AuthService(playerService, pgRepo, redisRepo, spigotRepo);
+        playerService = new PlayerService();
+        authService = new AuthService(playerService, pgRepo, redisRepo);
 
         Server server = new Server(authService);
         server.startServer();
@@ -60,9 +58,9 @@ public final class Mine3Auth extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(playerService), this);
 
         // Register Commands
-        getCommand("address").setExecutor(new AddressCommand(redisRepo, spigotRepo));
+        getCommand("address").setExecutor(new AddressCommand(redisRepo));
         getCommand("logout").setExecutor(new LogoutCommand(authService));
-        getCommand("mine3").setExecutor(new Mine3Command(spigotRepo));
+        getCommand("mine3").setExecutor(new Mine3Command());
         getCommand("mine3").setTabCompleter(new Mine3TabCompletion());
 
         // Connect all players if in game

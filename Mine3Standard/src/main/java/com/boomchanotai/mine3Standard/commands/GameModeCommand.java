@@ -8,15 +8,8 @@ import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
-import com.boomchanotai.mine3Standard.repository.SpigotRepository;
 
 public class GameModeCommand implements CommandExecutor {
-    SpigotRepository spigotRepository;
-
-    public GameModeCommand(SpigotRepository spigotRepository) {
-        this.spigotRepository = spigotRepository;
-    }
-
     private GameMode parsedGameMode(String gameMode, CommandSender sender) {
         switch (gameMode) {
             case "0":
@@ -31,13 +24,8 @@ public class GameModeCommand implements CommandExecutor {
                 try {
                     return GameMode.valueOf(gameMode.toUpperCase());
                 } catch (Exception e) {
-                    if (sender instanceof Player) {
-                        spigotRepository.sendMessage(sender, "Invalid game mode.");
-                    } else {
-                        Logger.warning("Invalid game mode.");
-                    }
+                    return null;
                 }
-                return null;
         }
     }
 
@@ -49,6 +37,11 @@ public class GameModeCommand implements CommandExecutor {
 
         GameMode gameMode = parsedGameMode(args[0], sender);
         if (gameMode == null) {
+            if (sender instanceof Player) {
+                PlayerRepository.sendMessage(sender, "Invalid game mode.");
+            } else {
+                Logger.warning("Invalid game mode.");
+            }
             return true;
         }
 
@@ -56,7 +49,7 @@ public class GameModeCommand implements CommandExecutor {
         if (args.length == 1 && sender instanceof Player) {
             Player player = (Player) sender;
             if (!player.hasPermission("mine3.gamemode")) {
-                spigotRepository.sendMessage(sender, "You don't have permission to use this command.");
+                PlayerRepository.sendMessage(sender, "You don't have permission to use this command.");
                 return true;
             }
 
@@ -68,7 +61,7 @@ public class GameModeCommand implements CommandExecutor {
         // gamemode <gamemode> <address>
         if (args.length == 2) {
             if (sender instanceof Player && !sender.hasPermission("mine3.gamemode.others")) {
-                spigotRepository.sendMessage(sender, "You don't have permission to use this command.");
+                PlayerRepository.sendMessage(sender, "You don't have permission to use this command.");
                 return true;
             }
 

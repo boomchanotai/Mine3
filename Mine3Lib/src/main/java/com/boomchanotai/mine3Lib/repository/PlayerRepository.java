@@ -2,8 +2,10 @@ package com.boomchanotai.mine3Lib.repository;
 
 import static com.boomchanotai.mine3Lib.config.Config.*;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
 import org.web3j.crypto.Keys;
@@ -13,6 +15,8 @@ import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.redis.Redis;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import redis.clients.jedis.Jedis;
 
 public class PlayerRepository {
@@ -112,5 +116,24 @@ public class PlayerRepository {
         } catch (Exception e) {
             Logger.warning(e.getMessage(), "failed to clear player");
         }
+    }
+
+    public static void sendMessage(CommandSender player, String message) {
+        player.sendMessage(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE + message));
+    }
+
+    public static void sendMessage(Player player, TextComponent... textComponent) {
+        TextComponent titleComponent = new TextComponent(
+                ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE));
+        titleComponent.setColor(ChatColor.BLUE);
+
+        ArrayList<TextComponent> components = new ArrayList<>();
+        components.add(titleComponent);
+        for (TextComponent component : textComponent) {
+            components.add(component);
+        }
+
+        TextComponent[] componentsArray = components.toArray(new TextComponent[0]);
+        player.spigot().sendMessage(componentsArray);
     }
 }

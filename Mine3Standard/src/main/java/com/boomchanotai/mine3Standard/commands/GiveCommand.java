@@ -10,14 +10,8 @@ import org.web3j.crypto.Keys;
 
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
-import com.boomchanotai.mine3Standard.repository.SpigotRepository;
 
 public class GiveCommand implements CommandExecutor {
-    SpigotRepository spigotRepository;
-
-    public GiveCommand(SpigotRepository spigotRepository) {
-        this.spigotRepository = spigotRepository;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -26,7 +20,7 @@ public class GiveCommand implements CommandExecutor {
         }
 
         if (sender instanceof Player && !sender.hasPermission("mine3.give")) {
-            spigotRepository.sendMessage(sender, "You don't have permission to use this command.");
+            PlayerRepository.sendMessage(sender, "You don't have permission to use this command.");
             return true;
         }
 
@@ -40,7 +34,7 @@ public class GiveCommand implements CommandExecutor {
 
         if (material == null) {
             if (sender instanceof Player) {
-                spigotRepository.sendMessage(sender, "Invalid item.");
+                PlayerRepository.sendMessage(sender, "Invalid item.");
             } else {
                 Logger.warning("Invalid item.");
             }

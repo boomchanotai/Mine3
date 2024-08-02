@@ -14,7 +14,6 @@ import com.boomchanotai.mine3Auth.entity.PlayerLocation;
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Auth.repository.PostgresRepository;
 import com.boomchanotai.mine3Auth.repository.RedisRepository;
-import com.boomchanotai.mine3Auth.repository.SpigotRepository;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 public class AuthService {
@@ -22,18 +21,15 @@ public class AuthService {
 
     private PostgresRepository pgRepo;
     private RedisRepository redisRepo;
-    private SpigotRepository spigotRepo;
 
     private static final int TOKEN_LENGTH = 32;
 
     public AuthService(PlayerService playerService,
             PostgresRepository pgRepo,
-            RedisRepository redisRepo,
-            SpigotRepository spigotRepo) {
+            RedisRepository redisRepo) {
         this.playerService = playerService;
         this.pgRepo = pgRepo;
         this.redisRepo = redisRepo;
-        this.spigotRepo = spigotRepo;
     }
 
     private static String getRandomHexString(int numchars) {
@@ -116,7 +112,7 @@ public class AuthService {
         playerService.restorePlayerState(player, playerData);
         playerService.setPlayerActiveState(player);
         playerService.sendAuthenticatedTitle(player);
-        spigotRepo.sendMessage(player, "Login as " + parsedAddress);
+        PlayerRepository.sendMessage(player, "Login as " + parsedAddress);
     }
 
     public void disconnect(Player player) {
