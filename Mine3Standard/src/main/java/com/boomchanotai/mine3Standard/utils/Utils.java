@@ -37,6 +37,6 @@ public class Utils {
             return;
         }
 
-        Logger.info("Address not found.");
+        Logger.info(message);
     }
 }

@@ -82,7 +82,16 @@ commands:
     description: Kill player
     usage: |
       Use /help <command> [subcommand] for more information
+      /<command> all - kill all player
       /<command> <address> - kill other player
+  kick:
+    description: Kick player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> all - kick all player
+      /<command> all <reason> - kick player with reason
+      /<command> <address> - kick player
+      /<command> <address> <reason> - kick player with reason
 permissions:
   mine3.tp:
     description: allow player to teleport to player
@@ -130,3 +139,5 @@ permissions:
     description: allow other player to change other player speed
   mine3.kill:
     description: allow player to kill
+  mine3.kick:
+    description: allow player to kick player

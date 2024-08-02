@@ -9,25 +9,35 @@ import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.Mine3Standard;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
-public class KillCommand implements CommandExecutor {
+public class KickCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0 || args.length > 1) {
+        if (args.length == 0) {
             return false;
         }
 
-        // kill <address> - (Player, Console)
-        if (!Utils.hasPermission(sender, "mine3.kill")) {
+        // kick <address> - (Player, Console)
+        if (!Utils.hasPermission(sender, "mine3.kick")) {
             return true;
+        }
+
+        String reason = "You have been kicked.";
+        if (args.length > 1) {
+            // reason = args[1] + args[2] + ... + args[n]
+            StringBuilder sb = new StringBuilder();
+            for (int i = 1; i < args.length; i++) {
+                sb.append(args[i]);
+                sb.append(" ");
+            }
+            reason = sb.toString();
         }
 
         if (args[0].toLowerCase().equals("all")) {
             for (Player p : Mine3Standard.getPlugin().getServer().getOnlinePlayers()) {
-                p.setLastDamage(Integer.MAX_VALUE);
-                p.setHealth(Double.MIN_VALUE);
-                PlayerRepository.sendMessage(p, "You have been killed.");
+                p.kickPlayer(reason);
             }
+            Utils.sendCommandReturnMessage(sender, "All players have been kicked.");
 
             return true;
         }
@@ -38,9 +48,8 @@ public class KillCommand implements CommandExecutor {
             return true;
         }
 
-        targetPlayer.setLastDamage(Integer.MAX_VALUE);
-        targetPlayer.setHealth(Double.MIN_VALUE);
-        PlayerRepository.sendMessage(targetPlayer, "You have been killed.");
+        targetPlayer.kickPlayer(reason);
+        Utils.sendCommandReturnMessage(sender, args[0] + " has been kicked.");
 
         return true;
     }
