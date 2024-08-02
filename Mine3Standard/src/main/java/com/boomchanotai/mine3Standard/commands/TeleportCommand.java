@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.web3j.crypto.Keys;
 
 import com.boomchanotai.mine3Lib.logger.Logger;
-import com.boomchanotai.mine3Lib.repository.Mine3Repository;
+import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.repository.SpigotRepository;
 
 public class TeleportCommand implements CommandExecutor {
@@ -35,7 +35,7 @@ public class TeleportCommand implements CommandExecutor {
             String toAddress = Keys.toChecksumAddress(args[0]);
 
             // Teleport to the player
-            Player toPlayer = Mine3Repository.getPlayer(toAddress);
+            Player toPlayer = PlayerRepository.getPlayer(toAddress);
             if (toPlayer == null) {
                 spigotRepository.sendMessage(player, ChatColor.RED + "Player not found.");
                 return true;
@@ -62,8 +62,8 @@ public class TeleportCommand implements CommandExecutor {
             String toAddress = Keys.toChecksumAddress(args[1]);
 
             // Teleport from the player to the player
-            Player fromPlayer = Mine3Repository.getPlayer(fromAddress);
-            Player toPlayer = Mine3Repository.getPlayer(toAddress);
+            Player fromPlayer = PlayerRepository.getPlayer(fromAddress);
+            Player toPlayer = PlayerRepository.getPlayer(toAddress);
 
             if (fromPlayer == null || toPlayer == null) {
                 if (sender instanceof Player) {

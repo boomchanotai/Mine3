@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Lib.logger.Logger;
-import com.boomchanotai.mine3Lib.repository.Mine3Repository;
+import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.repository.SpigotRepository;
 
 public class GameModeCommand implements CommandExecutor {
@@ -72,7 +72,7 @@ public class GameModeCommand implements CommandExecutor {
                 return true;
             }
 
-            Player targetPlayer = Mine3Repository.getPlayer(args[1]);
+            Player targetPlayer = PlayerRepository.getPlayer(args[1]);
             targetPlayer.setGameMode(gameMode);
 
             return true;

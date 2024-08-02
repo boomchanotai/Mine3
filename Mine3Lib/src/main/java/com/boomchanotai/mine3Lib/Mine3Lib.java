@@ -4,7 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.boomchanotai.mine3Lib.config.Config;
 import com.boomchanotai.mine3Lib.redis.Redis;
-import com.boomchanotai.mine3Lib.repository.Mine3Repository;
+import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 public final class Mine3Lib extends JavaPlugin {
     private static Mine3Lib plugin;
@@ -27,7 +27,7 @@ public final class Mine3Lib extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        Mine3Repository.clearPlayer();
+        PlayerRepository.clearPlayer();
         Redis.close();
     }
 }

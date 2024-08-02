@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import com.boomchanotai.mine3Lib.repository.Mine3Repository;
+import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 public class GiveTabCompletion implements TabCompleter {
 
@@ -17,7 +17,7 @@ public class GiveTabCompletion implements TabCompleter {
         List<String> subCommand = new ArrayList<>();
 
         if (args.length == 1) {
-            String[] address = Mine3Repository.getAllAddress();
+            String[] address = PlayerRepository.getAllAddress();
             for (String a : address) {
                 if (a.toLowerCase().contains(args[0].toLowerCase())) {
                     subCommand.add(a);

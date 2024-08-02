@@ -7,7 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import com.boomchanotai.mine3Lib.repository.Mine3Repository;
+import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 public class TeleportTabCompletion implements TabCompleter {
 
@@ -16,7 +16,7 @@ public class TeleportTabCompletion implements TabCompleter {
         List<String> addressList = new ArrayList<>();
 
         if (args.length == 1) {
-            String[] address = Mine3Repository.getAllAddress();
+            String[] address = PlayerRepository.getAllAddress();
             for (String a : address) {
                 if (a.toLowerCase().contains(args[0].toLowerCase())) {
                     addressList.add(a);
@@ -25,7 +25,7 @@ public class TeleportTabCompletion implements TabCompleter {
         }
 
         if (args.length == 2) {
-            String[] address = Mine3Repository.getAllAddress();
+            String[] address = PlayerRepository.getAllAddress();
             for (String a : address) {
                 if (a.toLowerCase().contains(args[1].toLowerCase())) {
                     addressList.add(a);

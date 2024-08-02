@@ -15,7 +15,7 @@ import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Auth.repository.PostgresRepository;
 import com.boomchanotai.mine3Auth.repository.RedisRepository;
 import com.boomchanotai.mine3Auth.repository.SpigotRepository;
-import com.boomchanotai.mine3Lib.repository.Mine3Repository;
+import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 public class AuthService {
     private PlayerService playerService;
@@ -80,13 +80,13 @@ public class AuthService {
         }
 
         // 3. Get Player from Address
-        if (Mine3Repository.getPlayer(parsedAddress) != null) {
+        if (PlayerRepository.getPlayer(parsedAddress) != null) {
             Logger.warning("ADDRESS_ALREADY_USED", "Address already used", parsedAddress);
             throw new Exception("ADDRESS_ALREADY_USED");
         }
 
         // 4. Set Player
-        Mine3Repository.setPlayer(parsedAddress, player); // Set player in Mine3Lib
+        PlayerRepository.setPlayer(parsedAddress, player); // Set player in Mine3Lib
         playerService.addPlayer(playerUUID); // Add player to player list
         redisRepo.deleteToken(token); // Delete login token
 
@@ -159,6 +159,6 @@ public class AuthService {
         // 3. Remove player from system
         playerService.removePlayer(playerUUID); // Remove player from player list
         playerService.clearPlayerState(player); // Clear player state
-        Mine3Repository.removePlayer(playerCacheData.getAddress()); // Remove player from Mine3Lib
+        PlayerRepository.removePlayer(playerCacheData.getAddress()); // Remove player from Mine3Lib
     }
 }

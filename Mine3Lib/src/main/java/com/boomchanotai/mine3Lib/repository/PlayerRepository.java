@@ -1,7 +1,6 @@
 package com.boomchanotai.mine3Lib.repository;
 
-import static com.boomchanotai.mine3Lib.config.Config.PLAYER_ADDRESS_KEY;
-import static com.boomchanotai.mine3Lib.config.Config.PLAYER_PLAYER_KEY;
+import static com.boomchanotai.mine3Lib.config.Config.*;
 
 import java.util.UUID;
 
@@ -16,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import redis.clients.jedis.Jedis;
 
-public class Mine3Repository {
+public class PlayerRepository {
     ObjectMapper mapper = new ObjectMapper();
 
     public static String[] getAllAddress() {

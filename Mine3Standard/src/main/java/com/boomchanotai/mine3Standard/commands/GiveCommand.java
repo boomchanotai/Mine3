@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.web3j.crypto.Keys;
 
 import com.boomchanotai.mine3Lib.logger.Logger;
-import com.boomchanotai.mine3Lib.repository.Mine3Repository;
+import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.repository.SpigotRepository;
 
 public class GiveCommand implements CommandExecutor {
@@ -35,7 +35,7 @@ public class GiveCommand implements CommandExecutor {
         String item = args[1];
         int amount = Integer.parseInt(args[2]);
 
-        Player targetPlayer = Mine3Repository.getPlayer(targetAddress);
+        Player targetPlayer = PlayerRepository.getPlayer(targetAddress);
         Material material = Material.getMaterial(item.toUpperCase());
 
         if (material == null) {
