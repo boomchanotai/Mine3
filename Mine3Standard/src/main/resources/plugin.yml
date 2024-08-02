@@ -35,6 +35,12 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> - burn themselves
       /<command> <address> - burn other player
+  clear:
+    description: Clear player inventory
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - clear their inventory
+      /<command> <address> - clear other player inventory
 permissions:
   mine3.tp:
     description: allow player to teleport to player
@@ -52,3 +58,7 @@ permissions:
     description: allow player to burn themselves
   mine3.burn.others:
     description: allow other player to burn other player
+  mine3.clearinventory:
+    description: allow player to clear their inventory
+  mine3.clearinventory.others:
+    description: allow other player to clear other player inventory

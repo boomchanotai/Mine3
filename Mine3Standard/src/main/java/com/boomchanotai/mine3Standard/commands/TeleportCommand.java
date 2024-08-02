@@ -61,6 +61,7 @@ public class TeleportCommand implements CommandExecutor {
         }
 
         fromPlayer.teleport(toPlayer);
+        PlayerRepository.sendMessage(fromPlayer, "You have been teleported.");
 
         return true;
     }

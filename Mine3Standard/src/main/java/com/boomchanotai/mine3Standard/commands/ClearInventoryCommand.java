@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
-public class BurnCommand implements CommandExecutor {
+public class ClearInventoryCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -18,22 +18,22 @@ public class BurnCommand implements CommandExecutor {
 
         Player targetPlayer = null;
 
-        // burn - (Player)
+        // clearinventory - (Player)
         if (args.length == 0) {
             if (!Utils.isPlayerUsingCommand(sender)) {
                 return true;
             }
 
-            if (!Utils.hasPermission(sender, "mine3.burn")) {
+            if (!Utils.hasPermission(sender, "mine3.clearinventory")) {
                 return true;
             }
 
             targetPlayer = (Player) sender;
         }
 
-        // burn <address> - (Player, Console)
+        // clearinventory <address> - (Player, Console)
         if (args.length == 1) {
-            if (!Utils.hasPermission(sender, "mine3.burn.others")) {
+            if (!Utils.hasPermission(sender, "mine3.clearinventory.others")) {
                 return true;
             }
 
@@ -45,9 +45,10 @@ public class BurnCommand implements CommandExecutor {
             return true;
         }
 
-        targetPlayer.setFireTicks(100);
-        PlayerRepository.sendMessage(targetPlayer, "You have been burned.");
+        targetPlayer.getInventory().clear();
+        PlayerRepository.sendMessage(targetPlayer, "Inventory cleared.");
 
         return true;
     }
+
 }

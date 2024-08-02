@@ -42,6 +42,7 @@ public class GiveCommand implements CommandExecutor {
 
         ItemStack itemStack = new ItemStack(material, amount);
         targetPlayer.getInventory().addItem(itemStack);
+        PlayerRepository.sendMessage(targetPlayer, "You have been given " + amount + " " + item.toLowerCase() + ".");
 
         return true;
     }

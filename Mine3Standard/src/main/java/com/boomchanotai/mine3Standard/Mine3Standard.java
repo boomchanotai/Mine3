@@ -6,6 +6,8 @@ import com.boomchanotai.mine3Standard.commands.TeleportTabCompletion;
 import com.boomchanotai.mine3Standard.commands.BroadcastCommand;
 import com.boomchanotai.mine3Standard.commands.BurnCommand;
 import com.boomchanotai.mine3Standard.commands.BurnTabCompletion;
+import com.boomchanotai.mine3Standard.commands.ClearInventoryCommand;
+import com.boomchanotai.mine3Standard.commands.ClearInventoryTabCompletion;
 import com.boomchanotai.mine3Standard.commands.GameModeCommand;
 import com.boomchanotai.mine3Standard.commands.GameModeTabCompletion;
 import com.boomchanotai.mine3Standard.commands.GiveCommand;
@@ -46,6 +48,10 @@ public final class Mine3Standard extends JavaPlugin {
         // burn
         getCommand("burn").setExecutor(new BurnCommand());
         getCommand("burn").setTabCompleter(new BurnTabCompletion());
+
+        // clear
+        getCommand("clear").setExecutor(new ClearInventoryCommand());
+        getCommand("clear").setTabCompleter(new ClearInventoryTabCompletion());
     }
 
     @Override

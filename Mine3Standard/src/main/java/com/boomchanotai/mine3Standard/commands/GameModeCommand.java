@@ -31,10 +31,11 @@ public class GameModeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0) {
+        if (args.length == 0 || args.length > 2) {
             return false;
         }
 
+        Player targetPlayer = null;
         GameMode gameMode = parsedGameMode(args[0], sender);
         if (gameMode == null) {
             Utils.sendCommandReturnMessage(sender, "Invalid game mode.");
@@ -51,9 +52,7 @@ public class GameModeCommand implements CommandExecutor {
                 return true;
             }
 
-            Player player = (Player) sender;
-            player.setGameMode(gameMode);
-            return true;
+            targetPlayer = (Player) sender;
         }
 
         // gamemode <gamemode> <address> - (Player, Console)
@@ -62,17 +61,19 @@ public class GameModeCommand implements CommandExecutor {
                 return true;
             }
 
-            Player targetPlayer = PlayerRepository.getPlayer(args[1]);
-            if (targetPlayer == null) {
-                Utils.sendCommandReturnMessage(sender, "Address not found.");
-                return true;
-            }
+            targetPlayer = PlayerRepository.getPlayer(args[1]);
+        }
 
-            targetPlayer.setGameMode(gameMode);
+        if (targetPlayer == null) {
+            Utils.sendCommandReturnMessage(sender, "Address not found.");
             return true;
         }
 
-        return false;
+        targetPlayer.setGameMode(gameMode);
+        targetPlayer.sendMessage("Game mode set to " + gameMode.toString().toLowerCase());
+        PlayerRepository.sendMessage(targetPlayer, "Game mode set to " + gameMode.toString().toLowerCase());
+
+        return true;
     }
 
 }
