@@ -4,10 +4,8 @@
 # Author: Boom Chanotai (https://www.boomchanotai.com/)
 
 # Plugins settings
-# Chat title when plugin send message to player
-title: "&9[Mine3] &7"
 # Color code prefix
-color_code_prefix: '&'
+color_code_prefix: "&"
 
 # Redis Settings
 redis:
@@ -45,4 +43,3 @@ auth:
     fade_in: 10
     stay: 70
     fade_out: 20
-

@@ -46,10 +46,6 @@ public class PlayerService {
     }
 
     public void sendLoginURL(Player player, String token) {
-        TextComponent titleComponent = new TextComponent(
-                ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, TITLE));
-        titleComponent.setColor(ChatColor.BLUE);
-
         String url = AUTH_WEBSITE_TOKEN_BASE_URL + token;
         TextComponent urlComponent = new TextComponent(
                 ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, AUTH_CLICK_TO_LOGIN_MESSAGE));
@@ -57,7 +53,7 @@ public class PlayerService {
         urlComponent.setUnderlined(true);
         urlComponent.setColor(ChatColor.GRAY);
 
-        PlayerRepository.sendMessage(player, titleComponent, urlComponent);
+        PlayerRepository.sendMessage(player, urlComponent);
     }
 
     public void sendWelcomeTitle(Player player) {

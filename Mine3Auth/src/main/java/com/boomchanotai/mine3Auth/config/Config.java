@@ -7,7 +7,6 @@ import java.util.Objects;
 
 public class Config {
     // Plugin Settings
-    public static String TITLE;
     public static char COLOR_CODE_PREFIX;
 
     // Redis Settings
@@ -51,7 +50,6 @@ public class Config {
 
     public static void loadConfig() {
         FileConfiguration config = Mine3Auth.getInstance().getConfig();
-        TITLE = config.getString("title");
         COLOR_CODE_PREFIX = Objects.requireNonNull(config.getString("color_code_prefix")).charAt(0);
 
         REDIS_HOST = config.getString("redis.host");

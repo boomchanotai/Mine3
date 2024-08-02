@@ -4,4 +4,6 @@
 # Author: Boom Chanotai (https://www.boomchanotai.com/)
 
 # Plugins settings
+color_code_prefix: "&" # Color code prefix
+
 teleport_timeout: 300 # Teleport timeout in seconds
