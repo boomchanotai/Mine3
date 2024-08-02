@@ -60,6 +60,18 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> - vanish themselves
       /<command> <address> - vanish other player
+  fly:
+    description: Fly player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - fly themselves
+      /<command> <address> - fly other player
+  god:
+    description: God player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - god themselves
+      /<command> <address> - god other player
 permissions:
   mine3.tp:
     description: allow player to teleport to player
@@ -93,3 +105,11 @@ permissions:
     description: allow player to vanish themselves
   mine3.vanish.others:
     description: allow other player to vanish other player
+  mine3.fly:
+    description: allow player to fly themselves
+  mine3.fly.others:
+    description: allow other player to fly other player
+  mine3.god:
+    description: allow player to god themselves
+  mine3.god.others:
+    description: allow other player to god other player
