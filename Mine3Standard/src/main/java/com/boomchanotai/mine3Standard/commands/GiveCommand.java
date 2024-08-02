@@ -30,8 +30,17 @@ public class GiveCommand implements CommandExecutor {
         int amount = Integer.parseInt(args[2]);
 
         Player targetPlayer = PlayerRepository.getPlayer(targetAddress);
-        Material material = Material.getMaterial(item.toUpperCase());
+        if (targetPlayer == null) {
+            if (sender instanceof Player) {
+                PlayerRepository.sendMessage(sender, "Address not found.");
+            } else {
+                Logger.warning("Address not found.");
+            }
 
+            return true;
+        }
+
+        Material material = Material.getMaterial(item.toUpperCase());
         if (material == null) {
             if (sender instanceof Player) {
                 PlayerRepository.sendMessage(sender, "Invalid item.");

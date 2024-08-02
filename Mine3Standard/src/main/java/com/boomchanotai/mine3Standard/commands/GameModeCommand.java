@@ -66,8 +66,16 @@ public class GameModeCommand implements CommandExecutor {
             }
 
             Player targetPlayer = PlayerRepository.getPlayer(args[1]);
-            targetPlayer.setGameMode(gameMode);
+            if (targetPlayer == null) {
+                if (sender instanceof Player) {
+                    PlayerRepository.sendMessage(sender, "Address not found.");
+                } else {
+                    Logger.warning("Address not found.");
+                }
+                return true;
+            }
 
+            targetPlayer.setGameMode(gameMode);
             return true;
         }
         return true;

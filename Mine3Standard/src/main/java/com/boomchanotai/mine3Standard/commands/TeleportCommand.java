@@ -30,7 +30,7 @@ public class TeleportCommand implements CommandExecutor {
             // Teleport to the player
             Player toPlayer = PlayerRepository.getPlayer(toAddress);
             if (toPlayer == null) {
-                PlayerRepository.sendMessage(player, ChatColor.RED + "Player not found.");
+                PlayerRepository.sendMessage(player, ChatColor.RED + "Address not found.");
                 return true;
             }
 
@@ -60,18 +60,18 @@ public class TeleportCommand implements CommandExecutor {
 
             if (fromPlayer == null || toPlayer == null) {
                 if (sender instanceof Player) {
-                    PlayerRepository.sendMessage(sender, ChatColor.RED + "Player not found.");
+                    PlayerRepository.sendMessage(sender, ChatColor.RED + "Address not found.");
                 } else {
-                    Logger.warning("Player not found.");
+                    Logger.warning("Address not found.");
                 }
                 return true;
             }
 
             if (fromPlayer == toPlayer) {
                 if (sender instanceof Player) {
-                    PlayerRepository.sendMessage(sender, ChatColor.RED + "You can't teleport to same player.");
+                    PlayerRepository.sendMessage(sender, ChatColor.RED + "You can't teleport to same address.");
                 } else {
-                    Logger.warning("You can't teleport to same player.");
+                    Logger.warning("You can't teleport to same address.");
                 }
                 return true;
             }
