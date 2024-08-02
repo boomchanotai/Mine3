@@ -15,10 +15,13 @@ import com.boomchanotai.mine3Standard.commands.HealCommand;
 import com.boomchanotai.mine3Standard.commands.InvseeCommand;
 import com.boomchanotai.mine3Standard.commands.KickCommand;
 import com.boomchanotai.mine3Standard.commands.KillCommand;
+import com.boomchanotai.mine3Standard.commands.SetSpawnCommand;
+import com.boomchanotai.mine3Standard.commands.SpawnCommand;
 import com.boomchanotai.mine3Standard.commands.SpeedCommand;
 import com.boomchanotai.mine3Standard.commands.TeleportCommand;
 import com.boomchanotai.mine3Standard.commands.VanishCommand;
 import com.boomchanotai.mine3Standard.config.Config;
+import com.boomchanotai.mine3Standard.config.SpawnConfig;
 import com.boomchanotai.mine3Standard.tabcompletion.BurnTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.ClearInventoryTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.EnderChestTabCompletion;
@@ -49,6 +52,10 @@ public final class Mine3Standard extends JavaPlugin {
         // Configuration
         Config.saveDefaultConfig();
         Config.loadConfig();
+
+        // Spawn Configuration
+        SpawnConfig.saveDefaultSpawnConfig();
+        SpawnConfig.loadConfig();
 
         // tp
         getCommand("tp").setExecutor(new TeleportCommand());
@@ -114,6 +121,12 @@ public final class Mine3Standard extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EnderChestCommand(), this);
         getCommand("enderchest").setExecutor(new EnderChestCommand());
         getCommand("enderchest").setTabCompleter(new EnderChestTabCompletion());
+
+        // setspawn
+        getCommand("setspawn").setExecutor(new SetSpawnCommand());
+
+        // spawn
+        getCommand("spawn").setExecutor(new SpawnCommand());
     }
 
     @Override

@@ -31,5 +31,5 @@ commands:
     permission: "mine3.setspawn"
     permission-message: You don't have permission to use this command
 permissions:
-  mine3.setspawn:
+  mine3.auth.setspawn:
     description: allow player to set spawn point

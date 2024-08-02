@@ -103,6 +103,16 @@ commands:
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> - see other player enderchest
+  setspawn:
+    description: Set spawn
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - set spawn
+  spawn:
+    description: Teleport to spawn
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - teleport to spawn
 permissions:
   mine3.tp:
     description: allow player to teleport to player
@@ -156,3 +166,8 @@ permissions:
     description: allow player to see other player inventory
   mine3.enderchest:
     description: allow player to see other player enderchest
+  mine3.setspawn:
+    description: allow player to set spawn
+  mine3.spawn:
+    description: allow player to teleport to spawn
+    default: true

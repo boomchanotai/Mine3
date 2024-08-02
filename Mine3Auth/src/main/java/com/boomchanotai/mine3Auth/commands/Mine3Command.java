@@ -28,7 +28,7 @@ public class Mine3Command implements CommandExecutor {
 
         if (args[0].equals("setspawn")) {
             Player player = (Player) sender;
-            if (!player.hasPermission("mine3Auth.setspawn")) {
+            if (!player.hasPermission("mine3.auth.setspawn")) {
                 PlayerRepository.sendMessage(player, ChatColor.RED + "You don't have permission to use this command.");
                 return true;
             }
