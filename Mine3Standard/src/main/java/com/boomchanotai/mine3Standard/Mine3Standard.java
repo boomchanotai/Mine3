@@ -5,15 +5,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.boomchanotai.mine3Standard.commands.BroadcastCommand;
 import com.boomchanotai.mine3Standard.commands.BurnCommand;
 import com.boomchanotai.mine3Standard.commands.ClearInventoryCommand;
+import com.boomchanotai.mine3Standard.commands.FeedCommand;
 import com.boomchanotai.mine3Standard.commands.GameModeCommand;
 import com.boomchanotai.mine3Standard.commands.GiveCommand;
+import com.boomchanotai.mine3Standard.commands.HealCommand;
 import com.boomchanotai.mine3Standard.commands.TeleportCommand;
+import com.boomchanotai.mine3Standard.commands.VanishCommand;
 import com.boomchanotai.mine3Standard.config.Config;
 import com.boomchanotai.mine3Standard.tabcompletion.BurnTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.ClearInventoryTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.FeedTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.GameModeTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.GiveTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.HealTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TeleportTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.VanishTabCompletion;
 
 public final class Mine3Standard extends JavaPlugin {
     private static Mine3Standard plugin;
@@ -52,6 +58,18 @@ public final class Mine3Standard extends JavaPlugin {
         // clear
         getCommand("clear").setExecutor(new ClearInventoryCommand());
         getCommand("clear").setTabCompleter(new ClearInventoryTabCompletion());
+
+        // feed
+        getCommand("feed").setExecutor(new FeedCommand());
+        getCommand("feed").setTabCompleter(new FeedTabCompletion());
+
+        // heal
+        getCommand("heal").setExecutor(new HealCommand());
+        getCommand("heal").setTabCompleter(new HealTabCompletion());
+
+        // vanish
+        getCommand("vanish").setExecutor(new VanishCommand());
+        getCommand("vanish").setTabCompleter(new VanishTabCompletion());
     }
 
     @Override

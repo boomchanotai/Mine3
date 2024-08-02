@@ -42,6 +42,24 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> - clear their inventory
       /<command> <address> - clear other player inventory
+  feed:
+    description: Feed player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - feed themselves
+      /<command> <address> - feed other player
+  heal:
+    description: Heal player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - heal themselves
+      /<command> <address> - heal other player
+  vanish:
+    description: Vanish player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - vanish themselves
+      /<command> <address> - vanish other player
 permissions:
   mine3.tp:
     description: allow player to teleport to player
@@ -63,3 +81,15 @@ permissions:
     description: allow player to clear their inventory
   mine3.clearinventory.others:
     description: allow other player to clear other player inventory
+  mine3.feed:
+    description: allow player to feed themselves
+  mine3.feed.others:
+    description: allow other player to feed other player
+  mine3.heal:
+    description: allow player to heal themselves
+  mine3.heal.others:
+    description: allow other player to heal other player
+  mine3.vanish:
+    description: allow player to vanish themselves
+  mine3.vanish.others:
+    description: allow other player to vanish other player
