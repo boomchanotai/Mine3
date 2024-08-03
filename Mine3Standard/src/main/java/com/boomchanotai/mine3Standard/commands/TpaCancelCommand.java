@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
-import com.boomchanotai.mine3Lib.utils.AddressUtils;
 import com.boomchanotai.mine3Standard.services.TpaService;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
@@ -32,36 +31,15 @@ public class TpaCancelCommand implements CommandExecutor {
             return true;
         }
 
-        Player toPlayer = (Player) sender;
+        Player player = (Player) sender;
 
-        String toPlayerAddress = PlayerRepository.getAddress(toPlayer.getUniqueId());
-        if (toPlayerAddress == null) {
+        String playerAddress = PlayerRepository.getAddress(player.getUniqueId());
+        if (playerAddress == null) {
             Utils.sendCommandReturnMessage(sender, "Can't parse your address. Please login again.");
             return true;
         }
 
-        if (!tpaService.hasTpaRequest(toPlayerAddress)) {
-            Utils.sendCommandReturnMessage(sender, "No tpa request found.");
-            return true;
-        }
-
-        String fromPlayerAddress = tpaService.getTpaRequest(toPlayerAddress);
-        if (fromPlayerAddress == null) {
-            Utils.sendCommandReturnMessage(sender, "No tpa request found.");
-            return true;
-        }
-
-        Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
-        if (fromPlayer == null) {
-            Utils.sendCommandReturnMessage(sender, "Player not found.");
-            return true;
-        }
-
-        tpaService.removeTpaRequest(toPlayerAddress);
-        PlayerRepository.sendMessage(fromPlayer, "Tpa request to " + AddressUtils.addressShortener(toPlayerAddress)
-                + " has been canceled.");
-        PlayerRepository.sendMessage(toPlayer,
-                "Tpa request from " + AddressUtils.addressShortener(fromPlayerAddress) + " has been canceled.");
+        tpaService.cancelTpaRequest(playerAddress);
 
         return true;
     }

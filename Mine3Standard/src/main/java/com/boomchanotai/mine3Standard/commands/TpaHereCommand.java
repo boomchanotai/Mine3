@@ -3,13 +3,75 @@ package com.boomchanotai.mine3Standard.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.web3j.crypto.Keys;
+
+import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Lib.utils.AddressUtils;
+import com.boomchanotai.mine3Standard.services.TpaService;
+import com.boomchanotai.mine3Standard.utils.Utils;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class TpaHereCommand implements CommandExecutor {
+    private TpaService tpaService;
+
+    public TpaHereCommand(TpaService tpaService) {
+        this.tpaService = tpaService;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'onCommand'");
+        // Define: from - command sender, to - receiver
+        if (args.length == 0 || args.length > 1) {
+            return false;
+        }
+
+        // tpahere <address> - (Player)
+        if (!Utils.isPlayerUsingCommand(sender)) {
+            return true;
+        }
+
+        if (!Utils.hasPermission(sender, "mine3.tpahere")) {
+            return true;
+        }
+
+        String toPlayerAddress = Keys.toChecksumAddress(args[0]);
+
+        Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
+        if (toPlayer == null) {
+            Utils.sendCommandReturnMessage(sender, "Address not found.");
+            return true;
+        }
+
+        Player fromPlayer = (Player) sender;
+
+        String fromPlayerAddress = PlayerRepository.getAddress(fromPlayer.getUniqueId());
+        if (fromPlayerAddress == null) {
+            Utils.sendCommandReturnMessage(sender, "Can't parse your address. Please login again.");
+            return true;
+        }
+
+        if (fromPlayerAddress.equals(toPlayerAddress)) {
+            Utils.sendCommandReturnMessage(sender, ChatColor.RED + "Cannot teleport to yourself.");
+            return true;
+        }
+
+        if (tpaService.hasTpaRequest(toPlayerAddress, "TPAHERE")
+                && tpaService.getTpaRequest(toPlayerAddress).getFirst().equals(fromPlayerAddress)) {
+            Utils.sendCommandReturnMessage(sender, "Tpahere request already sent.");
+            return true;
+        }
+
+        tpaService.addTpaHereRequest(fromPlayerAddress, toPlayerAddress);
+
+        PlayerRepository.sendMessage(fromPlayer,
+                "Tpahere request sent to " + AddressUtils.addressShortener(toPlayerAddress) + ".");
+        PlayerRepository.sendMessage(toPlayer,
+                AddressUtils.addressShortener(fromPlayerAddress)
+                        + " wants to teleport you to them. Use /tpaccept to accept. Use /tpacancel to deny.");
+
+        return true;
     }
 
 }

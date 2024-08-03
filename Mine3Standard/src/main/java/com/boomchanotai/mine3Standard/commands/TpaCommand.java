@@ -11,6 +11,8 @@ import com.boomchanotai.mine3Lib.utils.AddressUtils;
 import com.boomchanotai.mine3Standard.services.TpaService;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class TpaCommand implements CommandExecutor {
     private TpaService tpaService;
 
@@ -24,49 +26,38 @@ public class TpaCommand implements CommandExecutor {
             return false;
         }
 
-        String fromPlayerAddress = null;
-        String toPlayerAddress = null;
-
-        Player fromPlayer = null;
-        Player toPlayer = null;
-
         // tpa <address> - (Player)
-        if (args.length == 1) {
-            if (!Utils.isPlayerUsingCommand(sender)) {
-                return true;
-            }
-
-            if (!Utils.hasPermission(sender, "mine3.tpa")) {
-                return true;
-            }
-
-            String toAddress = Keys.toChecksumAddress(args[0]);
-
-            fromPlayer = (Player) sender;
-            toPlayer = PlayerRepository.getPlayer(toAddress);
-
-            fromPlayerAddress = PlayerRepository.getAddress(fromPlayer.getUniqueId());
-            toPlayerAddress = toAddress;
-
+        if (!Utils.isPlayerUsingCommand(sender)) {
+            return true;
         }
 
-        if (fromPlayerAddress == null || toPlayerAddress == null) {
+        if (!Utils.hasPermission(sender, "mine3.tpa")) {
+            return true;
+        }
+
+        String toPlayerAddress = Keys.toChecksumAddress(args[0]);
+
+        Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
+        if (toPlayer == null) {
             Utils.sendCommandReturnMessage(sender, "Address not found.");
             return true;
         }
 
-        if (fromPlayer == null || toPlayer == null) {
-            Utils.sendCommandReturnMessage(sender, "Player not found.");
+        Player fromPlayer = (Player) sender;
+
+        String fromPlayerAddress = PlayerRepository.getAddress(fromPlayer.getUniqueId());
+        if (fromPlayerAddress == null) {
+            Utils.sendCommandReturnMessage(sender, "Can't parse your address. Please login again.");
             return true;
         }
 
         if (fromPlayerAddress.equals(toPlayerAddress)) {
-            Utils.sendCommandReturnMessage(sender, "Cannot teleport to yourself.");
+            Utils.sendCommandReturnMessage(sender, ChatColor.RED + "Cannot teleport to yourself.");
             return true;
         }
 
-        if (tpaService.hasTpaRequest(toPlayerAddress)
-                && tpaService.getTpaRequest(toPlayerAddress).equals(fromPlayerAddress)) {
+        if (tpaService.hasTpaRequest(toPlayerAddress, "TPA")
+                && tpaService.getTpaRequest(toPlayerAddress).getFirst().equals(fromPlayerAddress)) {
             Utils.sendCommandReturnMessage(sender, "Tpa request already sent.");
             return true;
         }

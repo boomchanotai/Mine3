@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
-import com.boomchanotai.mine3Lib.utils.AddressUtils;
 import com.boomchanotai.mine3Standard.services.TpaService;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
@@ -32,38 +31,15 @@ public class TpacceptCommand implements CommandExecutor {
             return true;
         }
 
-        Player toPlayer = (Player) sender;
+        Player player = (Player) sender;
 
-        String toPlayerAddress = PlayerRepository.getAddress(toPlayer.getUniqueId());
-        if (toPlayerAddress == null) {
+        String playerAddress = PlayerRepository.getAddress(player.getUniqueId());
+        if (playerAddress == null) {
             Utils.sendCommandReturnMessage(sender, "Can't parse your address. Please login again.");
             return true;
         }
 
-        if (!tpaService.hasTpaRequest(toPlayerAddress)) {
-            Utils.sendCommandReturnMessage(sender, "No tpa request found.");
-            return true;
-        }
-
-        String fromPlayerAddress = tpaService.getTpaRequest(toPlayerAddress);
-        if (fromPlayerAddress == null) {
-            Utils.sendCommandReturnMessage(sender, "No tpa request found.");
-            return true;
-        }
-
-        Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
-        if (fromPlayer == null) {
-            Utils.sendCommandReturnMessage(sender, "Player not found.");
-            return true;
-        }
-
-        fromPlayer.teleport(toPlayer.getLocation());
-        PlayerRepository.sendMessage(fromPlayer,
-                "Teleporting to " + AddressUtils.addressShortener(toPlayerAddress) + "...");
-        PlayerRepository.sendMessage(toPlayer,
-                "Teleporting " + AddressUtils.addressShortener(fromPlayerAddress) + " to you...");
-
-        tpaService.removeTpaRequest(toPlayerAddress);
+        tpaService.acceptTpaRequest(playerAddress);
 
         return true;
     }

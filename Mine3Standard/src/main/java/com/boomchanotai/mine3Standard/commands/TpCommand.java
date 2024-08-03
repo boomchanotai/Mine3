@@ -55,8 +55,13 @@ public class TpCommand implements CommandExecutor {
             return true;
         }
 
-        if (fromPlayer == toPlayer) {
-            Utils.sendCommandReturnMessage(sender, ChatColor.RED + "You can't teleport to same address.");
+        if (fromPlayer.equals(toPlayer)) {
+            if (fromPlayer.equals(sender)) {
+                Utils.sendCommandReturnMessage(sender, ChatColor.RED + "You can't teleport to yourself.");
+            } else {
+                Utils.sendCommandReturnMessage(sender, ChatColor.RED + "You can't teleport to same address.");
+            }
+
             return true;
         }
 

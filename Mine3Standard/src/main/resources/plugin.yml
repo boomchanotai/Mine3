@@ -23,6 +23,11 @@ commands:
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> - request teleport to other player
+  tpahere:
+    description: Request teleport player to player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <address> - request teleport other player to themselves
   tpaccept:
     description: Accept teleport request
     usage: |
@@ -142,6 +147,8 @@ permissions:
     description: allow player to teleport player to player
   mine3.tpa:
     description: allow player to request teleport to player
+  mine3.tpahere:
+    description: allow player to request teleport player to player
   mine3.tpaccept:
     description: allow player to accept teleport request
   mine3.tpacancel:

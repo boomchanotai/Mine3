@@ -22,6 +22,7 @@ import com.boomchanotai.mine3Standard.commands.TpCommand;
 import com.boomchanotai.mine3Standard.commands.TpHereCommand;
 import com.boomchanotai.mine3Standard.commands.TpaCancelCommand;
 import com.boomchanotai.mine3Standard.commands.TpaCommand;
+import com.boomchanotai.mine3Standard.commands.TpaHereCommand;
 import com.boomchanotai.mine3Standard.commands.TpacceptCommand;
 import com.boomchanotai.mine3Standard.commands.VanishCommand;
 import com.boomchanotai.mine3Standard.config.Config;
@@ -44,6 +45,7 @@ import com.boomchanotai.mine3Standard.tabcompletion.KillTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.SpeedTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TpHereTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TpTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.TpaHereTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TpaTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.VanishTabCompletion;
 
@@ -84,6 +86,10 @@ public final class Mine3Standard extends JavaPlugin {
         // tpa
         getCommand("tpa").setExecutor(new TpaCommand(tpaService));
         getCommand("tpa").setTabCompleter(new TpaTabCompletion());
+
+        // tpahere
+        getCommand("tpahere").setExecutor(new TpaHereCommand(tpaService));
+        getCommand("tpahere").setTabCompleter(new TpaHereTabCompletion());
 
         // tpaccept
         getCommand("tpaccept").setExecutor(new TpacceptCommand(tpaService));
