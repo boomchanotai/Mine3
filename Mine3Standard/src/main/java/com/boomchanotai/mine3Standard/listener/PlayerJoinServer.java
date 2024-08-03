@@ -11,8 +11,8 @@ import com.boomchanotai.mine3Standard.config.SpawnConfig;
 public class PlayerJoinServer implements Listener {
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
 
         // set respawn point
         Location spawnLocation = SpawnConfig.getSpawnLocation();

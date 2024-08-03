@@ -11,8 +11,8 @@ import com.boomchanotai.mine3Standard.config.SpawnConfig;
 public class PlayerDeath implements Listener {
 
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent e) {
-        Player player = e.getEntity().getPlayer();
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity().getPlayer();
 
         // set respawn point
         Location spawnLocation = SpawnConfig.getSpawnLocation();

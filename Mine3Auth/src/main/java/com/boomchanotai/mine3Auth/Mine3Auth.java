@@ -6,6 +6,7 @@ import com.boomchanotai.mine3Auth.commands.Mine3Command;
 import com.boomchanotai.mine3Auth.commands.Mine3TabCompletion;
 import com.boomchanotai.mine3Auth.config.Config;
 import com.boomchanotai.mine3Auth.config.SpawnConfig;
+import com.boomchanotai.mine3Auth.listeners.PlayerDeath;
 import com.boomchanotai.mine3Auth.listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3Auth.listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3Auth.repository.ItemStackAdapter;
@@ -56,6 +57,7 @@ public final class Mine3Auth extends JavaPlugin {
         // Register Events
         getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(authService), this);
         getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(playerService), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         // Register Commands
         getCommand("address").setExecutor(new AddressCommand(redisRepo));
