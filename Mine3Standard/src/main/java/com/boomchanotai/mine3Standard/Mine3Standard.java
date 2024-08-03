@@ -6,6 +6,7 @@ import com.boomchanotai.mine3Standard.commands.BanCommand;
 import com.boomchanotai.mine3Standard.commands.BroadcastCommand;
 import com.boomchanotai.mine3Standard.commands.BurnCommand;
 import com.boomchanotai.mine3Standard.commands.ClearInventoryCommand;
+import com.boomchanotai.mine3Standard.commands.DeOpCommand;
 import com.boomchanotai.mine3Standard.commands.EnderChestCommand;
 import com.boomchanotai.mine3Standard.commands.FeedCommand;
 import com.boomchanotai.mine3Standard.commands.FlyCommand;
@@ -17,6 +18,7 @@ import com.boomchanotai.mine3Standard.commands.HealCommand;
 import com.boomchanotai.mine3Standard.commands.InvseeCommand;
 import com.boomchanotai.mine3Standard.commands.KickCommand;
 import com.boomchanotai.mine3Standard.commands.KillCommand;
+import com.boomchanotai.mine3Standard.commands.OpCommand;
 import com.boomchanotai.mine3Standard.commands.SetSpawnCommand;
 import com.boomchanotai.mine3Standard.commands.SpawnCommand;
 import com.boomchanotai.mine3Standard.commands.SpeedCommand;
@@ -35,6 +37,7 @@ import com.boomchanotai.mine3Standard.services.TpaService;
 import com.boomchanotai.mine3Standard.tabcompletion.BanTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.BurnTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.ClearInventoryTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.DeOpTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.EnderChestTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.FeedTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.FlyTabCompletion;
@@ -46,6 +49,7 @@ import com.boomchanotai.mine3Standard.tabcompletion.HealTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.InvseeTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.KickTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.KillTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.OpTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.SpeedTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TpHereTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TpTabCompletion;
@@ -175,6 +179,14 @@ public final class Mine3Standard extends JavaPlugin {
         // ban
         getCommand("ban").setExecutor(new BanCommand());
         getCommand("ban").setTabCompleter(new BanTabCompletion());
+
+        // op
+        getCommand("op").setExecutor(new OpCommand());
+        getCommand("op").setTabCompleter(new OpTabCompletion());
+
+        // deop
+        getCommand("deop").setExecutor(new DeOpCommand());
+        getCommand("deop").setTabCompleter(new DeOpTabCompletion());
     }
 
     @Override

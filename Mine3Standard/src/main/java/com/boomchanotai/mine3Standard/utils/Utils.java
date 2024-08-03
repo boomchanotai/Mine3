@@ -4,6 +4,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Standard.logger.Logger;
+
+import net.md_5.bungee.api.ChatColor;
+
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 public class Utils {
@@ -14,7 +17,7 @@ public class Utils {
 
         Player player = (Player) sender;
         if (!player.hasPermission(permission)) {
-            PlayerRepository.sendMessage(player, "You don't have permission to use this command.");
+            PlayerRepository.sendMessage(player, ChatColor.RED + "You don't have permission to use this command.");
             return false;
         }
 
