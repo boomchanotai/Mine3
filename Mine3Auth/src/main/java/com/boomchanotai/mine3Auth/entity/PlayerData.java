@@ -16,16 +16,18 @@ public class PlayerData {
     private GameMode gameMode;
     private float flySpeed;
     private float walkSpeed;
+    private boolean allowFlight;
     private boolean isFlying;
     private boolean isOp;
+    private boolean isBanned;
     private Collection<PotionEffect> potionEffects;
     private ItemStack[] inventory;
     private ItemStack[] enderchest;
     private PlayerLocation playerLocation;
 
     public PlayerData(String address, boolean isLoggedIn, int xpLevel, float xpExp, double health, int foodLevel,
-            GameMode gameMode, float flySpeed, float walkSpeed, boolean isFlying, boolean isOp,
-            Collection<PotionEffect> potionEffects, ItemStack[] inventory, ItemStack[] enderchest,
+            GameMode gameMode, float flySpeed, float walkSpeed, boolean allowFlight, boolean isFlying, boolean isOp,
+            boolean isBanned, Collection<PotionEffect> potionEffects, ItemStack[] inventory, ItemStack[] enderchest,
             PlayerLocation playerLocation) {
         this.address = address;
         this.isLoggedIn = isLoggedIn;
@@ -36,8 +38,10 @@ public class PlayerData {
         this.gameMode = gameMode;
         this.flySpeed = flySpeed;
         this.walkSpeed = walkSpeed;
+        this.allowFlight = allowFlight;
         this.isFlying = isFlying;
         this.isOp = isOp;
+        this.isBanned = isBanned;
         this.potionEffects = potionEffects;
         this.inventory = inventory;
         this.enderchest = enderchest;
@@ -85,12 +89,20 @@ public class PlayerData {
         return walkSpeed;
     }
 
+    public boolean getAllowFlight() {
+        return allowFlight;
+    }
+
     public boolean isFlying() {
         return isFlying;
     }
 
     public boolean isOp() {
         return isOp;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
     }
 
     public Collection<PotionEffect> getPotionEffects() {
@@ -145,12 +157,20 @@ public class PlayerData {
         this.walkSpeed = walkSpeed;
     }
 
+    public void setAllowFlight(boolean allowFlight) {
+        this.allowFlight = allowFlight;
+    }
+
     public void setFlying(boolean flying) {
         isFlying = flying;
     }
 
     public void setOp(boolean op) {
         isOp = op;
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
     }
 
     public void setPotionEffects(Collection<PotionEffect> potionEffects) {

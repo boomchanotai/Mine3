@@ -74,8 +74,10 @@ public class PostgresRepository {
                 GameMode gameMode = GameMode.valueOf(res.getString("game_mode"));
                 float flySpeed = res.getFloat("fly_speed");
                 float walkSpeed = res.getFloat("walk_speed");
+                boolean allowFlight = res.getBoolean("allow_flight");
                 boolean isFlying = res.getBoolean("is_flying");
                 boolean isOp = res.getBoolean("is_op");
+                boolean isBanned = res.getBoolean("is_banned");
 
                 // Potion Effects
                 PGobject potionEffectsObject = (PGobject) res.getObject("potion_effects");
@@ -91,7 +93,8 @@ public class PostgresRepository {
                 ItemStack[] enderChest = itemStackAdapter.ParseItemStackListFromPGObject(enderChestObject);
 
                 PlayerData playerData = new PlayerData(parsedAddress, isLoggedIn, xpLevel, xpExp, health, foodLevel,
-                        gameMode, flySpeed, walkSpeed, isFlying, isOp, potionEffects, inventory, enderChest,
+                        gameMode, flySpeed, walkSpeed, allowFlight, isFlying, isOp, isBanned, potionEffects, inventory,
+                        enderChest,
                         playerLocation);
 
                 return playerData;
@@ -133,7 +136,7 @@ public class PostgresRepository {
     }
 
     public void updateUserInventory(PlayerData playerData) {
-        String query = "UPDATE users SET is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, game_mode = ?, fly_speed = ?, walk_speed = ?, is_flying = ?, is_op = ?, potion_effects = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?";
+        String query = "UPDATE users SET is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, game_mode = ?, fly_speed = ?, walk_speed = ?, allow_flight = ?, is_flying = ?, is_op = ?, is_banned = ?, potion_effects = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?";
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
@@ -154,35 +157,39 @@ public class PostgresRepository {
             preparedStatement.setFloat(7, playerData.getFlySpeed());
             // set walk speed
             preparedStatement.setFloat(8, playerData.getWalkSpeed());
+            // set allow flight
+            preparedStatement.setBoolean(9, playerData.getAllowFlight());
             // set is flying
-            preparedStatement.setBoolean(9, playerData.isFlying());
+            preparedStatement.setBoolean(10, playerData.isFlying());
             // set is op
-            preparedStatement.setBoolean(10, playerData.isOp());
+            preparedStatement.setBoolean(11, playerData.isOp());
+            // set is banned
+            preparedStatement.setBoolean(12, playerData.isBanned());
             // set potion effects
             PGobject potionEffectsObject = potionEffectAdapter
                     .ParsePGObjectFromPotionEffects(playerData.getPotionEffects());
-            preparedStatement.setObject(11, potionEffectsObject);
+            preparedStatement.setObject(13, potionEffectsObject);
             // set inventory
             PGobject inventoryObject = itemStackAdapter.ParsePGObjectFromItemStackList(playerData.getInventory());
-            preparedStatement.setObject(12, inventoryObject);
+            preparedStatement.setObject(14, inventoryObject);
             // set ender chest
             PGobject enderchestObject = itemStackAdapter.ParsePGObjectFromItemStackList(playerData.getEnderchest());
-            preparedStatement.setObject(13, enderchestObject);
+            preparedStatement.setObject(15, enderchestObject);
             // set last_location_x
-            preparedStatement.setDouble(14, playerData.getPlayerLocation().getX());
+            preparedStatement.setDouble(16, playerData.getPlayerLocation().getX());
             // set last_location_y
-            preparedStatement.setDouble(15, playerData.getPlayerLocation().getY());
+            preparedStatement.setDouble(17, playerData.getPlayerLocation().getY());
             // set last_location_z
-            preparedStatement.setDouble(16, playerData.getPlayerLocation().getZ());
+            preparedStatement.setDouble(18, playerData.getPlayerLocation().getZ());
             // set last_location_yaw
-            preparedStatement.setFloat(17, playerData.getPlayerLocation().getYaw());
+            preparedStatement.setFloat(19, playerData.getPlayerLocation().getYaw());
             // set last_location_pitch
-            preparedStatement.setFloat(18, playerData.getPlayerLocation().getPitch());
+            preparedStatement.setFloat(20, playerData.getPlayerLocation().getPitch());
             // set last_location_world
-            preparedStatement.setString(19, playerData.getPlayerLocation().getWorld().getName());
+            preparedStatement.setString(21, playerData.getPlayerLocation().getWorld().getName());
             // set address
             String parsedAddress = Keys.toChecksumAddress(playerData.getAddress());
-            preparedStatement.setString(20, parsedAddress);
+            preparedStatement.setString(22, parsedAddress);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             Logger.warning(e.getMessage(), "failed to update user inventory");

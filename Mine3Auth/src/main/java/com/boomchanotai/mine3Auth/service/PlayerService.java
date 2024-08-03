@@ -109,6 +109,7 @@ public class PlayerService {
                 player.setGameMode(playerData.getGameMode());
                 player.setFlySpeed(playerData.getFlySpeed());
                 player.setWalkSpeed(playerData.getWalkSpeed());
+                player.setAllowFlight(playerData.getAllowFlight());
                 player.setFlying(playerData.isFlying());
                 player.setOp(playerData.isOp());
                 player.getInventory().setContents(playerData.getInventory());

@@ -56,8 +56,10 @@ public class Postgres {
                 "\t\"game_mode\" TEXT NOT NULL DEFAULT 'SURVIVAL',\n" +
                 "\t\"fly_speed\" FLOAT NOT NULL DEFAULT 0.1,\n" +
                 "\t\"walk_speed\" FLOAT NOT NULL DEFAULT 0.2,\n" +
+                "\t\"allow_flight\" BOOLEAN NOT NULL DEFAULT FALSE,\n" +
                 "\t\"is_flying\" BOOLEAN NOT NULL DEFAULT FALSE,\n" +
                 "\t\"is_op\" BOOLEAN NOT NULL DEFAULT FALSE,\n" +
+                "\t\"is_banned\" BOOLEAN NOT NULL DEFAULT FALSE,\n" +
                 "\t\"potion_effects\" JSONB NOT NULL DEFAULT '[]',\n" +
                 "\t\"inventory\" JSONB NOT NULL DEFAULT '[]',\n" +
                 "\t\"ender_chest\" JSONB NOT NULL DEFAULT '[]',\n" +
