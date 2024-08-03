@@ -18,6 +18,7 @@ import org.web3j.crypto.Keys;
 
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Lib.utils.AddressUtils;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
 public class EnderChestCommand implements CommandExecutor, Listener {
@@ -42,7 +43,7 @@ public class EnderChestCommand implements CommandExecutor, Listener {
         }
 
         ItemStack[] items = targetPlayer.getEnderChest().getContents();
-        String title = address.substring(0, 5) + "..." + address.substring(38) + "'s Enderchest";
+        String title = AddressUtils.addressShortener(address) + "'s Enderchest";
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
