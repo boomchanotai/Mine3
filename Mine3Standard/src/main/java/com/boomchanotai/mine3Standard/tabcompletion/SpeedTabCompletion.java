@@ -16,7 +16,7 @@ public class SpeedTabCompletion implements TabCompleter {
         List<String> subCommand = new ArrayList<>();
 
         if (args.length == 1) {
-            for (int i = -1; i <= 1; i++) {
+            for (int i = -10; i <= 10; i++) {
                 subCommand.add(String.valueOf(i));
             }
         }

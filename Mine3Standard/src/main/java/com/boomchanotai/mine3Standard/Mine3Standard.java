@@ -22,6 +22,8 @@ import com.boomchanotai.mine3Standard.commands.TeleportCommand;
 import com.boomchanotai.mine3Standard.commands.VanishCommand;
 import com.boomchanotai.mine3Standard.config.Config;
 import com.boomchanotai.mine3Standard.config.SpawnConfig;
+import com.boomchanotai.mine3Standard.listener.PlayerDeath;
+import com.boomchanotai.mine3Standard.listener.PlayerJoinServer;
 import com.boomchanotai.mine3Standard.tabcompletion.BurnTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.ClearInventoryTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.EnderChestTabCompletion;
@@ -56,6 +58,10 @@ public final class Mine3Standard extends JavaPlugin {
         // Spawn Configuration
         SpawnConfig.saveDefaultSpawnConfig();
         SpawnConfig.loadConfig();
+
+        // Event Listeners
+        getServer().getPluginManager().registerEvents(new PlayerJoinServer(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         // tp
         getCommand("tp").setExecutor(new TeleportCommand());
