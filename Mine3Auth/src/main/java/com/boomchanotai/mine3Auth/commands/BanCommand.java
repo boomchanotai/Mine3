@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3Standard.commands;
+package com.boomchanotai.mine3Auth.commands;
 
 import java.util.Date;
 
@@ -7,8 +7,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.boomchanotai.mine3Auth.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
-import com.boomchanotai.mine3Standard.utils.Utils;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class BanCommand implements CommandExecutor {
 
@@ -19,9 +21,13 @@ public class BanCommand implements CommandExecutor {
         }
 
         // ban <address> - (Player, Console)
-        if (!Utils.hasPermission(sender, "mine3.ban")) {
+        if (!sender.hasPermission("mine3.ban")) {
+            PlayerRepository.sendMessage((Player) sender,
+                    ChatColor.RED + "You don't have permission to use this command.");
             return true;
         }
+
+        String address = args[0];
 
         String reason = "You have been banned.";
         if (args.length > 1) {
@@ -34,14 +40,22 @@ public class BanCommand implements CommandExecutor {
             reason = sb.toString();
         }
 
-        Player targetPlayer = PlayerRepository.getPlayer(args[0]);
+        Player targetPlayer = PlayerRepository.getPlayer(address);
         if (targetPlayer == null) {
-            Utils.sendCommandReturnMessage(sender, "Address not found.");
+            if (sender instanceof Player) {
+                PlayerRepository.sendMessage((Player) sender, ChatColor.RED + "Player not found.");
+            } else {
+                Logger.warning("Player not found.");
+            }
             return true;
         }
 
         targetPlayer.ban(reason, (Date) null, null);
-        Utils.sendCommandReturnMessage(sender, args[0] + " has been banned.");
+        if (sender instanceof Player) {
+            PlayerRepository.sendMessage((Player) sender, args[0] + " has been banned.");
+        } else {
+            Logger.warning(args[0] + " has been banned.");
+        }
 
         return true;
     }

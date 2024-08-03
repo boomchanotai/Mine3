@@ -4,6 +4,8 @@ import com.boomchanotai.mine3Auth.commands.AddressCommand;
 import com.boomchanotai.mine3Auth.commands.LogoutCommand;
 import com.boomchanotai.mine3Auth.commands.AuthCommand;
 import com.boomchanotai.mine3Auth.commands.AuthTabCompletion;
+import com.boomchanotai.mine3Auth.commands.BanCommand;
+import com.boomchanotai.mine3Auth.commands.BanTabCompletion;
 import com.boomchanotai.mine3Auth.config.Config;
 import com.boomchanotai.mine3Auth.config.SpawnConfig;
 import com.boomchanotai.mine3Auth.listeners.PlayerDeath;
@@ -75,6 +77,8 @@ public final class Mine3Auth extends JavaPlugin {
         getCommand("logout").setExecutor(new LogoutCommand(authService));
         getCommand("auth").setExecutor(new AuthCommand(spawnService));
         getCommand("auth").setTabCompleter(new AuthTabCompletion());
+        getCommand("ban").setExecutor(new BanCommand());
+        getCommand("ban").setTabCompleter(new BanTabCompletion());
 
         // Connect all players if in game
         getServer().getOnlinePlayers().forEach(authService::connect);

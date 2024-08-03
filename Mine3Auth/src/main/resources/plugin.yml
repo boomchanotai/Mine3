@@ -30,6 +30,14 @@ commands:
     usage: /<command> setspawn
     permission: "mine3.setspawn"
     permission-message: You don't have permission to use this command
+  ban:
+    description: ban player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <player> - ban player
+      /<command> <player> <reason> - ban player with reason
 permissions:
   mine3.auth.setspawn:
     description: allow player to set spawn point
+  mine3.ban:
+    description: allow player to ban other player
