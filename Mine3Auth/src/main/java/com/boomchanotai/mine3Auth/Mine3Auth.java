@@ -9,6 +9,8 @@ import com.boomchanotai.mine3Auth.config.SpawnConfig;
 import com.boomchanotai.mine3Auth.listeners.PlayerDeath;
 import com.boomchanotai.mine3Auth.listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3Auth.listeners.PreventPlayerActionWhenNotLoggedIn;
+import com.boomchanotai.mine3Auth.postgres.Postgres;
+import com.boomchanotai.mine3Auth.redis.Redis;
 import com.boomchanotai.mine3Auth.repository.ItemStackAdapter;
 import com.boomchanotai.mine3Auth.repository.PostgresRepository;
 import com.boomchanotai.mine3Auth.repository.PotionEffectAdapter;
@@ -42,6 +44,12 @@ public final class Mine3Auth extends JavaPlugin {
         SpawnConfig.saveDefaultSpawnConfig();
         SpawnConfig.loadConfig();
 
+        // Redis
+        Redis.connect();
+
+        // Postgres
+        Postgres.connect();
+
         // Dependencies
         ItemStackAdapter itemStackAdapter = new ItemStackAdapter();
         PotionEffectAdapter potionEffectAdapter = new PotionEffectAdapter();
@@ -53,6 +61,7 @@ public final class Mine3Auth extends JavaPlugin {
         playerService = new PlayerService(spawnService);
         authService = new AuthService(playerService, pgRepo, redisRepo);
 
+        // Start HTTP Server
         Server server = new Server(authService);
         server.startServer();
 
