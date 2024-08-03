@@ -3,7 +3,7 @@ package com.boomchanotai.mine3Standard.utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.boomchanotai.mine3Lib.logger.Logger;
+import com.boomchanotai.mine3Standard.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 public class Utils {

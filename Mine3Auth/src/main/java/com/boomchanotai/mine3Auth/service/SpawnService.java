@@ -10,7 +10,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.boomchanotai.mine3Auth.Mine3Auth;
 import com.boomchanotai.mine3Auth.config.SpawnConfig;
-import com.boomchanotai.mine3Lib.logger.Logger;
+import com.boomchanotai.mine3Auth.logger.Logger;
 
 public class SpawnService {
     public void setSpawnLocation(Location location) {

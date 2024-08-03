@@ -2,7 +2,7 @@ package com.boomchanotai.mine3Auth.commands;
 
 import com.boomchanotai.mine3Auth.Mine3Auth;
 import com.boomchanotai.mine3Auth.entity.PlayerCacheData;
-import com.boomchanotai.mine3Lib.logger.Logger;
+import com.boomchanotai.mine3Auth.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Auth.repository.RedisRepository;
 

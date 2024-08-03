@@ -16,7 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.web3j.crypto.Keys;
 
-import com.boomchanotai.mine3Lib.logger.Logger;
+import com.boomchanotai.mine3Standard.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Lib.utils.AddressUtils;
 import com.boomchanotai.mine3Standard.utils.Utils;

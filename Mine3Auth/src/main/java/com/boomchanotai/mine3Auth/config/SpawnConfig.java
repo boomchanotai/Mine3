@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.boomchanotai.mine3Auth.Mine3Auth;
-import com.boomchanotai.mine3Lib.logger.Logger;
+import com.boomchanotai.mine3Auth.logger.Logger;
 
 public class SpawnConfig {
     private static File spawnConfigFile;

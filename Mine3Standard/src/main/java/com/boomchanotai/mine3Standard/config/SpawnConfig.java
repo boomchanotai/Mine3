@@ -8,7 +8,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.boomchanotai.mine3Lib.logger.Logger;
+import com.boomchanotai.mine3Standard.logger.Logger;
 import com.boomchanotai.mine3Standard.Mine3Standard;
 
 public class SpawnConfig {
