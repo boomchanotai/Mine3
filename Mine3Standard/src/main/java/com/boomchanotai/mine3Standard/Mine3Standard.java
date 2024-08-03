@@ -18,12 +18,17 @@ import com.boomchanotai.mine3Standard.commands.KillCommand;
 import com.boomchanotai.mine3Standard.commands.SetSpawnCommand;
 import com.boomchanotai.mine3Standard.commands.SpawnCommand;
 import com.boomchanotai.mine3Standard.commands.SpeedCommand;
-import com.boomchanotai.mine3Standard.commands.TeleportCommand;
+import com.boomchanotai.mine3Standard.commands.TpCommand;
+import com.boomchanotai.mine3Standard.commands.TpHereCommand;
+import com.boomchanotai.mine3Standard.commands.TpaCancelCommand;
+import com.boomchanotai.mine3Standard.commands.TpaCommand;
+import com.boomchanotai.mine3Standard.commands.TpacceptCommand;
 import com.boomchanotai.mine3Standard.commands.VanishCommand;
 import com.boomchanotai.mine3Standard.config.Config;
 import com.boomchanotai.mine3Standard.config.SpawnConfig;
 import com.boomchanotai.mine3Standard.listener.PlayerDeath;
 import com.boomchanotai.mine3Standard.listener.PlayerJoinServer;
+import com.boomchanotai.mine3Standard.services.TpaService;
 import com.boomchanotai.mine3Standard.tabcompletion.BurnTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.ClearInventoryTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.EnderChestTabCompletion;
@@ -37,7 +42,9 @@ import com.boomchanotai.mine3Standard.tabcompletion.InvseeTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.KickTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.KillTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.SpeedTabCompletion;
-import com.boomchanotai.mine3Standard.tabcompletion.TeleportTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.TpHereTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.TpTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.TpaTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.VanishTabCompletion;
 
 public final class Mine3Standard extends JavaPlugin {
@@ -59,13 +66,30 @@ public final class Mine3Standard extends JavaPlugin {
         SpawnConfig.saveDefaultSpawnConfig();
         SpawnConfig.loadConfig();
 
+        // Dependency
+        TpaService tpaService = new TpaService(this);
+
         // Event Listeners
         getServer().getPluginManager().registerEvents(new PlayerJoinServer(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         // tp
-        getCommand("tp").setExecutor(new TeleportCommand());
-        getCommand("tp").setTabCompleter(new TeleportTabCompletion());
+        getCommand("tp").setExecutor(new TpCommand());
+        getCommand("tp").setTabCompleter(new TpTabCompletion());
+
+        // tphere
+        getCommand("tphere").setExecutor(new TpHereCommand());
+        getCommand("tphere").setTabCompleter(new TpHereTabCompletion());
+
+        // tpa
+        getCommand("tpa").setExecutor(new TpaCommand(tpaService));
+        getCommand("tpa").setTabCompleter(new TpaTabCompletion());
+
+        // tpaccept
+        getCommand("tpaccept").setExecutor(new TpacceptCommand(tpaService));
+
+        // tpacancel
+        getCommand("tpacancel").setExecutor(new TpaCancelCommand(tpaService));
 
         // give
         getCommand("give").setExecutor(new GiveCommand());

@@ -13,6 +13,26 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> <address> - teleport to other player
       /<command> <address> <player> - teleport player to player
+  tphere:
+    description: Teleport player to player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <address> - teleport other player to themselves
+  tpa:
+    description: Request teleport to player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <address> - request teleport to other player
+  tpaccept:
+    description: Accept teleport request
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - accept teleport request
+  tpacancel:
+    description: Cancel teleport request
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - cancel teleport request
   give:
     description: Give item to player
     usage: |
@@ -118,6 +138,14 @@ permissions:
     description: allow player to teleport to player
   mine3.tp.others:
     description: allow other player to teleport other player
+  mine3.tphere:
+    description: allow player to teleport player to player
+  mine3.tpa:
+    description: allow player to request teleport to player
+  mine3.tpaccept:
+    description: allow player to accept teleport request
+  mine3.tpacancel:
+    description: allow player to cancel teleport request
   mine3.give:
     description: allow player to give item to player
   mine3.gamemode:
