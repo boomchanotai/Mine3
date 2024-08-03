@@ -2,8 +2,8 @@ package com.boomchanotai.mine3Auth;
 
 import com.boomchanotai.mine3Auth.commands.AddressCommand;
 import com.boomchanotai.mine3Auth.commands.LogoutCommand;
-import com.boomchanotai.mine3Auth.commands.Mine3Command;
-import com.boomchanotai.mine3Auth.commands.Mine3TabCompletion;
+import com.boomchanotai.mine3Auth.commands.AuthCommand;
+import com.boomchanotai.mine3Auth.commands.AuthTabCompletion;
 import com.boomchanotai.mine3Auth.config.Config;
 import com.boomchanotai.mine3Auth.config.SpawnConfig;
 import com.boomchanotai.mine3Auth.listeners.PlayerDeath;
@@ -16,22 +16,23 @@ import com.boomchanotai.mine3Auth.repository.RedisRepository;
 import com.boomchanotai.mine3Auth.server.Server;
 import com.boomchanotai.mine3Auth.service.AuthService;
 import com.boomchanotai.mine3Auth.service.PlayerService;
+import com.boomchanotai.mine3Auth.service.SpawnService;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Mine3Auth extends JavaPlugin {
-    private static Mine3Auth instance;
+    private static Mine3Auth plugin;
 
     PlayerService playerService;
     AuthService authService;
 
-    public static Mine3Auth getInstance() {
-        return instance;
+    public static Mine3Auth getPlugin() {
+        return plugin;
     }
 
     @Override
     public void onEnable() {
-        instance = this;
+        plugin = this;
 
         // Configuration
         Config.saveDefaultConfig();
@@ -50,6 +51,7 @@ public final class Mine3Auth extends JavaPlugin {
 
         playerService = new PlayerService();
         authService = new AuthService(playerService, pgRepo, redisRepo);
+        SpawnService spawnService = new SpawnService();
 
         Server server = new Server(authService);
         server.startServer();
@@ -62,8 +64,8 @@ public final class Mine3Auth extends JavaPlugin {
         // Register Commands
         getCommand("address").setExecutor(new AddressCommand(redisRepo));
         getCommand("logout").setExecutor(new LogoutCommand(authService));
-        getCommand("mine3").setExecutor(new Mine3Command());
-        getCommand("mine3").setTabCompleter(new Mine3TabCompletion());
+        getCommand("auth").setExecutor(new AuthCommand(spawnService));
+        getCommand("auth").setTabCompleter(new AuthTabCompletion());
 
         // Connect all players if in game
         getServer().getOnlinePlayers().forEach(authService::connect);

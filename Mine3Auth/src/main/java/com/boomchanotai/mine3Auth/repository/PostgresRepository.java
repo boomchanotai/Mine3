@@ -61,7 +61,7 @@ public class PostgresRepository {
                 float lastLocationYaw = res.getFloat("last_location_yaw");
                 float lastLocationPitch = res.getFloat("last_location_pitch");
                 String lastLocationWorld = res.getString("last_location_world");
-                World world = Mine3Auth.getInstance().getServer().getWorld(lastLocationWorld);
+                World world = Mine3Auth.getPlugin().getServer().getWorld(lastLocationWorld);
 
                 PlayerLocation playerLocation = new PlayerLocation(lastLocationX, lastLocationY, lastLocationZ,
                         lastLocationYaw, lastLocationPitch, world);

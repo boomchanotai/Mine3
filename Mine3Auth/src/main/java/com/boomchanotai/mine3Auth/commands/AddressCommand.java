@@ -32,7 +32,7 @@ public class AddressCommand implements CommandExecutor {
         }
 
         if (args.length == 1) {
-            player = Mine3Auth.getInstance().getServer().getPlayer(args[0]);
+            player = Mine3Auth.getPlugin().getServer().getPlayer(args[0]);
         }
 
         if (player == null) {

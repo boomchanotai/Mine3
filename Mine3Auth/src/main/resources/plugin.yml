@@ -16,16 +16,16 @@ commands:
   logout:
     description: logout
     usage: /<command>
-  mine3:
+  auth:
     description: mine3 command
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> spawn - go to spawn point
       /<command> setspawn - set spawn point (admin only)
-  mine3 spawn:
+  auth spawn:
     description: go to spawn point
     usage: /<command> spawn
-  mine3 setspawn:
+  auth setspawn:
     description: set spawn point on player join
     usage: /<command> setspawn
     permission: "mine3.setspawn"

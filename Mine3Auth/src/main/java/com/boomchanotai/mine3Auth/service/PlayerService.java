@@ -133,7 +133,7 @@ public class PlayerService {
                 player.teleport(lastLocation, TeleportCause.PLUGIN);
             }
         };
-        runnable.runTaskLater(Mine3Auth.getInstance(), 0);
+        runnable.runTaskLater(Mine3Auth.getPlugin(), 0);
     }
 
     // setPlayerIdleState is set player state for waiting login complete
@@ -141,7 +141,7 @@ public class PlayerService {
         clearPlayerState(player);
         player.setInvulnerable(true);
 
-        World world = Mine3Auth.getInstance().getServer()
+        World world = Mine3Auth.getPlugin().getServer()
                 .getWorld(SpawnConfig.getSpawnConfig().getString("spawn.world"));
         Location spawnLocation = new Location(
                 world,

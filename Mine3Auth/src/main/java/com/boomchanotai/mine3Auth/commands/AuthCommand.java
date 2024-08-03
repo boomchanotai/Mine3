@@ -6,12 +6,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.boomchanotai.mine3Auth.config.SpawnConfig;
+import com.boomchanotai.mine3Auth.service.SpawnService;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class Mine3Command implements CommandExecutor {
+public class AuthCommand implements CommandExecutor {
+    private SpawnService spawnService;
+
+    public AuthCommand(SpawnService spawnService) {
+        this.spawnService = spawnService;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
@@ -33,7 +39,7 @@ public class Mine3Command implements CommandExecutor {
                 return true;
             }
 
-            SpawnConfig.setSpawnLocation(player.getLocation());
+            spawnService.setSpawnLocation(player.getLocation());
             PlayerRepository.sendMessage(player, "Spawn location has been set.");
 
             return true;
@@ -42,7 +48,7 @@ public class Mine3Command implements CommandExecutor {
         if (args[0].equals("spawn")) {
             Player player = (Player) sender;
 
-            Location spawnLocation = SpawnConfig.getSpawnLocation();
+            Location spawnLocation = spawnService.getSpawnLocation();
             player.teleport(spawnLocation);
 
             PlayerRepository.sendMessage(player, "Teleported to spawn location.");

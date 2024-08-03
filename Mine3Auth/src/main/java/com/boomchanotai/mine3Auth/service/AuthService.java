@@ -69,7 +69,7 @@ public class AuthService {
         }
 
         // 2. Get player from spigot
-        Player player = Mine3Auth.getInstance().getServer().getPlayer(playerUUID);
+        Player player = Mine3Auth.getPlugin().getServer().getPlayer(playerUUID);
         if (player == null) {
             Logger.warning("PLAYER_NOT_IN_GAME", "Not found player in game.", parsedAddress);
             throw new Exception("PLAYER_NOT_IN_GAME");

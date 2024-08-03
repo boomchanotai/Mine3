@@ -45,11 +45,11 @@ public class Config {
     public static int AUTH_LOGGED_IN_TITLE_FADE_OUT;
 
     public static void saveDefaultConfig() {
-        Mine3Auth.getInstance().saveDefaultConfig();
+        Mine3Auth.getPlugin().saveDefaultConfig();
     }
 
     public static void loadConfig() {
-        FileConfiguration config = Mine3Auth.getInstance().getConfig();
+        FileConfiguration config = Mine3Auth.getPlugin().getConfig();
         COLOR_CODE_PREFIX = Objects.requireNonNull(config.getString("color_code_prefix")).charAt(0);
 
         REDIS_HOST = config.getString("redis.host");

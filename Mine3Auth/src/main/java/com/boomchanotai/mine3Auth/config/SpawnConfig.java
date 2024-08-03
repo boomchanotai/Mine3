@@ -20,10 +20,10 @@ public class SpawnConfig {
     }
 
     public static void saveDefaultSpawnConfig() {
-        spawnConfigFile = new File(Mine3Auth.getInstance().getDataFolder(), "spawn.yml");
+        spawnConfigFile = new File(Mine3Auth.getPlugin().getDataFolder(), "spawn.yml");
 
         if (!spawnConfigFile.exists()) {
-            Mine3Auth.getInstance().saveResource("spawn.yml", false);
+            Mine3Auth.getPlugin().saveResource("spawn.yml", false);
         }
 
         spawnConfig = new YamlConfiguration();
@@ -48,14 +48,14 @@ public class SpawnConfig {
         }
 
         getSpawnConfig().set("spawn.init", true);
-        List<World> worlds = Mine3Auth.getInstance().getServer().getWorlds();
+        List<World> worlds = Mine3Auth.getPlugin().getServer().getWorlds();
 
         if (worlds.size() < 1) {
             Logger.warning("No world found", "Fail to set spawn location");
             return;
         }
 
-        Location defaultSpawnLocation = Mine3Auth.getInstance().getServer().getWorlds().get(0).getSpawnLocation();
+        Location defaultSpawnLocation = Mine3Auth.getPlugin().getServer().getWorlds().get(0).getSpawnLocation();
         setSpawnLocation(defaultSpawnLocation);
     }
 
@@ -70,7 +70,7 @@ public class SpawnConfig {
     }
 
     public static Location getSpawnLocation() {
-        World world = Mine3Auth.getInstance().getServer().getWorld(getSpawnConfig().getString("spawn.world"));
+        World world = Mine3Auth.getPlugin().getServer().getWorld(getSpawnConfig().getString("spawn.world"));
         Location spawnLocation = new Location(
                 world,
                 getSpawnConfig().getDouble("spawn.x"),

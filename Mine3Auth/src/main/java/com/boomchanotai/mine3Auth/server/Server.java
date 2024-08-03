@@ -29,7 +29,7 @@ public class Server {
     public void startServer() {
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            Thread.currentThread().setContextClassLoader(Mine3Auth.getInstance().getClass().getClassLoader());
+            Thread.currentThread().setContextClassLoader(Mine3Auth.getPlugin().getClass().getClassLoader());
 
             app = Javalin.create(config -> {
                 config.bundledPlugins.enableCors(cors -> {
@@ -43,7 +43,7 @@ public class Server {
             app.post("/login", Server::login);
         } catch (Exception e) {
             Logger.warning(e.getMessage());
-            Mine3Auth.getInstance().getServer().shutdown();
+            Mine3Auth.getPlugin().getServer().shutdown();
         }
 
         Logger.info("Http server is running!");
