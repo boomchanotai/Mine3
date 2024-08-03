@@ -36,8 +36,14 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> <player> - ban player
       /<command> <player> <reason> - ban player with reason
+  pardon:
+    description: unban player
+    usage: /<command> <player>
+    aliases: [unban]
 permissions:
   mine3.auth.setspawn:
     description: allow player to set spawn point
   mine3.ban:
     description: allow player to ban other player
+  mine3.pardon:
+    description: allow player to unban other player

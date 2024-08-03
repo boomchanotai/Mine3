@@ -16,6 +16,7 @@ import org.web3j.crypto.Keys;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class PostgresRepository {
@@ -208,6 +209,42 @@ public class PostgresRepository {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             Logger.warning(e.getMessage(), "failed to update user login");
+        }
+    }
+
+    public ArrayList<String> getBannedPlayers() {
+        String query = "SELECT address FROM users WHERE is_banned = true";
+        ArrayList<String> bannedPlayers = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
+            ResultSet res = preparedStatement.executeQuery();
+
+            while (res.next()) {
+                String address = res.getString("address");
+                bannedPlayers.add(address);
+            }
+        } catch (SQLException e) {
+            Logger.warning(e.getMessage(), "failed to get banned players");
+        }
+
+        return bannedPlayers;
+    }
+
+    public void setPlayerBanned(String address, boolean isBanned) {
+        String query = "UPDATE users SET is_banned = ? WHERE address = ?";
+
+        try {
+            PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
+
+            // set is_banned
+            preparedStatement.setBoolean(1, isBanned);
+            // set address
+            String parsedAddress = Keys.toChecksumAddress(address);
+            preparedStatement.setString(2, parsedAddress);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            Logger.warning(e.getMessage(), "failed to update user ban status");
         }
     }
 

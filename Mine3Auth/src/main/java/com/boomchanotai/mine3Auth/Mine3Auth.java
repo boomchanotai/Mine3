@@ -2,6 +2,8 @@ package com.boomchanotai.mine3Auth;
 
 import com.boomchanotai.mine3Auth.commands.AddressCommand;
 import com.boomchanotai.mine3Auth.commands.LogoutCommand;
+import com.boomchanotai.mine3Auth.commands.PardonCommand;
+import com.boomchanotai.mine3Auth.commands.PardonTabCompletion;
 import com.boomchanotai.mine3Auth.commands.AuthCommand;
 import com.boomchanotai.mine3Auth.commands.AuthTabCompletion;
 import com.boomchanotai.mine3Auth.commands.BanCommand;
@@ -74,11 +76,17 @@ public final class Mine3Auth extends JavaPlugin {
 
         // Register Commands
         getCommand("address").setExecutor(new AddressCommand(redisRepo));
+
         getCommand("logout").setExecutor(new LogoutCommand(authService));
+
         getCommand("auth").setExecutor(new AuthCommand(spawnService));
         getCommand("auth").setTabCompleter(new AuthTabCompletion());
+
         getCommand("ban").setExecutor(new BanCommand());
         getCommand("ban").setTabCompleter(new BanTabCompletion());
+
+        getCommand("pardon").setExecutor(new PardonCommand(pgRepo));
+        getCommand("pardon").setTabCompleter(new PardonTabCompletion(pgRepo));
 
         // Connect all players if in game
         getServer().getOnlinePlayers().forEach(authService::connect);

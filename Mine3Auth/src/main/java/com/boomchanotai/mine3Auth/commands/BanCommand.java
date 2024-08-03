@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.web3j.crypto.Keys;
 
 import com.boomchanotai.mine3Auth.logger.Logger;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
@@ -27,7 +28,7 @@ public class BanCommand implements CommandExecutor {
             return true;
         }
 
-        String address = args[0];
+        String address = Keys.toChecksumAddress(args[0]);
 
         String reason = "You have been banned.";
         if (args.length > 1) {
