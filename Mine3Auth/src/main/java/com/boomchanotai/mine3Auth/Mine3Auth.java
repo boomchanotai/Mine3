@@ -49,9 +49,9 @@ public final class Mine3Auth extends JavaPlugin {
         PostgresRepository pgRepo = new PostgresRepository(itemStackAdapter, potionEffectAdapter);
         RedisRepository redisRepo = new RedisRepository();
 
-        playerService = new PlayerService();
-        authService = new AuthService(playerService, pgRepo, redisRepo);
         SpawnService spawnService = new SpawnService();
+        playerService = new PlayerService(spawnService);
+        authService = new AuthService(playerService, pgRepo, redisRepo);
 
         Server server = new Server(authService);
         server.startServer();

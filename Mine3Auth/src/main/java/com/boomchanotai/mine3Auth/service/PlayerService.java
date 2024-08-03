@@ -1,7 +1,6 @@
 package com.boomchanotai.mine3Auth.service;
 
 import com.boomchanotai.mine3Auth.Mine3Auth;
-import com.boomchanotai.mine3Auth.config.SpawnConfig;
 import com.boomchanotai.mine3Auth.entity.PlayerData;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
@@ -11,7 +10,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.potion.PotionEffect;
@@ -22,10 +20,11 @@ import static com.boomchanotai.mine3Auth.config.Config.*;
 import java.util.*;
 
 public class PlayerService {
-
+    private SpawnService spawnService;
     private HashMap<UUID, Boolean> playerList;
 
-    public PlayerService() {
+    public PlayerService(SpawnService spawnService) {
+        this.spawnService = spawnService;
         playerList = new HashMap<>();
     }
 
@@ -141,16 +140,8 @@ public class PlayerService {
         clearPlayerState(player);
         player.setInvulnerable(true);
 
-        World world = Mine3Auth.getPlugin().getServer()
-                .getWorld(SpawnConfig.getSpawnConfig().getString("spawn.world"));
-        Location spawnLocation = new Location(
-                world,
-                SpawnConfig.getSpawnConfig().getDouble("spawn.x"),
-                SpawnConfig.getSpawnConfig().getDouble("spawn.y"),
-                SpawnConfig.getSpawnConfig().getDouble("spawn.z"),
-                (float) SpawnConfig.getSpawnConfig().getDouble("spawn.yaw"),
-                (float) SpawnConfig.getSpawnConfig().getDouble("spawn.pitch"));
-        player.teleport(spawnLocation);
+        // Teleport Player to Spawn Location
+        player.teleport(spawnService.getSpawnLocation());
     }
 
     // setPlayerActiveState is set player state for active player
