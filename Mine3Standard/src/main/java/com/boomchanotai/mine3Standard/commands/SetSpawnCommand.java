@@ -24,7 +24,6 @@ public class SetSpawnCommand implements CommandExecutor {
         Player player = (Player) sender;
         SpawnConfig.setSpawnLocation(player.getLocation());
         player.getWorld().setSpawnLocation(player.getLocation());
-        // TODO: set respawn location for all players
         PlayerRepository.sendMessage(player, "Spawn location has been set.");
 
         return true;
