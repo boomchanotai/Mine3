@@ -48,6 +48,7 @@ public class Postgres {
         Statement statement = getConnection().createStatement();
         statement.execute("CREATE TABLE IF NOT EXISTS \"users\" (\n" +
                 "\t\"address\" TEXT PRIMARY KEY,\n" +
+                "\t\"ens_domain\" TEXT NOT NULL DEFAULT '',\n" +
                 "\t\"is_logged_in\" BOOLEAN NOT NULL DEFAULT FALSE,\n" +
                 "\t\"xp_level\" INTEGER NOT NULL DEFAULT 0,\n" +
                 "\t\"xp_exp\" FLOAT NOT NULL DEFAULT 0,\n" +

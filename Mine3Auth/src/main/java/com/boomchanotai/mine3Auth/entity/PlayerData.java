@@ -8,6 +8,7 @@ import org.bukkit.potion.PotionEffect;
 
 public class PlayerData {
     private String address;
+    private String ensDomain;
     private boolean isLoggedIn;
     private int xpLevel;
     private float xpExp;
@@ -25,11 +26,12 @@ public class PlayerData {
     private ItemStack[] enderchest;
     private PlayerLocation playerLocation;
 
-    public PlayerData(String address, boolean isLoggedIn, int xpLevel, float xpExp, double health, int foodLevel,
-            GameMode gameMode, float flySpeed, float walkSpeed, boolean allowFlight, boolean isFlying, boolean isOp,
-            boolean isBanned, Collection<PotionEffect> potionEffects, ItemStack[] inventory, ItemStack[] enderchest,
-            PlayerLocation playerLocation) {
+    public PlayerData(String address, String ensDomain, boolean isLoggedIn, int xpLevel, float xpExp, double health,
+            int foodLevel, GameMode gameMode, float flySpeed, float walkSpeed, boolean allowFlight, boolean isFlying,
+            boolean isOp, boolean isBanned, Collection<PotionEffect> potionEffects, ItemStack[] inventory,
+            ItemStack[] enderchest, PlayerLocation playerLocation) {
         this.address = address;
+        this.ensDomain = ensDomain;
         this.isLoggedIn = isLoggedIn;
         this.xpLevel = xpLevel;
         this.xpExp = xpExp;
@@ -48,13 +50,18 @@ public class PlayerData {
         this.playerLocation = playerLocation;
     }
 
-    public PlayerData(String address, PlayerLocation playerLocation) {
+    public PlayerData(String address, String ensDomain, PlayerLocation playerLocation) {
         this.address = address;
+        this.ensDomain = ensDomain;
         this.playerLocation = playerLocation;
     }
 
     public String getAddress() {
         return address;
+    }
+
+    public String getEnsDomain() {
+        return ensDomain;
     }
 
     public boolean isLoggedIn() {
@@ -123,6 +130,10 @@ public class PlayerData {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setEnsDomain(String ensDomain) {
+        this.ensDomain = ensDomain;
     }
 
     public void setLoggedIn(boolean loggedIn) {

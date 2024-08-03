@@ -96,7 +96,7 @@ public class AuthService {
                     player.getLocation().getPitch(),
                     Objects.requireNonNull(player.getLocation().getWorld()));
 
-            PlayerData createPlayerData = new PlayerData(parsedAddress, playerLocation);
+            PlayerData createPlayerData = new PlayerData(parsedAddress, "", playerLocation);
             pgRepo.createNewPlayer(createPlayerData);
         }
 
@@ -135,6 +135,7 @@ public class AuthService {
 
         PlayerData playerData = new PlayerData(
                 playerCacheData.getAddress(),
+                "",
                 false,
                 player.getLevel(),
                 player.getExp(),
