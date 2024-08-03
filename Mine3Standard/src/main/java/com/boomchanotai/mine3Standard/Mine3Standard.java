@@ -10,6 +10,7 @@ import com.boomchanotai.mine3Standard.commands.FeedCommand;
 import com.boomchanotai.mine3Standard.commands.FlyCommand;
 import com.boomchanotai.mine3Standard.commands.GameModeCommand;
 import com.boomchanotai.mine3Standard.commands.GiveCommand;
+import com.boomchanotai.mine3Standard.commands.GiveMeCommand;
 import com.boomchanotai.mine3Standard.commands.GodCommand;
 import com.boomchanotai.mine3Standard.commands.HealCommand;
 import com.boomchanotai.mine3Standard.commands.InvseeCommand;
@@ -36,6 +37,7 @@ import com.boomchanotai.mine3Standard.tabcompletion.EnderChestTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.FeedTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.FlyTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.GameModeTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.GiveMeTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.GiveTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.GodTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.HealTabCompletion;
@@ -100,6 +102,10 @@ public final class Mine3Standard extends JavaPlugin {
         // give
         getCommand("give").setExecutor(new GiveCommand());
         getCommand("give").setTabCompleter(new GiveTabCompletion());
+
+        // i
+        getCommand("i").setExecutor(new GiveMeCommand());
+        getCommand("i").setTabCompleter(new GiveMeTabCompletion());
 
         // gamemode
         getCommand("gamemode").setExecutor(new GameModeCommand());

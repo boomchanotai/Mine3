@@ -6,39 +6,37 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.web3j.crypto.Keys;
 
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
-public class GiveCommand implements CommandExecutor {
+public class GiveMeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length < 3 || args.length > 3) {
+        if (args.length != 2) {
             return false;
         }
 
+        // i <item> <amount> - (Player)
         if (!Utils.hasPermission(sender, "mine3.give")) {
             return true;
         }
 
-        // give <address> <item> <amount> - (Player, Console)
-        String targetAddress = Keys.toChecksumAddress(args[0]);
-        String item = args[1];
+        if (!Utils.isPlayerUsingCommand(sender)) {
+            return true;
+        }
+
+        String item = args[0];
         int amount;
         try {
-            amount = Integer.parseInt(args[2]);
+            amount = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
             Utils.sendCommandReturnMessage(sender, "Invalid amount.");
             return true;
         }
 
-        Player targetPlayer = PlayerRepository.getPlayer(targetAddress);
-        if (targetPlayer == null) {
-            Utils.sendCommandReturnMessage(sender, "Address not found.");
-            return true;
-        }
+        Player player = (Player) sender;
 
         Material material = Material.getMaterial(item.toUpperCase());
         if (material == null) {
@@ -47,8 +45,8 @@ public class GiveCommand implements CommandExecutor {
         }
 
         ItemStack itemStack = new ItemStack(material, amount);
-        targetPlayer.getInventory().addItem(itemStack);
-        PlayerRepository.sendMessage(targetPlayer, "You have been given " + amount + " " + item.toLowerCase() + ".");
+        player.getInventory().addItem(itemStack);
+        PlayerRepository.sendMessage(player, "You have been given " + amount + " " + item.toLowerCase() + ".");
 
         return true;
     }

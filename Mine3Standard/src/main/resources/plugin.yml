@@ -43,6 +43,11 @@ commands:
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> <item> <item> - give item to player
+  i:
+    description: Give item to player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <item> <item> - give item to player
   gamemode:
     description: Change player gamemode
     usage: |
