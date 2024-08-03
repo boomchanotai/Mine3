@@ -14,6 +14,7 @@ public class PlayerJoinServer implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
 
+        // set respawn point
         Location spawnLocation = SpawnConfig.getSpawnLocation();
         player.setRespawnLocation(spawnLocation, true);
     }

@@ -6,7 +6,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.config.SpawnConfig;
 
 public class PlayerDeath implements Listener {
@@ -18,10 +17,6 @@ public class PlayerDeath implements Listener {
         // set respawn point
         Location spawnLocation = SpawnConfig.getSpawnLocation();
         player.setRespawnLocation(spawnLocation, true);
-
-        // replace death message
-        String address = PlayerRepository.getAddress(player.getUniqueId());
-        e.setDeathMessage(e.getDeathMessage().replaceAll(player.getName(), address));
     }
 
 }
