@@ -11,7 +11,7 @@ public class Config {
     public static char COLOR_CODE_PREFIX;
 
     // Teleport Settings
-    public static String TELEPORT_TIMEOUT;
+    public static int TELEPORT_TIMEOUT;
 
     public static void saveDefaultConfig() {
         Mine3Standard.getPlugin().saveDefaultConfig();
@@ -21,6 +21,6 @@ public class Config {
         FileConfiguration config = Mine3Standard.getPlugin().getConfig();
         COLOR_CODE_PREFIX = Objects.requireNonNull(config.getString("color_code_prefix")).charAt(0);
 
-        TELEPORT_TIMEOUT = config.getString("teleport_timeout");
+        TELEPORT_TIMEOUT = config.getInt("teleport_timeout");
     }
 }

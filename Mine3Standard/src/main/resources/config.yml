@@ -6,4 +6,4 @@
 # Plugins settings
 color_code_prefix: "&" # Color code prefix
 
-teleport_timeout: 300 # Teleport timeout in seconds
+teleport_timeout: 300 # Teleport timeout in seconds (5 minutes)

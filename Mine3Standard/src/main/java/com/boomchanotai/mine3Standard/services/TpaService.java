@@ -7,6 +7,9 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.boomchanotai.mine3Standard.Mine3Standard;
 
+import static com.boomchanotai.mine3Standard.constants.Constants.TICKS_PER_SECOND;
+import static com.boomchanotai.mine3Standard.config.Config.TELEPORT_TIMEOUT;
+
 public class TpaService {
     private Mine3Standard plugin;
     // (hashmap) toAddress, fromAddress
@@ -22,19 +25,16 @@ public class TpaService {
         tpaRequests.put(toAddress, fromAddress);
 
         // add timeout for tpa request
-        // Timeout: 5 minutes
-        // task = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, new
-        // Runnable() {
-        // @Override
-        // public void run() {
-        // if (hasTpaRequest(toAddress) && getTpaRequest(toAddress).equals(fromAddress))
-        // {
-        // removeTpaRequest(toAddress);
-        // }
+        task = Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+            @Override
+            public void run() {
+                if (hasTpaRequest(toAddress) && getTpaRequest(toAddress).equals(fromAddress)) {
+                    removeTpaRequest(toAddress);
+                }
 
-        // task.cancel();
-        // }
-        // }, 10);
+                task.cancel();
+            }
+        }, TICKS_PER_SECOND * TELEPORT_TIMEOUT);
     }
 
     public void removeTpaRequest(String toAddress) {
