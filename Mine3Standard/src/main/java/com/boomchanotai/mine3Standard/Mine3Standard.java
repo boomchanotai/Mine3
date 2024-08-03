@@ -2,6 +2,7 @@ package com.boomchanotai.mine3Standard;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.boomchanotai.mine3Standard.commands.BanCommand;
 import com.boomchanotai.mine3Standard.commands.BroadcastCommand;
 import com.boomchanotai.mine3Standard.commands.BurnCommand;
 import com.boomchanotai.mine3Standard.commands.ClearInventoryCommand;
@@ -31,6 +32,7 @@ import com.boomchanotai.mine3Standard.config.SpawnConfig;
 import com.boomchanotai.mine3Standard.listener.PlayerDeath;
 import com.boomchanotai.mine3Standard.listener.PlayerJoinServer;
 import com.boomchanotai.mine3Standard.services.TpaService;
+import com.boomchanotai.mine3Standard.tabcompletion.BanTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.BurnTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.ClearInventoryTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.EnderChestTabCompletion;
@@ -169,6 +171,10 @@ public final class Mine3Standard extends JavaPlugin {
 
         // spawn
         getCommand("spawn").setExecutor(new SpawnCommand());
+
+        // ban
+        getCommand("ban").setExecutor(new BanCommand());
+        getCommand("ban").setTabCompleter(new BanTabCompletion());
     }
 
     @Override

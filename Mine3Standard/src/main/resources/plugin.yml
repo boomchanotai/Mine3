@@ -143,6 +143,11 @@ commands:
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> - teleport to spawn
+  ban:
+    description: Ban player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <address> - ban player
 permissions:
   mine3.tp:
     description: allow player to teleport to player
@@ -211,3 +216,5 @@ permissions:
   mine3.spawn:
     description: allow player to teleport to spawn
     default: true
+  mine3.ban:
+    description: allow player to ban player

@@ -8,8 +8,11 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.BanList;
+import org.bukkit.ban.ProfileBanList;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.potion.PotionEffect;
@@ -88,6 +91,10 @@ public class PlayerService {
         player.setWalkSpeed(0.2F);
         player.setFlying(false);
         player.setOp(false);
+
+        ProfileBanList profileBanList = Bukkit.getBanList(BanList.Type.PROFILE);
+        profileBanList.pardon(player.getPlayerProfile());
+
         player.getInventory().clear();
         player.getEnderChest().clear();
 
@@ -101,6 +108,12 @@ public class PlayerService {
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
+                // Check Player Ban
+                if (playerData.isBanned()) {
+                    player.ban("You are banned from this server.", (Date) null, null);
+                    return;
+                }
+
                 // Set Player State
                 player.setLevel(playerData.getXpLevel());
                 player.setExp(playerData.getXpExp());
