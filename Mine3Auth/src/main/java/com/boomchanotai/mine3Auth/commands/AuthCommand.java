@@ -28,6 +28,7 @@ public class AuthCommand implements CommandExecutor {
 
         if (args[0].equals("setspawn")) {
             if (!(sender instanceof Player)) {
+                Logger.info("This command can only be run by a player.");
                 return false;
             }
 
@@ -45,6 +46,7 @@ public class AuthCommand implements CommandExecutor {
 
         if (args[0].equals("spawn")) {
             if (!(sender instanceof Player)) {
+                Logger.info("This command can only be run by a player.");
                 return false;
             }
 

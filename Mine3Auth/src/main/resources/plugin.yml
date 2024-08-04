@@ -29,21 +29,27 @@ commands:
   auth setspawn:
     description: set spawn point on player join
     usage: /<command> setspawn
-    permission: "mine3.setspawn"
+    permission: "mine3.auth.setspawn"
     permission-message: You don't have permission to use this command
   auth reload:
     description: reload plugin
     usage: /<command> reload
+    permission: "mine3.auth.reload"
+    permission-message: You don't have permission to use this command
   ban:
     description: ban player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <player> - ban player
       /<command> <player> <reason> - ban player with reason
+    permission: "mine3.ban"
+    permission-message: You don't have permission to use this command
   pardon:
     description: unban player
     usage: /<command> <player>
     aliases: [unban]
+    permission: "mine3.pardon"
+    permission-message: You don't have permission to use this command
 permissions:
   mine3.auth.setspawn:
     description: allow player to set spawn point

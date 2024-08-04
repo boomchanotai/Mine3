@@ -35,4 +35,11 @@ public class Config {
         PLAYER_ADDRESS_KEY = config.getString("player.address_key");
         PLAYER_PLAYER_KEY = config.getString("player.player_key");
     }
+
+    public static void reloadConfig() {
+        Mine3Lib.getPlugin().reloadConfig();
+        saveDefaultConfig();
+        Mine3Lib.getPlugin().getConfig().options().copyDefaults(true);
+        loadConfig();
+    }
 }
