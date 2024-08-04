@@ -1,6 +1,5 @@
 package com.boomchanotai.mine3Auth.service;
 
-import com.boomchanotai.mine3Auth.Mine3Auth;
 import com.boomchanotai.mine3Auth.entity.PlayerData;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
@@ -16,7 +15,6 @@ import org.bukkit.ban.ProfileBanList;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import static com.boomchanotai.mine3Auth.config.Config.*;
 
@@ -105,48 +103,42 @@ public class PlayerService {
 
     // restorePlayerState is restore player state from database
     public void restorePlayerState(Player player, PlayerData playerData) {
-        BukkitRunnable runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                // Check Player Ban
-                if (playerData.isBanned()) {
-                    player.ban("You are banned from this server.", (Date) null, null);
-                    return;
-                }
+        // Check Player Ban
+        if (playerData.isBanned()) {
+            player.ban("You are banned from this server.", (Date) null, null);
+            return;
+        }
 
-                // Set Player State
-                player.setLevel(playerData.getXpLevel());
-                player.setExp(playerData.getXpExp());
-                player.setHealth(playerData.getHealth());
-                player.setFoodLevel(playerData.getFoodLevel());
-                player.setGameMode(playerData.getGameMode());
-                player.setFlySpeed(playerData.getFlySpeed());
-                player.setWalkSpeed(playerData.getWalkSpeed());
-                player.setAllowFlight(playerData.getAllowFlight());
-                player.setFlying(playerData.isFlying());
-                player.setOp(playerData.isOp());
-                player.getInventory().setContents(playerData.getInventory());
-                player.getEnderChest().setContents(playerData.getEnderchest());
+        // Set Player State
+        player.setLevel(playerData.getXpLevel());
+        player.setExp(playerData.getXpExp());
+        player.setHealth(playerData.getHealth());
+        player.setFoodLevel(playerData.getFoodLevel());
+        player.setGameMode(playerData.getGameMode());
+        player.setFlySpeed(playerData.getFlySpeed());
+        player.setWalkSpeed(playerData.getWalkSpeed());
+        player.setAllowFlight(playerData.getAllowFlight());
+        player.setFlying(playerData.isFlying());
+        player.setOp(playerData.isOp());
+        player.getInventory().setContents(playerData.getInventory());
+        player.getEnderChest().setContents(playerData.getEnderchest());
 
-                for (PotionEffect potionEffect : playerData.getPotionEffects()) {
-                    player.addPotionEffect(potionEffect);
-                }
+        for (PotionEffect potionEffect : playerData.getPotionEffects()) {
+            player.addPotionEffect(potionEffect);
+        }
 
-                player.setDisplayName(playerData.getAddress().getValue());
-                player.setPlayerListName(playerData.getAddress().getValue());
+        player.setDisplayName(playerData.getAddress().getValue());
+        player.setPlayerListName(playerData.getAddress().getValue());
 
-                // Teleport Player to Last Location
-                Location lastLocation = new Location(
-                        playerData.getPlayerLocation().getWorld(),
-                        playerData.getPlayerLocation().getX(),
-                        playerData.getPlayerLocation().getY(),
-                        playerData.getPlayerLocation().getZ(),
-                        playerData.getPlayerLocation().getYaw(),
-                        playerData.getPlayerLocation().getPitch());
-                player.teleport(lastLocation, TeleportCause.PLUGIN);
-            }
-        };
-        runnable.runTaskLater(Mine3Auth.getPlugin(), 0);
+        // Teleport Player to Last Location
+        Location lastLocation = new Location(
+                playerData.getPlayerLocation().getWorld(),
+                playerData.getPlayerLocation().getX(),
+                playerData.getPlayerLocation().getY(),
+                playerData.getPlayerLocation().getZ(),
+                playerData.getPlayerLocation().getYaw(),
+                playerData.getPlayerLocation().getPitch());
+        player.teleport(lastLocation, TeleportCause.PLUGIN);
     }
 
     // setPlayerIdleState is set player state for waiting login complete

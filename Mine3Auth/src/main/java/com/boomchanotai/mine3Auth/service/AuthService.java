@@ -4,9 +4,12 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import com.boomchanotai.mine3Lib.address.Address;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
 import com.boomchanotai.mine3Auth.Mine3Auth;
 import com.boomchanotai.mine3Auth.entity.PlayerCacheData;
 import com.boomchanotai.mine3Auth.entity.PlayerData;
@@ -86,33 +89,15 @@ public class AuthService {
         playerService.addPlayer(playerUUID); // Add player to player list
         redisRepo.deleteToken(token); // Delete login token
 
-        // 5. Create User in Database if not exist
-        if (!pgRepo.isAddressExist(address)) {
-            PlayerLocation playerLocation = new PlayerLocation(
-                    player.getLocation().getX(),
-                    player.getLocation().getY(),
-                    player.getLocation().getZ(),
-                    player.getLocation().getYaw(),
-                    player.getLocation().getPitch(),
-                    Objects.requireNonNull(player.getLocation().getWorld()));
-
-            PlayerData createPlayerData = new PlayerData(address, "", playerLocation);
-            pgRepo.createNewPlayer(createPlayerData);
-        }
-
-        // 6. Update user login status
-        pgRepo.setUserLoggedIn(address);
-
-        // 7. Restore player data
-        PlayerData playerData = pgRepo.getPlayerData(address);
-        if (playerData == null) {
-            Logger.warning("PlayerData is null", "Failed to get player data in database.", address.getValue());
-            return;
-        }
-        playerService.restorePlayerState(player, playerData);
-        playerService.setPlayerActiveState(player);
-        playerService.sendAuthenticatedTitle(player);
-        PlayerRepository.sendMessage(player, "Login as " + address);
+        // 5. Call PlayerAuthEvent
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                PlayerAuthEvent playerAuthEvent = new PlayerAuthEvent(address, player);
+                Bukkit.getPluginManager().callEvent(playerAuthEvent);
+            }
+        };
+        runnable.runTaskLater(Mine3Auth.getPlugin(), 0);
     }
 
     public void disconnect(Player player) {
