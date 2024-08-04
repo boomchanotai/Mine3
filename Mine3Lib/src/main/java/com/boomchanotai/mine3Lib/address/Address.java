@@ -20,10 +20,16 @@ public class Address {
         return address.getValue();
     }
 
-    public boolean equals(Address other) {
-        if (this.address.equals(other.address)) {
-            return true;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Address) {
+            return address.equals(((Address) obj).address);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return address.hashCode();
     }
 }
