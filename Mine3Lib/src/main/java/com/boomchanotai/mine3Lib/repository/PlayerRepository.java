@@ -14,15 +14,15 @@ import com.boomchanotai.mine3Lib.Mine3Lib;
 import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.redis.Redis;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import redis.clients.jedis.Jedis;
 
 public class PlayerRepository {
-    ObjectMapper mapper = new ObjectMapper();
+    private static ArrayList<Address> playerList = new ArrayList<>();
 
+    // Get All Address in Redis
     public static ArrayList<Address> getAllAddress() {
         ArrayList<Address> allAddress = new ArrayList<>();
         try (Jedis j = Redis.getPool().getResource()) {
@@ -36,6 +36,11 @@ public class PlayerRepository {
         }
 
         return allAddress;
+    }
+
+    // Get All Player in this server
+    public static ArrayList<Address> getOnlinePlayers() {
+        return playerList;
     }
 
     public static Address getAddress(UUID uuid) {
@@ -90,6 +95,8 @@ public class PlayerRepository {
         } catch (Exception e) {
             Logger.warning(e.getMessage(), "failed to set player player key", player.getUniqueId().toString());
         }
+
+        playerList.add(address);
     }
 
     public static void removePlayer(Address address) {
@@ -106,6 +113,8 @@ public class PlayerRepository {
         } catch (Exception e) {
             Logger.warning(e.getMessage(), "failed to remove player player key", player.getUniqueId().toString());
         }
+
+        playerList.remove(address);
     }
 
     public static void clearPlayer() {
@@ -115,6 +124,8 @@ public class PlayerRepository {
         } catch (Exception e) {
             Logger.warning(e.getMessage(), "failed to clear player");
         }
+
+        playerList.clear();
     }
 
     public static void sendMessage(Player player, String message) {

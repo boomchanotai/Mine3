@@ -17,7 +17,7 @@ public class TpaHereTabCompletion implements TabCompleter {
         List<String> subCommand = new ArrayList<>();
 
         if (args.length == 1) {
-            ArrayList<Address> address = PlayerRepository.getAllAddress();
+            ArrayList<Address> address = PlayerRepository.getOnlinePlayers();
             for (Address a : address) {
                 if (a.getValue().toLowerCase().contains(args[0].toLowerCase())) {
                     subCommand.add(a.getValue());

@@ -32,7 +32,7 @@ public class GameModeTabCompletion implements TabCompleter {
         }
 
         if (args.length == 2) {
-            ArrayList<Address> address = PlayerRepository.getAllAddress();
+            ArrayList<Address> address = PlayerRepository.getOnlinePlayers();
             for (Address a : address) {
                 if (a.getValue().toLowerCase().contains(args[1].toLowerCase())) {
                     subCommand.add(a.getValue());

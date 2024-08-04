@@ -19,7 +19,7 @@ public class KillTabCompletion implements TabCompleter {
         if (args.length == 1) {
             subCommand.add("all");
 
-            ArrayList<Address> address = PlayerRepository.getAllAddress();
+            ArrayList<Address> address = PlayerRepository.getOnlinePlayers();
             for (Address a : address) {
                 if (a.getValue().toLowerCase().contains(args[0].toLowerCase())) {
                     subCommand.add(a.getValue());
