@@ -128,8 +128,8 @@ public class PlayerService {
             player.addPotionEffect(potionEffect);
         }
 
-        player.setDisplayName(playerData.getAddress().getValue());
-        player.setPlayerListName(playerData.getAddress().getValue());
+        player.setDisplayName(playerData.getAddress().getShortAddress());
+        player.setPlayerListName(playerData.getAddress().getShortAddress());
 
         // Teleport Player to Last Location
         Location lastLocation = new Location(
@@ -145,7 +145,10 @@ public class PlayerService {
     // setPlayerIdleState is set player state for waiting login complete
     public void setPlayerIdleState(Player player) {
         clearPlayerState(player);
+        player.setPlayerListName("Anonymous");
+
         player.setInvulnerable(true);
+        player.setInvisible(true);
 
         // Teleport Player to Spawn Location
         player.teleport(spawnService.getSpawnLocation());
@@ -154,6 +157,7 @@ public class PlayerService {
     // setPlayerActiveState is set player state for active player
     public void setPlayerActiveState(Player player) {
         player.setInvulnerable(false);
+        player.setInvisible(false);
     }
 
     public void sendJoinMessage(Address address) {
