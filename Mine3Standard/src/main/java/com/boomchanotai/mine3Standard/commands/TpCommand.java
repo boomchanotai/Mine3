@@ -4,8 +4,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.web3j.crypto.Keys;
 
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
@@ -31,7 +31,7 @@ public class TpCommand implements CommandExecutor {
                 return true;
             }
 
-            String toAddress = Keys.toChecksumAddress(args[0]);
+            Address toAddress = new Address(args[0]);
 
             fromPlayer = (Player) sender;
             toPlayer = PlayerRepository.getPlayer(toAddress);
@@ -43,8 +43,8 @@ public class TpCommand implements CommandExecutor {
                 return true;
             }
 
-            String fromAddress = Keys.toChecksumAddress(args[0]);
-            String toAddress = Keys.toChecksumAddress(args[1]);
+            Address fromAddress = new Address(args[0]);
+            Address toAddress = new Address(args[1]);
 
             fromPlayer = PlayerRepository.getPlayer(fromAddress);
             toPlayer = PlayerRepository.getPlayer(toAddress);

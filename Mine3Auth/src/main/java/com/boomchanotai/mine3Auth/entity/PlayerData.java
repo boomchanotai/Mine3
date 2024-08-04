@@ -5,9 +5,10 @@ import java.util.Collection;
 import org.bukkit.GameMode;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import com.boomchanotai.mine3Lib.address.Address;
 
 public class PlayerData {
-    private String address;
+    private Address address;
     private String ensDomain;
     private boolean isLoggedIn;
     private int xpLevel;
@@ -26,7 +27,7 @@ public class PlayerData {
     private ItemStack[] enderchest;
     private PlayerLocation playerLocation;
 
-    public PlayerData(String address, String ensDomain, boolean isLoggedIn, int xpLevel, float xpExp, double health,
+    public PlayerData(Address address, String ensDomain, boolean isLoggedIn, int xpLevel, float xpExp, double health,
             int foodLevel, GameMode gameMode, float flySpeed, float walkSpeed, boolean allowFlight, boolean isFlying,
             boolean isOp, boolean isBanned, Collection<PotionEffect> potionEffects, ItemStack[] inventory,
             ItemStack[] enderchest, PlayerLocation playerLocation) {
@@ -50,13 +51,13 @@ public class PlayerData {
         this.playerLocation = playerLocation;
     }
 
-    public PlayerData(String address, String ensDomain, PlayerLocation playerLocation) {
+    public PlayerData(Address address, String ensDomain, PlayerLocation playerLocation) {
         this.address = address;
         this.ensDomain = ensDomain;
         this.playerLocation = playerLocation;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
@@ -128,7 +129,7 @@ public class PlayerData {
         return playerLocation;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

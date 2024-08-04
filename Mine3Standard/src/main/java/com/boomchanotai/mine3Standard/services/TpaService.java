@@ -5,10 +5,9 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import org.web3j.crypto.Keys;
 
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
-import com.boomchanotai.mine3Lib.utils.AddressUtils;
 import com.boomchanotai.mine3Standard.Mine3Standard;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
@@ -25,7 +24,7 @@ public class TpaService {
 
     private Mine3Standard plugin;
     // (hashmap) toAddress, fromAddress
-    private static HashMap<String, Pair<String, TpaType>> tpaRequests;
+    private static HashMap<Address, Pair<Address, TpaType>> tpaRequests;
     private BukkitTask task;
 
     public TpaService(Mine3Standard plugin) {
@@ -33,7 +32,7 @@ public class TpaService {
         tpaRequests = new HashMap<>();
     }
 
-    public void addTpaRequest(String fromAddress, String toAddress) {
+    public void addTpaRequest(Address fromAddress, Address toAddress) {
         tpaRequests.put(toAddress, new Pair<>(fromAddress, TpaType.TPA));
 
         // add timeout for tpa request
@@ -49,11 +48,11 @@ public class TpaService {
         }, TICKS_PER_SECOND * TELEPORT_TIMEOUT);
     }
 
-    public void removeTpaRequest(String address) {
+    public void removeTpaRequest(Address address) {
         tpaRequests.remove(address);
     }
 
-    public void addTpaHereRequest(String fromAddress, String toAddress) {
+    public void addTpaHereRequest(Address fromAddress, Address toAddress) {
         tpaRequests.put(toAddress, new Pair<>(fromAddress, TpaType.TPAHERE));
 
         // add timeout for tpa request
@@ -69,7 +68,7 @@ public class TpaService {
         }, TICKS_PER_SECOND * TELEPORT_TIMEOUT);
     }
 
-    public boolean hasTpaRequest(String address, String type) {
+    public boolean hasTpaRequest(Address address, String type) {
         TpaType tpaType = null;
 
         switch (type) {
@@ -90,7 +89,7 @@ public class TpaService {
         return tpaRequests.containsKey(address) && tpaRequests.get(address).getSecond() == tpaType;
     }
 
-    public Pair<String, TpaType> getTpaRequest(String address) {
+    public Pair<Address, TpaType> getTpaRequest(Address address) {
         return tpaRequests.get(address);
     }
 
@@ -98,10 +97,10 @@ public class TpaService {
         tpaRequests.clear();
     }
 
-    public void acceptTpaRequest(String address) {
-        Pair<String, TpaType> request = getTpaRequest(address);
+    public void acceptTpaRequest(Address address) {
+        Pair<Address, TpaType> request = getTpaRequest(address);
         if (request == null) {
-            Utils.sendCommandReturnMessage(PlayerRepository.getPlayer(Keys.toChecksumAddress(address)),
+            Utils.sendCommandReturnMessage(PlayerRepository.getPlayer(address),
                     "You don't have any tpa request.");
             return;
         }
@@ -109,7 +108,7 @@ public class TpaService {
         removeTpaRequest(address);
 
         if (request.getSecond() == TpaType.TPA) {
-            String toPlayerAddress = Keys.toChecksumAddress(address);
+            Address toPlayerAddress = address;
 
             Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
             if (toPlayer == null) {
@@ -117,24 +116,24 @@ public class TpaService {
                 return;
             }
 
-            String fromPlayerAddress = request.getFirst();
+            Address fromPlayerAddress = request.getFirst();
 
             Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
             if (fromPlayer == null) {
                 Utils.sendCommandReturnMessage(fromPlayer,
-                        "Not found " + AddressUtils.getShortAddress(fromPlayerAddress) + " in game.");
+                        "Not found " + fromPlayerAddress.getShortAddress() + " in game.");
                 return;
             }
 
             fromPlayer.teleport(toPlayer.getLocation());
             PlayerRepository.sendMessage(fromPlayer,
-                    "Teleporting to " + AddressUtils.getShortAddress(toPlayerAddress) + "...");
+                    "Teleporting to " + toPlayerAddress.getShortAddress() + "...");
             PlayerRepository.sendMessage(toPlayer,
-                    "Teleporting " + AddressUtils.getShortAddress(fromPlayerAddress) + " to you...");
+                    "Teleporting " + fromPlayerAddress.getShortAddress() + " to you...");
 
             return;
         } else if (request.getSecond() == TpaType.TPAHERE) {
-            String fromPlayerAddress = Keys.toChecksumAddress(address);
+            Address fromPlayerAddress = address;
 
             Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
             if (fromPlayer == null) {
@@ -142,29 +141,29 @@ public class TpaService {
                 return;
             }
 
-            String toPlayerAddress = request.getFirst();
+            Address toPlayerAddress = request.getFirst();
 
             Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
             if (toPlayer == null) {
                 Utils.sendCommandReturnMessage(toPlayer,
-                        "Not found " + AddressUtils.getShortAddress(toPlayerAddress) + " in game.");
+                        "Not found " + toPlayerAddress.getShortAddress() + " in game.");
                 return;
             }
 
             fromPlayer.teleport(toPlayer.getLocation());
             PlayerRepository.sendMessage(fromPlayer,
-                    "Teleporting to " + AddressUtils.getShortAddress(fromPlayerAddress) + "...");
+                    "Teleporting to " + fromPlayerAddress.getShortAddress() + "...");
             PlayerRepository.sendMessage(toPlayer,
-                    "Teleporting " + AddressUtils.getShortAddress(toPlayerAddress) + " to you...");
+                    "Teleporting " + toPlayerAddress.getShortAddress() + " to you...");
 
             return;
         }
     }
 
-    public void cancelTpaRequest(String address) {
-        Pair<String, TpaType> request = getTpaRequest(address);
+    public void cancelTpaRequest(Address address) {
+        Pair<Address, TpaType> request = getTpaRequest(address);
         if (request == null) {
-            Utils.sendCommandReturnMessage(PlayerRepository.getPlayer(Keys.toChecksumAddress(address)),
+            Utils.sendCommandReturnMessage(PlayerRepository.getPlayer(address),
                     "You don't have any tpa request.");
             return;
         }
@@ -172,7 +171,7 @@ public class TpaService {
         removeTpaRequest(address);
 
         if (request.getSecond() == TpaType.TPA) {
-            String toPlayerAddress = Keys.toChecksumAddress(address);
+            Address toPlayerAddress = address;
 
             Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
             if (toPlayer == null) {
@@ -180,23 +179,23 @@ public class TpaService {
                 return;
             }
 
-            String fromPlayerAddress = request.getFirst();
+            Address fromPlayerAddress = request.getFirst();
 
             Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
             if (fromPlayer == null) {
                 Utils.sendCommandReturnMessage(fromPlayer,
-                        "Not found " + AddressUtils.getShortAddress(fromPlayerAddress) + " in game.");
+                        "Not found " + fromPlayerAddress.getShortAddress() + " in game.");
                 return;
             }
 
             PlayerRepository.sendMessage(fromPlayer,
-                    "Tpa request to " + AddressUtils.getShortAddress(toPlayerAddress) + " has been canceled.");
+                    "Tpa request to " + toPlayerAddress.getShortAddress() + " has been canceled.");
             PlayerRepository.sendMessage(toPlayer,
-                    "Tpa request from " + AddressUtils.getShortAddress(fromPlayerAddress) + " has been canceled.");
+                    "Tpa request from " + fromPlayerAddress.getShortAddress() + " has been canceled.");
 
             return;
         } else if (request.getSecond() == TpaType.TPAHERE) {
-            String fromPlayerAddress = Keys.toChecksumAddress(address);
+            Address fromPlayerAddress = address;
 
             Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
             if (fromPlayer == null) {
@@ -204,19 +203,19 @@ public class TpaService {
                 return;
             }
 
-            String toPlayerAddress = request.getFirst();
+            Address toPlayerAddress = request.getFirst();
 
             Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
             if (toPlayer == null) {
                 Utils.sendCommandReturnMessage(toPlayer,
-                        "Not found " + AddressUtils.getShortAddress(toPlayerAddress) + " in game.");
+                        "Not found " + toPlayerAddress.getShortAddress() + " in game.");
                 return;
             }
 
             PlayerRepository.sendMessage(toPlayer,
-                    "Tpahere request from " + AddressUtils.getShortAddress(fromPlayerAddress) + " has been canceled.");
+                    "Tpahere request from " + fromPlayerAddress.getShortAddress() + " has been canceled.");
             PlayerRepository.sendMessage(fromPlayer,
-                    "Tpahere request to " + AddressUtils.getShortAddress(toPlayerAddress) + " has been canceled.");
+                    "Tpahere request to " + toPlayerAddress.getShortAddress() + " has been canceled.");
 
             return;
         }

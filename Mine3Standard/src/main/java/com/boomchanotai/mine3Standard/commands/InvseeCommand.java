@@ -14,11 +14,10 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.web3j.crypto.Keys;
 
 import com.boomchanotai.mine3Standard.logger.Logger;
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
-import com.boomchanotai.mine3Lib.utils.AddressUtils;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
 public class InvseeCommand implements CommandExecutor, Listener {
@@ -35,15 +34,15 @@ public class InvseeCommand implements CommandExecutor, Listener {
             return true;
         }
 
-        String address = Keys.toChecksumAddress(args[0]);
-        Player targetPlayer = PlayerRepository.getPlayer(args[0]);
+        Address address = new Address(args[0]);
+        Player targetPlayer = PlayerRepository.getPlayer(address);
         if (targetPlayer == null) {
             Utils.sendCommandReturnMessage(sender, "Address not found.");
             return true;
         }
 
         ItemStack[] items = targetPlayer.getInventory().getContents();
-        String title = AddressUtils.getShortAddress(address) + "'s Inventory";
+        String title = address.getShortAddress() + "'s Inventory";
 
         if (sender instanceof Player) {
             Player player = (Player) sender;

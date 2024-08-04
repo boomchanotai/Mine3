@@ -5,6 +5,8 @@ import com.boomchanotai.mine3Auth.logger.Logger;
 import com.boomchanotai.mine3Auth.redis.Redis;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.boomchanotai.mine3Lib.address.Address;
 import org.web3j.crypto.Keys;
 import redis.clients.jedis.Jedis;
 
@@ -55,10 +57,10 @@ public class RedisRepository {
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode node = mapper.readTree(info);
-            String address = node.get("address").asText();
-            String parsedAddress = Keys.toChecksumAddress(address);
+            String addr = node.get("address").asText();
+            Address address = new Address(addr);
 
-            return new PlayerCacheData(parsedAddress);
+            return new PlayerCacheData(address);
         } catch (Exception e) {
             Logger.warning(e.getMessage());
         }

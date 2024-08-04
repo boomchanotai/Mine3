@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
@@ -37,7 +38,8 @@ public class ClearInventoryCommand implements CommandExecutor {
                 return true;
             }
 
-            targetPlayer = PlayerRepository.getPlayer(args[0]);
+            Address address = new Address(args[0]);
+            targetPlayer = PlayerRepository.getPlayer(address);
         }
 
         if (targetPlayer == null) {

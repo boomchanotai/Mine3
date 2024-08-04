@@ -3,6 +3,7 @@ package com.boomchanotai.mine3Auth.repository;
 import com.boomchanotai.mine3Auth.entity.PlayerData;
 import com.boomchanotai.mine3Auth.entity.PlayerLocation;
 import com.boomchanotai.mine3Auth.postgres.Postgres;
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Auth.logger.Logger;
 import com.boomchanotai.mine3Auth.Mine3Auth;
 
@@ -11,7 +12,6 @@ import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.postgresql.util.PGobject;
-import org.web3j.crypto.Keys;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,13 +28,11 @@ public class PostgresRepository {
         this.potionEffectAdapter = potionEffectAdapter;
     }
 
-    public boolean isAddressExist(String address) {
-        String parsedAddress = Keys.toChecksumAddress(address);
-
+    public boolean isAddressExist(Address address) {
         try {
             PreparedStatement preparedStatement = Postgres.getConnection()
                     .prepareStatement("SELECT * FROM users WHERE address = ?");
-            preparedStatement.setString(1, parsedAddress);
+            preparedStatement.setString(1, address.getValue());
             ResultSet res = preparedStatement.executeQuery();
 
             return res.next();
@@ -45,14 +43,13 @@ public class PostgresRepository {
         return false;
     }
 
-    public PlayerData getPlayerData(String address) {
-        String parsedAddress = Keys.toChecksumAddress(address);
+    public PlayerData getPlayerData(Address address) {
         String query = "SELECT * FROM users WHERE address = ?";
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection()
                     .prepareStatement(query);
-            preparedStatement.setString(1, parsedAddress);
+            preparedStatement.setString(1, address.getValue());
             ResultSet res = preparedStatement.executeQuery();
 
             if (res.next()) {
@@ -94,7 +91,7 @@ public class PostgresRepository {
                 PGobject enderChestObject = (PGobject) res.getObject("ender_chest");
                 ItemStack[] enderChest = itemStackAdapter.ParseItemStackListFromPGObject(enderChestObject);
 
-                PlayerData playerData = new PlayerData(parsedAddress, ensDomain, isLoggedIn, xpLevel, xpExp, health,
+                PlayerData playerData = new PlayerData(address, ensDomain, isLoggedIn, xpLevel, xpExp, health,
                         foodLevel,
                         gameMode, flySpeed, walkSpeed, allowFlight, isFlying, isOp, isBanned, potionEffects, inventory,
                         enderChest,
@@ -116,7 +113,7 @@ public class PostgresRepository {
             PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
 
             // set address
-            preparedStatement.setString(1, playerData.getAddress());
+            preparedStatement.setString(1, playerData.getAddress().getValue());
             // set ens_domain
             preparedStatement.setString(2, playerData.getEnsDomain());
             // set is_logged_in
@@ -195,39 +192,38 @@ public class PostgresRepository {
             // set last_location_world
             preparedStatement.setString(22, playerData.getPlayerLocation().getWorld().getName());
             // set address
-            String parsedAddress = Keys.toChecksumAddress(playerData.getAddress());
-            preparedStatement.setString(23, parsedAddress);
+            preparedStatement.setString(23, playerData.getAddress().getValue());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             Logger.warning(e.getMessage(), "failed to update user inventory");
         }
     }
 
-    public void setUserLoggedIn(String address) {
+    public void setUserLoggedIn(Address address) {
         String query = "UPDATE users SET is_logged_in = true, last_login = CURRENT_TIMESTAMP WHERE address = ?";
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
 
             // set address
-            String parsedAddress = Keys.toChecksumAddress(address);
-            preparedStatement.setString(1, parsedAddress);
+            preparedStatement.setString(1, address.getValue());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             Logger.warning(e.getMessage(), "failed to update user login");
         }
     }
 
-    public ArrayList<String> getBannedPlayers() {
+    public ArrayList<Address> getBannedPlayers() {
         String query = "SELECT address FROM users WHERE is_banned = true";
-        ArrayList<String> bannedPlayers = new ArrayList<>();
+        ArrayList<Address> bannedPlayers = new ArrayList<>();
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
             ResultSet res = preparedStatement.executeQuery();
 
             while (res.next()) {
-                String address = res.getString("address");
+                String addr = res.getString("address");
+                Address address = new Address(addr);
                 bannedPlayers.add(address);
             }
         } catch (SQLException e) {
@@ -237,7 +233,7 @@ public class PostgresRepository {
         return bannedPlayers;
     }
 
-    public void setPlayerBanned(String address, boolean isBanned) {
+    public void setPlayerBanned(Address address, boolean isBanned) {
         String query = "UPDATE users SET is_banned = ? WHERE address = ?";
 
         try {
@@ -246,8 +242,7 @@ public class PostgresRepository {
             // set is_banned
             preparedStatement.setBoolean(1, isBanned);
             // set address
-            String parsedAddress = Keys.toChecksumAddress(address);
-            preparedStatement.setString(2, parsedAddress);
+            preparedStatement.setString(2, address.getValue());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             Logger.warning(e.getMessage(), "failed to update user ban status");

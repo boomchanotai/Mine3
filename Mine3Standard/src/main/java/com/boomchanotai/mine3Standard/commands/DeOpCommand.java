@@ -4,10 +4,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.web3j.crypto.Keys;
 
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
-import com.boomchanotai.mine3Lib.utils.AddressUtils;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
 public class DeOpCommand implements CommandExecutor {
@@ -23,7 +22,7 @@ public class DeOpCommand implements CommandExecutor {
             return true;
         }
 
-        String address = Keys.toChecksumAddress(args[0]);
+        Address address = new Address(args[0]);
 
         Player targetPlayer = PlayerRepository.getPlayer(address);
         if (targetPlayer == null) {
@@ -33,7 +32,7 @@ public class DeOpCommand implements CommandExecutor {
 
         if (!targetPlayer.isOp()) {
             Utils.sendCommandReturnMessage(sender,
-                    AddressUtils.getShortAddress(address) + " is already not an operator.");
+                    address.getShortAddress() + " is already not an operator.");
             return true;
         }
 

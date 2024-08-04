@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.services.TpaService;
 import com.boomchanotai.mine3Standard.utils.Utils;
@@ -33,7 +34,7 @@ public class TpaCancelCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        String playerAddress = PlayerRepository.getAddress(player.getUniqueId());
+        Address playerAddress = PlayerRepository.getAddress(player.getUniqueId());
         if (playerAddress == null) {
             Utils.sendCommandReturnMessage(sender, "Can't parse your address. Please login again.");
             return true;

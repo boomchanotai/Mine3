@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.Mine3Standard;
 import com.boomchanotai.mine3Standard.utils.Utils;
@@ -42,7 +43,8 @@ public class KickCommand implements CommandExecutor {
             return true;
         }
 
-        Player targetPlayer = PlayerRepository.getPlayer(args[0]);
+        Address address = new Address(args[0]);
+        Player targetPlayer = PlayerRepository.getPlayer(address);
         if (targetPlayer == null) {
             Utils.sendCommandReturnMessage(sender, "Address not found.");
             return true;

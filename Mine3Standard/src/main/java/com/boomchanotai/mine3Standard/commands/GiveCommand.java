@@ -6,8 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.web3j.crypto.Keys;
 
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
@@ -24,7 +24,7 @@ public class GiveCommand implements CommandExecutor {
         }
 
         // give <address> <item> <amount> - (Player, Console)
-        String targetAddress = Keys.toChecksumAddress(args[0]);
+        Address address = new Address(args[0]);
         String item = args[1];
         int amount;
         try {
@@ -34,7 +34,7 @@ public class GiveCommand implements CommandExecutor {
             return true;
         }
 
-        Player targetPlayer = PlayerRepository.getPlayer(targetAddress);
+        Player targetPlayer = PlayerRepository.getPlayer(address);
         if (targetPlayer == null) {
             Utils.sendCommandReturnMessage(sender, "Address not found.");
             return true;

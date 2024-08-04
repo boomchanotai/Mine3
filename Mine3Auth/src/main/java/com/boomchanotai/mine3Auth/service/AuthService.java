@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
-import org.web3j.crypto.Keys;
+import com.boomchanotai.mine3Lib.address.Address;
 
 import com.boomchanotai.mine3Auth.Mine3Auth;
 import com.boomchanotai.mine3Auth.entity.PlayerCacheData;
@@ -58,36 +58,36 @@ public class AuthService {
     }
 
     // When player login with website
-    public void authenticate(String token, String address) throws Exception {
-        String parsedAddress = Keys.toChecksumAddress(address);
+    public void authenticate(String token, String addr) throws Exception {
+        Address address = new Address(addr);
 
         // 1. Get player UUID
         UUID playerUUID = redisRepo.getPlayerUUIDFromToken(token);
         if (playerUUID == null) {
-            Logger.warning("INVALID_TOKEN", "Can't get player from token.", parsedAddress);
+            Logger.warning("INVALID_TOKEN", "Can't get player from token.", address.getValue());
             throw new Exception("INVALID_TOKEN");
         }
 
         // 2. Get player from spigot
         Player player = Mine3Auth.getPlugin().getServer().getPlayer(playerUUID);
         if (player == null) {
-            Logger.warning("PLAYER_NOT_IN_GAME", "Not found player in game.", parsedAddress);
+            Logger.warning("PLAYER_NOT_IN_GAME", "Not found player in game.", address.getValue());
             throw new Exception("PLAYER_NOT_IN_GAME");
         }
 
         // 3. Get Player from Address
-        if (PlayerRepository.getPlayer(parsedAddress) != null) {
-            Logger.warning("ADDRESS_ALREADY_USED", "Address already used", parsedAddress);
+        if (PlayerRepository.getPlayer(address) != null) {
+            Logger.warning("ADDRESS_ALREADY_USED", "Address already used", address.getValue());
             throw new Exception("ADDRESS_ALREADY_USED");
         }
 
         // 4. Set Player
-        PlayerRepository.setPlayer(parsedAddress, player); // Set player in Mine3Lib
+        PlayerRepository.setPlayer(address, player); // Set player in Mine3Lib
         playerService.addPlayer(playerUUID); // Add player to player list
         redisRepo.deleteToken(token); // Delete login token
 
         // 5. Create User in Database if not exist
-        if (!pgRepo.isAddressExist(parsedAddress)) {
+        if (!pgRepo.isAddressExist(address)) {
             PlayerLocation playerLocation = new PlayerLocation(
                     player.getLocation().getX(),
                     player.getLocation().getY(),
@@ -96,23 +96,23 @@ public class AuthService {
                     player.getLocation().getPitch(),
                     Objects.requireNonNull(player.getLocation().getWorld()));
 
-            PlayerData createPlayerData = new PlayerData(parsedAddress, "", playerLocation);
+            PlayerData createPlayerData = new PlayerData(address, "", playerLocation);
             pgRepo.createNewPlayer(createPlayerData);
         }
 
         // 6. Update user login status
-        pgRepo.setUserLoggedIn(parsedAddress);
+        pgRepo.setUserLoggedIn(address);
 
         // 7. Restore player data
-        PlayerData playerData = pgRepo.getPlayerData(parsedAddress);
+        PlayerData playerData = pgRepo.getPlayerData(address);
         if (playerData == null) {
-            Logger.warning("PlayerData is null", "Failed to get player data in database.", parsedAddress);
+            Logger.warning("PlayerData is null", "Failed to get player data in database.", address.getValue());
             return;
         }
         playerService.restorePlayerState(player, playerData);
         playerService.setPlayerActiveState(player);
         playerService.sendAuthenticatedTitle(player);
-        PlayerRepository.sendMessage(player, "Login as " + parsedAddress);
+        PlayerRepository.sendMessage(player, "Login as " + address);
     }
 
     public void disconnect(Player player) {

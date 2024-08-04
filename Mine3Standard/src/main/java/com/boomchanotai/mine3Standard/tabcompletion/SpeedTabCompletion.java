@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 public class SpeedTabCompletion implements TabCompleter {
@@ -22,10 +23,10 @@ public class SpeedTabCompletion implements TabCompleter {
         }
 
         if (args.length == 2) {
-            String[] address = PlayerRepository.getAllAddress();
-            for (String a : address) {
-                if (a.toLowerCase().contains(args[1].toLowerCase())) {
-                    subCommand.add(a);
+            ArrayList<Address> address = PlayerRepository.getAllAddress();
+            for (Address a : address) {
+                if (a.getValue().toLowerCase().contains(args[1].toLowerCase())) {
+                    subCommand.add(a.getValue());
                 }
             }
         }

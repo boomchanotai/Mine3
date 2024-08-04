@@ -9,9 +9,9 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
-import org.web3j.abi.datatypes.Address;
 
 import com.boomchanotai.mine3Lib.Mine3Lib;
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.redis.Redis;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,9 +58,9 @@ public class PlayerRepository {
     public static Player getPlayer(Address address) {
         String playerUUID = null;
         try (Jedis j = Redis.getPool().getResource()) {
-            playerUUID = j.hget(PLAYER_ADDRESS_KEY, address.toString());
+            playerUUID = j.hget(PLAYER_ADDRESS_KEY, address.getValue());
         } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to get player from address", address.toString());
+            Logger.warning(e.getMessage(), "failed to get player from address", address.getValue());
             return null;
         }
 
@@ -75,9 +75,9 @@ public class PlayerRepository {
     public static void setPlayer(Address address, Player player) {
         // 1. Set player pair of address, (string) uuid
         try (Jedis j = Redis.getPool().getResource()) {
-            j.hset(PLAYER_ADDRESS_KEY, address.toString(), player.getUniqueId().toString());
+            j.hset(PLAYER_ADDRESS_KEY, address.getValue(), player.getUniqueId().toString());
         } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to set player address key", address.toString());
+            Logger.warning(e.getMessage(), "failed to set player address key", address.getValue());
         }
 
         // 2. Set player pair of uuid, (json) { address }
@@ -96,9 +96,9 @@ public class PlayerRepository {
         Player player = getPlayer(address);
 
         try (Jedis j = Redis.getPool().getResource()) {
-            j.hdel(PLAYER_ADDRESS_KEY, address.toString());
+            j.hdel(PLAYER_ADDRESS_KEY, address.getValue());
         } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to remove player address key", address.toString());
+            Logger.warning(e.getMessage(), "failed to remove player address key", address.getValue());
         }
 
         try (Jedis j = Redis.getPool().getResource()) {

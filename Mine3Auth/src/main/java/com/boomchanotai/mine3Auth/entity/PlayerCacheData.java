@@ -1,19 +1,19 @@
 package com.boomchanotai.mine3Auth.entity;
 
-import org.web3j.crypto.Keys;
+import com.boomchanotai.mine3Lib.address.Address;
 
 public class PlayerCacheData {
-    private String address;
+    private Address address;
 
-    public PlayerCacheData(String address) {
+    public PlayerCacheData(Address address) {
         this.address = address;
     }
 
-    public String getAddress() {
-        return Keys.toChecksumAddress(address);
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 }

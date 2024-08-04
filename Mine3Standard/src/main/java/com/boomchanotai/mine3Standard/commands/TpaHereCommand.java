@@ -4,10 +4,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.web3j.crypto.Keys;
 
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
-import com.boomchanotai.mine3Lib.utils.AddressUtils;
 import com.boomchanotai.mine3Standard.services.TpaService;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
@@ -36,7 +35,7 @@ public class TpaHereCommand implements CommandExecutor {
             return true;
         }
 
-        String toPlayerAddress = Keys.toChecksumAddress(args[0]);
+        Address toPlayerAddress = new Address(args[0]);
 
         Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
         if (toPlayer == null) {
@@ -46,7 +45,7 @@ public class TpaHereCommand implements CommandExecutor {
 
         Player fromPlayer = (Player) sender;
 
-        String fromPlayerAddress = PlayerRepository.getAddress(fromPlayer.getUniqueId());
+        Address fromPlayerAddress = PlayerRepository.getAddress(fromPlayer.getUniqueId());
         if (fromPlayerAddress == null) {
             Utils.sendCommandReturnMessage(sender, "Can't parse your address. Please login again.");
             return true;
@@ -66,9 +65,9 @@ public class TpaHereCommand implements CommandExecutor {
         tpaService.addTpaHereRequest(fromPlayerAddress, toPlayerAddress);
 
         PlayerRepository.sendMessage(fromPlayer,
-                "Tpahere request sent to " + AddressUtils.getShortAddress(toPlayerAddress) + ".");
+                "Tpahere request sent to " + toPlayerAddress.getShortAddress() + ".");
         PlayerRepository.sendMessage(toPlayer,
-                AddressUtils.getShortAddress(fromPlayerAddress)
+                fromPlayerAddress.getShortAddress()
                         + " wants to teleport you to them. Use /tpaccept to accept. Use /tpacancel to deny.");
 
         return true;

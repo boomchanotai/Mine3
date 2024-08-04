@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import com.boomchanotai.mine3Auth.repository.PostgresRepository;
+import com.boomchanotai.mine3Lib.address.Address;
 
 public class PardonTabCompletion implements TabCompleter {
     private PostgresRepository pgRepo;
@@ -21,10 +22,10 @@ public class PardonTabCompletion implements TabCompleter {
         List<String> subCommand = new ArrayList<>();
 
         if (args.length == 1) {
-            ArrayList<String> address = pgRepo.getBannedPlayers();
-            for (String a : address) {
-                if (a.toLowerCase().contains(args[0].toLowerCase())) {
-                    subCommand.add(a);
+            ArrayList<Address> address = pgRepo.getBannedPlayers();
+            for (Address a : address) {
+                if (a.getValue().toLowerCase().contains(args[0].toLowerCase())) {
+                    subCommand.add(a.getValue());
                 }
             }
         }

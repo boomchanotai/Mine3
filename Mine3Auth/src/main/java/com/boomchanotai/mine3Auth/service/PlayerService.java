@@ -132,8 +132,8 @@ public class PlayerService {
                     player.addPotionEffect(potionEffect);
                 }
 
-                player.setDisplayName(playerData.getAddress());
-                player.setPlayerListName(playerData.getAddress());
+                player.setDisplayName(playerData.getAddress().getValue());
+                player.setPlayerListName(playerData.getAddress().getValue());
 
                 // Teleport Player to Last Location
                 Location lastLocation = new Location(
