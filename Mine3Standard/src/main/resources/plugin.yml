@@ -13,41 +13,58 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> <address> - teleport to other player
       /<command> <address> <player> - teleport player to player
+    permissions: mine3.tp
+    permission-message: You don't have permission to use this command
   tphere:
     description: Teleport player to player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> - teleport other player to themselves
+    permissions: mine3.tphere
+    permission-message: You don't have permission to use this command
   tpa:
     description: Request teleport to player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> - request teleport to other player
+    permissions: mine3.tpa
+    permission-message: You don't have permission to use this command
   tpahere:
     description: Request teleport player to player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> - request teleport other player to themselves
+    permissions: mine3.tpahere
+    permission-message: You don't have permission to use this command
   tpaccept:
     description: Accept teleport request
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> - accept teleport request
+    permissions: mine3.tpaccept
+    permission-message: You don't have permission to use this command
   tpacancel:
     description: Cancel teleport request
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> - cancel teleport request
+    permissions: mine3.tpacancel
+    permission-message: You don't have permission to use this command
   give:
     description: Give item to player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> <item> <item> - give item to player
+    permissions: mine3.give
+    permission-message: You don't have permission to use this command
   i:
     description: Give item to player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <item> <item> - give item to player
+    aliases: [item]
+    permissions: mine3.give
+    permission-message: You don't have permission to use this command
   gamemode:
     description: Change player gamemode
     usage: |
@@ -55,65 +72,88 @@ commands:
       /<command> <gamemode> - change their gamemode
       /<command> <gamemode> <address> - change other player gamemode
     aliases: [gm]
+    permissions: mine3.gamemode
+    permission-message: You don't have permission to use this command
   broadcast:
     description: Broadcast message
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <message> - broadcast message
+    aliases: [bc]
+    permissions: mine3.broadcast
+    permission-message: You don't have permission to use this command
   burn:
     description: Burn player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> - burn themselves
       /<command> <address> - burn other player
+    permissions: mine3.burn
+    permission-message: You don't have permission to use this command
   clear:
     description: Clear player inventory
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> - clear their inventory
       /<command> <address> - clear other player inventory
+    permissions: mine3.clearinventory
+    permission-message: You don't have permission to use this command
   feed:
     description: Feed player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> - feed themselves
       /<command> <address> - feed other player
+    permissions: mine3.feed
+    permission-message: You don't have permission to use this command
   heal:
     description: Heal player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> - heal themselves
       /<command> <address> - heal other player
+    permissions: mine3.heal
+    permission-message: You don't have permission to use this command
   vanish:
     description: Vanish player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> - vanish themselves
       /<command> <address> - vanish other player
+    permissions: mine3.vanish
+    permission-message: You don't have permission to use this command
   fly:
     description: Fly player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> - fly themselves
       /<command> <address> - fly other player
+    permissions: mine3.fly
+    permission-message: You don't have permission to use this command
   god:
     description: God player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> - god themselves
       /<command> <address> - god other player
+    permissions: mine3.god
+    permission-message: You don't have permission to use this command
   speed:
     description: Change player speed
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <speed> - change their speed
       /<command> <speed> <address> - change other player speed
+    permissions: mine3.speed
+    permission-message: You don't have permission to use this command
   kill:
     description: Kill player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> all - kill all player
       /<command> <address> - kill other player
+    permissions: mine3.kill
+    permission-message: You don't have permission to use this command
   kick:
     description: Kick player
     usage: |
@@ -122,22 +162,31 @@ commands:
       /<command> all <reason> - kick player with reason
       /<command> <address> - kick player
       /<command> <address> <reason> - kick player with reason
+    permissions: mine3.kick
+    permission-message: You don't have permission to use this command
   invsee:
     description: See other player inventory
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> - see other player inventory
     aliases: [inv]
+    permissions: mine3.invsee
+    permission-message: You don't have permission to use this command
   enderchest:
     description: See other player enderchest
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> - see other player enderchest
+    aliases: [ec]
+    permissions: mine3.enderchest
+    permission-message: You don't have permission to use this command
   setspawn:
     description: Set spawn
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> - set spawn
+    permissions: mine3.setspawn
+    permission-message: You don't have permission to use this command
   spawn:
     description: Teleport to spawn
     usage: |
@@ -148,11 +197,15 @@ commands:
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> - op player
+    permissions: mine3.op
+    permission-message: You don't have permission to use this command
   deop:
     description: Deop player
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> - deop player
+    permissions: mine3.deop
+    permission-message: You don't have permission to use this command
   standard:
     description: Standard command
     usage: |
@@ -163,6 +216,8 @@ commands:
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> reload - reload standard config
+    permissions: mine3.standard.reload
+    permission-message: You don't have permission to use this command
 permissions:
   mine3.tp:
     description: allow player to teleport to player
