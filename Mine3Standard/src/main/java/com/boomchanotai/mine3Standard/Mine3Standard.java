@@ -21,6 +21,7 @@ import com.boomchanotai.mine3Standard.commands.OpCommand;
 import com.boomchanotai.mine3Standard.commands.SetSpawnCommand;
 import com.boomchanotai.mine3Standard.commands.SpawnCommand;
 import com.boomchanotai.mine3Standard.commands.SpeedCommand;
+import com.boomchanotai.mine3Standard.commands.StandardCommand;
 import com.boomchanotai.mine3Standard.commands.TpCommand;
 import com.boomchanotai.mine3Standard.commands.TpHereCommand;
 import com.boomchanotai.mine3Standard.commands.TpaCancelCommand;
@@ -49,6 +50,7 @@ import com.boomchanotai.mine3Standard.tabcompletion.KickTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.KillTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.OpTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.SpeedTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.StandardTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TpHereTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TpTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TpaHereTabCompletion;
@@ -181,6 +183,10 @@ public final class Mine3Standard extends JavaPlugin {
         // deop
         getCommand("deop").setExecutor(new DeOpCommand());
         getCommand("deop").setTabCompleter(new DeOpTabCompletion());
+
+        // standard reload
+        getCommand("standard").setExecutor(new StandardCommand());
+        getCommand("standard").setTabCompleter(new StandardTabCompletion());
     }
 
     @Override

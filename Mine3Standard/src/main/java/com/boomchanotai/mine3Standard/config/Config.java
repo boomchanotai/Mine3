@@ -1,5 +1,6 @@
 package com.boomchanotai.mine3Standard.config;
 
+import com.boomchanotai.mine3Lib.Mine3Lib;
 import com.boomchanotai.mine3Standard.Mine3Standard;
 
 import java.util.Objects;
@@ -22,5 +23,12 @@ public class Config {
         COLOR_CODE_PREFIX = Objects.requireNonNull(config.getString("color_code_prefix")).charAt(0);
 
         TELEPORT_TIMEOUT = config.getInt("teleport_timeout");
+    }
+
+    public static void reloadConfig() {
+        Mine3Lib.getPlugin().reloadConfig();
+        saveDefaultConfig();
+        Mine3Lib.getPlugin().getConfig().options().copyDefaults(true);
+        loadConfig();
     }
 }

@@ -153,6 +153,16 @@ commands:
     usage: |
       Use /help <command> [subcommand] for more information
       /<command> <address> - deop player
+  standard:
+    description: Standard command
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> reload - show standard command
+  standard reload:
+    description: Reload standard command
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> reload - reload standard config
 permissions:
   mine3.tp:
     description: allow player to teleport to player
@@ -225,3 +235,5 @@ permissions:
     description: allow player to op player
   mine3.deop:
     description: allow player to deop player
+  mine3.standard.reload:
+    description: allow player to reload standard config
