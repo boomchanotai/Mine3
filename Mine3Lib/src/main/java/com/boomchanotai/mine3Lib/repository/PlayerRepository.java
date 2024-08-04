@@ -3,12 +3,13 @@ package com.boomchanotai.mine3Lib.repository;
 import static com.boomchanotai.mine3Lib.config.Config.*;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
-import org.web3j.crypto.Keys;
+import org.web3j.abi.datatypes.Address;
 
 import com.boomchanotai.mine3Lib.Mine3Lib;
 import com.boomchanotai.mine3Lib.logger.Logger;
@@ -22,19 +23,22 @@ import redis.clients.jedis.Jedis;
 public class PlayerRepository {
     ObjectMapper mapper = new ObjectMapper();
 
-    public static String[] getAllAddress() {
-        String[] addresses = null;
+    public static ArrayList<Address> getAllAddress() {
+        ArrayList<Address> allAddress = new ArrayList<>();
         try (Jedis j = Redis.getPool().getResource()) {
-            addresses = j.hkeys(PLAYER_ADDRESS_KEY).toArray(new String[0]);
+            Set<String> addresses = j.hkeys(PLAYER_ADDRESS_KEY);
+            for (String address : addresses) {
+                allAddress.add(new Address(address));
+            }
         } catch (Exception e) {
             Logger.warning(e.getMessage(), "failed to get all address");
             return null;
         }
 
-        return addresses;
+        return allAddress;
     }
 
-    public static String getAddress(UUID uuid) {
+    public static Address getAddress(UUID uuid) {
         String playerInfo = null;
         try (Jedis j = Redis.getPool().getResource()) {
             playerInfo = j.hget(PLAYER_PLAYER_KEY, uuid.toString());
@@ -47,17 +51,16 @@ public class PlayerRepository {
             return null;
 
         JSONObject player = new JSONObject(playerInfo);
-        return player.getString("address");
+        String address = player.getString("address");
+        return new Address(address);
     }
 
-    public static Player getPlayer(String address) {
-        String parsedAddress = Keys.toChecksumAddress(address);
-
+    public static Player getPlayer(Address address) {
         String playerUUID = null;
         try (Jedis j = Redis.getPool().getResource()) {
-            playerUUID = j.hget(PLAYER_ADDRESS_KEY, parsedAddress);
+            playerUUID = j.hget(PLAYER_ADDRESS_KEY, address.toString());
         } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to get player from address", parsedAddress);
+            Logger.warning(e.getMessage(), "failed to get player from address", address.toString());
             return null;
         }
 
@@ -69,14 +72,12 @@ public class PlayerRepository {
         return player;
     }
 
-    public static void setPlayer(String address, Player player) {
-        String parsedAddress = Keys.toChecksumAddress(address);
-
+    public static void setPlayer(Address address, Player player) {
         // 1. Set player pair of address, (string) uuid
         try (Jedis j = Redis.getPool().getResource()) {
-            j.hset(PLAYER_ADDRESS_KEY, parsedAddress, player.getUniqueId().toString());
+            j.hset(PLAYER_ADDRESS_KEY, address.toString(), player.getUniqueId().toString());
         } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to set player address key", parsedAddress);
+            Logger.warning(e.getMessage(), "failed to set player address key", address.toString());
         }
 
         // 2. Set player pair of uuid, (json) { address }
@@ -91,15 +92,13 @@ public class PlayerRepository {
         }
     }
 
-    public static void removePlayer(String address) {
-        String parsedAddress = Keys.toChecksumAddress(address);
-
+    public static void removePlayer(Address address) {
         Player player = getPlayer(address);
 
         try (Jedis j = Redis.getPool().getResource()) {
-            j.hdel(PLAYER_ADDRESS_KEY, parsedAddress);
+            j.hdel(PLAYER_ADDRESS_KEY, address.toString());
         } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to remove player address key", parsedAddress);
+            Logger.warning(e.getMessage(), "failed to remove player address key", address.toString());
         }
 
         try (Jedis j = Redis.getPool().getResource()) {
