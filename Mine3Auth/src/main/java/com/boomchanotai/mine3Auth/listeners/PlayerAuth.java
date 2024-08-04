@@ -29,6 +29,8 @@ public class PlayerAuth implements Listener {
         Address address = event.getAddress();
         Player player = event.getPlayer();
 
+        playerService.sendJoinMessage(address);
+
         // 1. Create User in Postgres if not exist
         if (!pgRepo.isAddressExist(address)) {
             PlayerLocation playerLocation = new PlayerLocation(

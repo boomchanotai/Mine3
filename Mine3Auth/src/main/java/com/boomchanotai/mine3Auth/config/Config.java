@@ -44,6 +44,9 @@ public class Config {
     public static int AUTH_LOGGED_IN_TITLE_STAY;
     public static int AUTH_LOGGED_IN_TITLE_FADE_OUT;
 
+    public static String AUTH_JOIN_MESSAGE;
+    public static String AUTH_QUIT_MESSAGE;
+
     public static void saveDefaultConfig() {
         Mine3Auth.getPlugin().saveDefaultConfig();
     }
@@ -80,5 +83,15 @@ public class Config {
         AUTH_LOGGED_IN_TITLE_FADE_IN = config.getInt("auth.logged_in_title.fade_in");
         AUTH_LOGGED_IN_TITLE_STAY = config.getInt("auth.logged_in_title.stay");
         AUTH_LOGGED_IN_TITLE_FADE_OUT = config.getInt("auth.logged_in_title.fade_out");
+
+        AUTH_JOIN_MESSAGE = config.getString("join_message");
+        AUTH_QUIT_MESSAGE = config.getString("quit_message");
+    }
+
+    public static void reloadConfig() {
+        Mine3Auth.getPlugin().reloadConfig();
+        saveDefaultConfig();
+        Mine3Auth.getPlugin().getConfig().options().copyDefaults(true);
+        loadConfig();
     }
 }

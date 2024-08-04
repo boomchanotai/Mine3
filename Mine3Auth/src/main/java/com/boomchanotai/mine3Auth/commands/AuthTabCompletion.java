@@ -20,6 +20,7 @@ public class AuthTabCompletion implements TabCompleter {
         if (args.length == 1) {
             if (sender.hasPermission("mine3Auth.setspawn")) {
                 subCommand.add("setspawn");
+                subCommand.add("reload");
             }
 
             subCommand.add("spawn");

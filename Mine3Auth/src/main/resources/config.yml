@@ -43,3 +43,8 @@ auth:
     fade_in: 10
     stay: 70
     fade_out: 20
+
+# Join Quit Server Settings
+# {address} = Ethereum Address
+join_message: "&e{address} joined the game."
+quit_message: "&e{address} left the game."

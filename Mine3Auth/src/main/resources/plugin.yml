@@ -22,6 +22,7 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> spawn - go to spawn point
       /<command> setspawn - set spawn point (admin only)
+      /<command> reload - reload plugin config (admin only)
   auth spawn:
     description: go to spawn point
     usage: /<command> spawn
@@ -30,6 +31,9 @@ commands:
     usage: /<command> setspawn
     permission: "mine3.setspawn"
     permission-message: You don't have permission to use this command
+  auth reload:
+    description: reload plugin
+    usage: /<command> reload
   ban:
     description: ban player
     usage: |
@@ -43,6 +47,8 @@ commands:
 permissions:
   mine3.auth.setspawn:
     description: allow player to set spawn point
+  mine3.auth.reload:
+    description: allow player to reload plugin config
   mine3.ban:
     description: allow player to ban other player
   mine3.pardon:

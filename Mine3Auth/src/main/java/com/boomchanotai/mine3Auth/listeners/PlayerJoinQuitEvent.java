@@ -18,12 +18,16 @@ public class PlayerJoinQuitEvent implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        event.setJoinMessage(null);
+
         Player player = event.getPlayer();
         authService.connect(player);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        event.setQuitMessage(null);
+
         Player player = event.getPlayer();
         authService.disconnect(player);
     }

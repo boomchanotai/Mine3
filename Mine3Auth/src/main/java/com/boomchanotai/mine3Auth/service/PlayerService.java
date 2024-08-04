@@ -1,6 +1,7 @@
 package com.boomchanotai.mine3Auth.service;
 
 import com.boomchanotai.mine3Auth.entity.PlayerData;
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 import net.md_5.bungee.api.ChatColor;
@@ -153,5 +154,15 @@ public class PlayerService {
     // setPlayerActiveState is set player state for active player
     public void setPlayerActiveState(Player player) {
         player.setInvulnerable(false);
+    }
+
+    public void sendJoinMessage(Address address) {
+        String message = AUTH_JOIN_MESSAGE.replace("{address}", address.getShortAddress());
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, message));
+    }
+
+    public void sendQuitMessage(Address address) {
+        String message = AUTH_QUIT_MESSAGE.replace("{address}", address.getShortAddress());
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, message));
     }
 }

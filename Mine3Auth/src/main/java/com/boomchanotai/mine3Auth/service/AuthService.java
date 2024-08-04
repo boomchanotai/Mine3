@@ -144,5 +144,7 @@ public class AuthService {
         playerService.removePlayer(playerUUID); // Remove player from player list
         playerService.clearPlayerState(player); // Clear player state
         PlayerRepository.removePlayer(playerCacheData.getAddress()); // Remove player from Mine3Lib
+
+        playerService.sendQuitMessage(playerCacheData.getAddress());
     }
 }
