@@ -1,6 +1,7 @@
 package com.boomchanotai.mine3Auth.server;
 
 import com.boomchanotai.mine3Auth.service.AuthService;
+import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Auth.Mine3Auth;
 import com.boomchanotai.mine3Auth.logger.Logger;
 
@@ -12,7 +13,6 @@ import io.javalin.plugin.bundled.CorsPluginConfig;
 import static com.boomchanotai.mine3Auth.config.Config.*;
 
 import org.json.JSONObject;
-import org.web3j.crypto.Keys;
 
 public class Server {
     private static Javalin app = null;
@@ -88,8 +88,10 @@ public class Server {
         // Verify Signature with address and timestamp
         String msg = "Sign in to Mine3 and this is my wallet address: " + loginRequest.address + " to sign in "
                 + loginRequest.token + ". now is " + loginRequest.timestamp;
-        String recoveredAddress = EthersUtils.verifyMessage(msg, loginRequest.signature);
-        if (!Keys.toChecksumAddress(recoveredAddress).equals(Keys.toChecksumAddress(loginRequest.address))) {
+        String recoveredAddr = EthersUtils.verifyMessage(msg, loginRequest.signature);
+        Address recoveredAddress = new Address(recoveredAddr);
+        Address address = new Address(loginRequest.address);
+        if (!recoveredAddress.equals(address)) {
             JSONObject res = new JSONObject();
             res.put("error", "CANT_VERIFY_SIGNATURE");
 

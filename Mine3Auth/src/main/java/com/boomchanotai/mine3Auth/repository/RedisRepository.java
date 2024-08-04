@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.boomchanotai.mine3Lib.address.Address;
-import org.web3j.crypto.Keys;
 import redis.clients.jedis.Jedis;
 
 import static com.boomchanotai.mine3Auth.config.Config.*;
@@ -84,10 +83,9 @@ public class RedisRepository {
         }
     }
 
-    public UUID getPlayerFromAddress(String address) {
-        String parsedAddress = Keys.toChecksumAddress(address);
+    public UUID getPlayerFromAddress(Address address) {
         try (Jedis j = Redis.getPool().getResource()) {
-            String playerUUID = j.hget(AUTH_ADDRESS_KEY, parsedAddress);
+            String playerUUID = j.hget(AUTH_ADDRESS_KEY, address.getValue());
             if (playerUUID == null || playerUUID.isEmpty())
                 return null;
 
@@ -99,19 +97,17 @@ public class RedisRepository {
         return null;
     }
 
-    public void setAddress(UUID playerUUID, String address) {
-        String parsedAddress = Keys.toChecksumAddress(address);
+    public void setAddress(UUID playerUUID, Address address) {
         try (Jedis j = Redis.getPool().getResource()) {
-            j.hset(AUTH_ADDRESS_KEY, parsedAddress, playerUUID.toString());
+            j.hset(AUTH_ADDRESS_KEY, address.getValue(), playerUUID.toString());
         } catch (Exception e) {
             Logger.warning(e.getMessage());
         }
     }
 
-    public void deleteAddress(String address) {
-        String parsedAddress = Keys.toChecksumAddress(address);
+    public void deleteAddress(Address address) {
         try (Jedis j = Redis.getPool().getResource()) {
-            j.hdel(AUTH_ADDRESS_KEY, parsedAddress);
+            j.hdel(AUTH_ADDRESS_KEY, address.getValue());
         } catch (Exception e) {
             Logger.warning(e.getMessage());
         }
