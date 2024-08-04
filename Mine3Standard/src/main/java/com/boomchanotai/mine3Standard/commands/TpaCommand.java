@@ -65,9 +65,9 @@ public class TpaCommand implements CommandExecutor {
         tpaService.addTpaRequest(fromPlayerAddress, toPlayerAddress);
 
         PlayerRepository.sendMessage(fromPlayer,
-                "Tpa request sent to " + AddressUtils.addressShortener(toPlayerAddress) + ".");
+                "Tpa request sent to " + AddressUtils.getShortAddress(toPlayerAddress) + ".");
         PlayerRepository.sendMessage(toPlayer,
-                AddressUtils.addressShortener(fromPlayerAddress)
+                AddressUtils.getShortAddress(fromPlayerAddress)
                         + " wants to teleport to you. Use /tpaccept to accept. Use /tpacancel to deny.");
 
         return true;

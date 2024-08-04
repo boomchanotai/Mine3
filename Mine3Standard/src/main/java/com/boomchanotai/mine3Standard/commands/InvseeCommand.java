@@ -43,7 +43,7 @@ public class InvseeCommand implements CommandExecutor, Listener {
         }
 
         ItemStack[] items = targetPlayer.getInventory().getContents();
-        String title = AddressUtils.addressShortener(address) + "'s Inventory";
+        String title = AddressUtils.getShortAddress(address) + "'s Inventory";
 
         if (sender instanceof Player) {
             Player player = (Player) sender;

@@ -66,9 +66,9 @@ public class TpaHereCommand implements CommandExecutor {
         tpaService.addTpaHereRequest(fromPlayerAddress, toPlayerAddress);
 
         PlayerRepository.sendMessage(fromPlayer,
-                "Tpahere request sent to " + AddressUtils.addressShortener(toPlayerAddress) + ".");
+                "Tpahere request sent to " + AddressUtils.getShortAddress(toPlayerAddress) + ".");
         PlayerRepository.sendMessage(toPlayer,
-                AddressUtils.addressShortener(fromPlayerAddress)
+                AddressUtils.getShortAddress(fromPlayerAddress)
                         + " wants to teleport you to them. Use /tpaccept to accept. Use /tpacancel to deny.");
 
         return true;

@@ -122,15 +122,15 @@ public class TpaService {
             Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
             if (fromPlayer == null) {
                 Utils.sendCommandReturnMessage(fromPlayer,
-                        "Not found " + AddressUtils.addressShortener(fromPlayerAddress) + " in game.");
+                        "Not found " + AddressUtils.getShortAddress(fromPlayerAddress) + " in game.");
                 return;
             }
 
             fromPlayer.teleport(toPlayer.getLocation());
             PlayerRepository.sendMessage(fromPlayer,
-                    "Teleporting to " + AddressUtils.addressShortener(toPlayerAddress) + "...");
+                    "Teleporting to " + AddressUtils.getShortAddress(toPlayerAddress) + "...");
             PlayerRepository.sendMessage(toPlayer,
-                    "Teleporting " + AddressUtils.addressShortener(fromPlayerAddress) + " to you...");
+                    "Teleporting " + AddressUtils.getShortAddress(fromPlayerAddress) + " to you...");
 
             return;
         } else if (request.getSecond() == TpaType.TPAHERE) {
@@ -147,15 +147,15 @@ public class TpaService {
             Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
             if (toPlayer == null) {
                 Utils.sendCommandReturnMessage(toPlayer,
-                        "Not found " + AddressUtils.addressShortener(toPlayerAddress) + " in game.");
+                        "Not found " + AddressUtils.getShortAddress(toPlayerAddress) + " in game.");
                 return;
             }
 
             fromPlayer.teleport(toPlayer.getLocation());
             PlayerRepository.sendMessage(fromPlayer,
-                    "Teleporting to " + AddressUtils.addressShortener(fromPlayerAddress) + "...");
+                    "Teleporting to " + AddressUtils.getShortAddress(fromPlayerAddress) + "...");
             PlayerRepository.sendMessage(toPlayer,
-                    "Teleporting " + AddressUtils.addressShortener(toPlayerAddress) + " to you...");
+                    "Teleporting " + AddressUtils.getShortAddress(toPlayerAddress) + " to you...");
 
             return;
         }
@@ -185,14 +185,14 @@ public class TpaService {
             Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
             if (fromPlayer == null) {
                 Utils.sendCommandReturnMessage(fromPlayer,
-                        "Not found " + AddressUtils.addressShortener(fromPlayerAddress) + " in game.");
+                        "Not found " + AddressUtils.getShortAddress(fromPlayerAddress) + " in game.");
                 return;
             }
 
             PlayerRepository.sendMessage(fromPlayer,
-                    "Tpa request to " + AddressUtils.addressShortener(toPlayerAddress) + " has been canceled.");
+                    "Tpa request to " + AddressUtils.getShortAddress(toPlayerAddress) + " has been canceled.");
             PlayerRepository.sendMessage(toPlayer,
-                    "Tpa request from " + AddressUtils.addressShortener(fromPlayerAddress) + " has been canceled.");
+                    "Tpa request from " + AddressUtils.getShortAddress(fromPlayerAddress) + " has been canceled.");
 
             return;
         } else if (request.getSecond() == TpaType.TPAHERE) {
@@ -209,14 +209,14 @@ public class TpaService {
             Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
             if (toPlayer == null) {
                 Utils.sendCommandReturnMessage(toPlayer,
-                        "Not found " + AddressUtils.addressShortener(toPlayerAddress) + " in game.");
+                        "Not found " + AddressUtils.getShortAddress(toPlayerAddress) + " in game.");
                 return;
             }
 
             PlayerRepository.sendMessage(toPlayer,
-                    "Tpahere request from " + AddressUtils.addressShortener(fromPlayerAddress) + " has been canceled.");
+                    "Tpahere request from " + AddressUtils.getShortAddress(fromPlayerAddress) + " has been canceled.");
             PlayerRepository.sendMessage(fromPlayer,
-                    "Tpahere request to " + AddressUtils.addressShortener(toPlayerAddress) + " has been canceled.");
+                    "Tpahere request to " + AddressUtils.getShortAddress(toPlayerAddress) + " has been canceled.");
 
             return;
         }

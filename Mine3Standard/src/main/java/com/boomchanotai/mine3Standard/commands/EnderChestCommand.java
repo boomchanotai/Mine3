@@ -43,7 +43,7 @@ public class EnderChestCommand implements CommandExecutor, Listener {
         }
 
         ItemStack[] items = targetPlayer.getEnderChest().getContents();
-        String title = AddressUtils.addressShortener(address) + "'s Enderchest";
+        String title = AddressUtils.getShortAddress(address) + "'s Enderchest";
 
         if (sender instanceof Player) {
             Player player = (Player) sender;

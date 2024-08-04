@@ -33,7 +33,7 @@ public class DeOpCommand implements CommandExecutor {
 
         if (!targetPlayer.isOp()) {
             Utils.sendCommandReturnMessage(sender,
-                    AddressUtils.addressShortener(address) + " is already not an operator.");
+                    AddressUtils.getShortAddress(address) + " is already not an operator.");
             return true;
         }
 

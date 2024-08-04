@@ -32,7 +32,7 @@ public class OpCommand implements CommandExecutor {
         }
 
         if (targetPlayer.isOp()) {
-            Utils.sendCommandReturnMessage(sender, AddressUtils.addressShortener(address) + " is already an operator.");
+            Utils.sendCommandReturnMessage(sender, AddressUtils.getShortAddress(address) + " is already an operator.");
             return true;
         }
 
