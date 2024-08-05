@@ -11,7 +11,6 @@ import com.boomchanotai.mine3Auth.commands.BanTabCompletion;
 import com.boomchanotai.mine3Auth.config.Config;
 import com.boomchanotai.mine3Auth.config.SpawnConfig;
 import com.boomchanotai.mine3Auth.listeners.PlayerAuth;
-import com.boomchanotai.mine3Auth.listeners.PlayerDeath;
 import com.boomchanotai.mine3Auth.listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3Auth.listeners.PreventPlayerActionWhenNotLoggedIn;
 import com.boomchanotai.mine3Auth.postgres.Postgres;
@@ -84,7 +83,6 @@ public final class Mine3Auth extends JavaPlugin {
         // Register Events
         getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(authService), this);
         getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(playerService), this);
-        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
         getServer().getPluginManager().registerEvents(new PlayerAuth(playerService, pgRepo), this);
 
         // Register Commands

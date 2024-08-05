@@ -121,7 +121,6 @@ public class PlayerService {
                 .setSkin(Skin.of(player))
                 .build();
         provider.disguise(player, disguise);
-        player.setPlayerListName(playerData.getAddress().getShortAddress());
 
         // Set Player State
         player.setLevel(playerData.getXpLevel());
