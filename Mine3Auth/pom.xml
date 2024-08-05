@@ -81,6 +81,10 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>gravemc-repo</id>
+            <url>https://repo.gravemc.net/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -94,6 +98,12 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>5.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.iiahmed</groupId>
+            <artifactId>ModernDisguise</artifactId>
+            <version>3.1</version>
+            <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.javalin/javalin -->
         <dependency>

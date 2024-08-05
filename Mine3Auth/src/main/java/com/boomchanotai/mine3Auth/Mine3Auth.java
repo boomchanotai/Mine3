@@ -25,6 +25,11 @@ import com.boomchanotai.mine3Auth.service.AuthService;
 import com.boomchanotai.mine3Auth.service.PlayerService;
 import com.boomchanotai.mine3Auth.service.SpawnService;
 
+import dev.iiahmed.disguise.DisguiseManager;
+import dev.iiahmed.disguise.DisguiseProvider;
+
+import java.util.regex.Pattern;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Mine3Auth extends JavaPlugin {
@@ -56,6 +61,12 @@ public final class Mine3Auth extends JavaPlugin {
         Postgres.connect();
 
         // Dependencies
+        DisguiseProvider disguiseProvider = DisguiseManager.getProvider();
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9_.]{1,16}$");
+        disguiseProvider.setNamePattern(pattern);
+
+        DisguiseManager.initialize(this, true);
+
         ItemStackAdapter itemStackAdapter = new ItemStackAdapter();
         PotionEffectAdapter potionEffectAdapter = new PotionEffectAdapter();
 
@@ -63,7 +74,7 @@ public final class Mine3Auth extends JavaPlugin {
         RedisRepository redisRepo = new RedisRepository();
 
         SpawnService spawnService = new SpawnService();
-        playerService = new PlayerService(spawnService);
+        playerService = new PlayerService(spawnService, disguiseProvider);
         authService = new AuthService(playerService, pgRepo, redisRepo);
 
         // Start HTTP Server

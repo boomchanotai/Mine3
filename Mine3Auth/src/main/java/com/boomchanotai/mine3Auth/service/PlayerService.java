@@ -4,6 +4,9 @@ import com.boomchanotai.mine3Auth.entity.PlayerData;
 import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
+import dev.iiahmed.disguise.Disguise;
+import dev.iiahmed.disguise.DisguiseProvider;
+import dev.iiahmed.disguise.Skin;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -23,10 +26,12 @@ import java.util.*;
 
 public class PlayerService {
     private SpawnService spawnService;
+    private DisguiseProvider provider;
     private HashMap<UUID, Boolean> playerList;
 
-    public PlayerService(SpawnService spawnService) {
+    public PlayerService(SpawnService spawnService, DisguiseProvider provider) {
         this.spawnService = spawnService;
+        this.provider = provider;
         playerList = new HashMap<>();
     }
 
@@ -110,6 +115,14 @@ public class PlayerService {
             return;
         }
 
+        // Change Player Name
+        Disguise disguise = Disguise.builder()
+                .setName(playerData.getAddress().getShortAddress())
+                .setSkin(Skin.of(player))
+                .build();
+        provider.disguise(player, disguise);
+        player.setPlayerListName(playerData.getAddress().getShortAddress());
+
         // Set Player State
         player.setLevel(playerData.getXpLevel());
         player.setExp(playerData.getXpExp());
@@ -127,9 +140,6 @@ public class PlayerService {
         for (PotionEffect potionEffect : playerData.getPotionEffects()) {
             player.addPotionEffect(potionEffect);
         }
-
-        player.setDisplayName(playerData.getAddress().getShortAddress());
-        player.setPlayerListName(playerData.getAddress().getShortAddress());
 
         // Teleport Player to Last Location
         Location lastLocation = new Location(
