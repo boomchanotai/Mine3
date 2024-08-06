@@ -1,0 +1,7 @@
+name: Mine3Permission
+version: '1.0-SNAPSHOT'
+main: com.boomchanotai.mine3Permission.Mine3Permission
+api-version: '1.21'
+authors: [BoomChanotai]
+description: permission manager plugin for mine3
+website: https://boomchanotai.com
