@@ -6,6 +6,8 @@ import com.boomchanotai.mine3Permission.command.PermissionCommand;
 import com.boomchanotai.mine3Permission.config.Config;
 import com.boomchanotai.mine3Permission.listeners.PlayerAuth;
 import com.boomchanotai.mine3Permission.postgres.Postgres;
+import com.boomchanotai.mine3Permission.repositories.PostgresRepository;
+import com.boomchanotai.mine3Permission.services.PermissionManager;
 import com.boomchanotai.mine3Permission.tabcompletion.PermissionTabCompletion;
 
 public final class Mine3Permission extends JavaPlugin {
@@ -26,12 +28,17 @@ public final class Mine3Permission extends JavaPlugin {
         // Postgres
         Postgres.connect();
 
+        // Dependencies
+        PostgresRepository pgRepo = new PostgresRepository();
+        PermissionManager permissionManager = new PermissionManager();
+        permissionManager.initializePermission();
+
         // Register Event
-        getServer().getPluginManager().registerEvents(new PlayerAuth(), plugin);
+        getServer().getPluginManager().registerEvents(new PlayerAuth(pgRepo, permissionManager), plugin);
 
         // Commands
         // permission
-        getCommand("permission").setExecutor(new PermissionCommand());
+        getCommand("permission").setExecutor(new PermissionCommand(permissionManager));
         getCommand("permission").setTabCompleter(new PermissionTabCompletion());
     }
 
