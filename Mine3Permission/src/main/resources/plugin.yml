@@ -1,7 +1,25 @@
 name: Mine3Permission
-version: '1.0-SNAPSHOT'
+version: "1.0-SNAPSHOT"
 main: com.boomchanotai.mine3Permission.Mine3Permission
-api-version: '1.21'
+api-version: "1.21"
 authors: [BoomChanotai]
 description: permission manager plugin for mine3
 website: https://boomchanotai.com
+commands:
+  permission:
+    description: permission command
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> reload - reload plugin config
+    permission: "mine3.permission"
+    permission-message: You don't have permission to use this command
+  permission reload:
+    description: reload plugin
+    usage: /<command> reload
+    permission: "mine3.permission.reload"
+    permission-message: You don't have permission to use this command
+permissions:
+  mine3.permission:
+    description: allow player to use permission command
+  mine3.permission.reload:
+    description: allow player to reload plugin config

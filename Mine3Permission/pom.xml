@@ -98,5 +98,10 @@
         <scope>system</scope>
         <systemPath>/Users/boom/Desktop/Mine3/Mine3Lib-1.0-SNAPSHOT.jar</systemPath>
     </dependency>
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.7.3</version>
+    </dependency>
   </dependencies>
 </project>

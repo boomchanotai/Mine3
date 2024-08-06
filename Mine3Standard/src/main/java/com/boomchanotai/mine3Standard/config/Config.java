@@ -1,6 +1,5 @@
 package com.boomchanotai.mine3Standard.config;
 
-import com.boomchanotai.mine3Lib.Mine3Lib;
 import com.boomchanotai.mine3Standard.Mine3Standard;
 
 import java.util.Objects;
@@ -26,9 +25,9 @@ public class Config {
     }
 
     public static void reloadConfig() {
-        Mine3Lib.getPlugin().reloadConfig();
+        Mine3Standard.getPlugin().reloadConfig();
         saveDefaultConfig();
-        Mine3Lib.getPlugin().getConfig().options().copyDefaults(true);
+        Mine3Standard.getPlugin().getConfig().options().copyDefaults(true);
         loadConfig();
     }
 }
