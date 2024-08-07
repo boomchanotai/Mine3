@@ -3,12 +3,7 @@ package com.boomchanotai.mine3Auth.config;
 import com.boomchanotai.mine3Auth.Mine3Auth;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.Objects;
-
 public class Config {
-    // Plugin Settings
-    public static char COLOR_CODE_PREFIX;
-
     // Redis Settings
     public static String REDIS_HOST;
     public static int REDIS_PORT;
@@ -53,7 +48,6 @@ public class Config {
 
     public static void loadConfig() {
         FileConfiguration config = Mine3Auth.getPlugin().getConfig();
-        COLOR_CODE_PREFIX = Objects.requireNonNull(config.getString("color_code_prefix")).charAt(0);
 
         REDIS_HOST = config.getString("redis.host");
         REDIS_PORT = config.getInt("redis.port");

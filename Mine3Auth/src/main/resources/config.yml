@@ -3,10 +3,6 @@
 # Repository: https://github.com/boomchanotai/Mine3
 # Author: Boom Chanotai (https://www.boomchanotai.com/)
 
-# Plugins settings
-# Color code prefix
-color_code_prefix: "&"
-
 # Redis Settings
 redis:
   host: "localhost"

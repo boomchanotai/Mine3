@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.potion.PotionEffect;
 
+import static com.boomchanotai.mine3Lib.config.Config.COLOR_CODE_PREFIX;
 import static com.boomchanotai.mine3Auth.config.Config.*;
 
 import java.util.*;
