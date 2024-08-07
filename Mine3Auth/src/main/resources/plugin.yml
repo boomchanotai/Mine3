@@ -23,19 +23,6 @@ commands:
       /<command> spawn - go to spawn point
       /<command> setspawn - set spawn point (admin only)
       /<command> reload - reload plugin config (admin only)
-  auth spawn:
-    description: go to spawn point
-    usage: /<command> spawn
-  auth setspawn:
-    description: set spawn point on player join
-    usage: /<command> setspawn
-    permission: "mine3.auth.setspawn"
-    permission-message: You don't have permission to use this command
-  auth reload:
-    description: reload plugin
-    usage: /<command> reload
-    permission: "mine3.auth.reload"
-    permission-message: You don't have permission to use this command
   ban:
     description: ban player
     usage: |

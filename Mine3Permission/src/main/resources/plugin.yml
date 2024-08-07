@@ -12,7 +12,7 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> has <permission> - check yourself has permission
       /<command> has <permission> <address> - check player has permission
-      /<command> set - group <group> <address> - set player group
+      /<command> set-group <group> <address> - set player group
       /<command> reload - reload plugin config
 permissions:
   mine3.permission.reload:

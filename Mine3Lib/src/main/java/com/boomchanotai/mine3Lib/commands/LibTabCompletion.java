@@ -13,8 +13,13 @@ public class LibTabCompletion implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> subCommand = new ArrayList<>();
         if (args.length == 1) {
-            if (sender.hasPermission("mine3.lib.reload")) {
-                subCommand.add("reload");
+            ArrayList<String> subs = new ArrayList<>();
+            subs.add("reload");
+
+            for (String sub : subs) {
+                if (sub.toLowerCase().contains(args[0].toLowerCase())) {
+                    subCommand.add(sub);
+                }
             }
         }
 

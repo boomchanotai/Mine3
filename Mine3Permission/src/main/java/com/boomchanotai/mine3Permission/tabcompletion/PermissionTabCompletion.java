@@ -24,9 +24,15 @@ public class PermissionTabCompletion implements TabCompleter {
         List<String> subCommand = new ArrayList<>();
         if (args.length == 1) {
             ArrayList<String> subs = new ArrayList<>();
-            subs.add("reload");
-            subs.add("has");
-            subs.add("set-group");
+            if (sender.hasPermission("mine3.permission.reload")) {
+                subs.add("reload");
+            }
+            if (sender.hasPermission("mine3.permission.has")) {
+                subs.add("has");
+            }
+            if (sender.hasPermission("mine3.permission.set-group")) {
+                subs.add("set-group");
+            }
 
             for (String sub : subs) {
                 if (sub.toLowerCase().contains(args[0].toLowerCase())) {

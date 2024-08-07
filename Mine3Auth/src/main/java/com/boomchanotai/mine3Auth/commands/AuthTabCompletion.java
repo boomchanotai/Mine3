@@ -13,15 +13,22 @@ public class AuthTabCompletion implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> subCommand = new ArrayList<>();
         if (args.length == 1) {
-            if (sender.hasPermission("mine3.auth.setspawn")) {
-                subCommand.add("setspawn");
-            }
-
-            if (sender.hasPermission("mine3.auth.reload")) {
-                subCommand.add("reload");
-            }
 
             subCommand.add("spawn");
+            ArrayList<String> subs = new ArrayList<>();
+            if (sender.hasPermission("mine3.auth.setspawn")) {
+                subs.add("setspawn");
+            }
+            if (sender.hasPermission("mine3.auth.reload")) {
+                subs.add("reload");
+            }
+            subs.add("spawn");
+
+            for (String sub : subs) {
+                if (sub.toLowerCase().contains(args[0].toLowerCase())) {
+                    subCommand.add(sub);
+                }
+            }
         }
 
         return subCommand;

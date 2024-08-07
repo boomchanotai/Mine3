@@ -12,11 +12,6 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> - mine3lib command
       /<command> reload - reload plugin config (admin only)
-  mine3lib reload:
-    description: reload plugin
-    usage: /<command> reload
-    permission: mine3.lib.reload
-    permission-message: You don't have permission to use this command
 permissions:
   mine3.lib.reload:
     description: allow player to reload plugin config
