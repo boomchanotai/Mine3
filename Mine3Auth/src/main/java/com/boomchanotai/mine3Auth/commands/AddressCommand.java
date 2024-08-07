@@ -1,10 +1,10 @@
 package com.boomchanotai.mine3Auth.commands;
 
 import com.boomchanotai.mine3Auth.Mine3Auth;
-import com.boomchanotai.mine3Auth.entity.PlayerCacheData;
+import com.boomchanotai.mine3Auth.entities.PlayerCacheData;
 import com.boomchanotai.mine3Auth.logger.Logger;
+import com.boomchanotai.mine3Auth.repositories.RedisRepository;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
-import com.boomchanotai.mine3Auth.repository.RedisRepository;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

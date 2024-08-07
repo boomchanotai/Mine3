@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3Auth.service;
+package com.boomchanotai.mine3Auth.services;
 
 import java.io.File;
 

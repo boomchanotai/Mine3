@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3Auth.service;
+package com.boomchanotai.mine3Auth.services;
 
 import java.util.Objects;
 import java.util.Random;
@@ -11,12 +11,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
 import com.boomchanotai.mine3Auth.Mine3Auth;
-import com.boomchanotai.mine3Auth.entity.PlayerCacheData;
-import com.boomchanotai.mine3Auth.entity.PlayerData;
-import com.boomchanotai.mine3Auth.entity.PlayerLocation;
+import com.boomchanotai.mine3Auth.entities.PlayerCacheData;
+import com.boomchanotai.mine3Auth.entities.PlayerData;
+import com.boomchanotai.mine3Auth.entities.PlayerLocation;
 import com.boomchanotai.mine3Auth.logger.Logger;
-import com.boomchanotai.mine3Auth.repository.PostgresRepository;
-import com.boomchanotai.mine3Auth.repository.RedisRepository;
+import com.boomchanotai.mine3Auth.repositories.PostgresRepository;
+import com.boomchanotai.mine3Auth.repositories.RedisRepository;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 public class AuthService {

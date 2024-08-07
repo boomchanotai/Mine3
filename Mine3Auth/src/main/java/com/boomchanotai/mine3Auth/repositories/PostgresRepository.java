@@ -1,11 +1,11 @@
-package com.boomchanotai.mine3Auth.repository;
+package com.boomchanotai.mine3Auth.repositories;
 
-import com.boomchanotai.mine3Auth.entity.PlayerData;
-import com.boomchanotai.mine3Auth.entity.PlayerLocation;
 import com.boomchanotai.mine3Auth.postgres.Postgres;
 import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Auth.logger.Logger;
 import com.boomchanotai.mine3Auth.Mine3Auth;
+import com.boomchanotai.mine3Auth.entities.PlayerData;
+import com.boomchanotai.mine3Auth.entities.PlayerLocation;
 
 import org.bukkit.GameMode;
 import org.bukkit.World;

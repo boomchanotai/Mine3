@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3Auth.repository;
+package com.boomchanotai.mine3Auth.repositories;
 
 import java.util.ArrayList;
 import java.util.Collection;

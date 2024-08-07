@@ -7,7 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import com.boomchanotai.mine3Auth.repository.PostgresRepository;
+import com.boomchanotai.mine3Auth.repositories.PostgresRepository;
 import com.boomchanotai.mine3Lib.address.Address;
 
 public class PardonTabCompletion implements TabCompleter {

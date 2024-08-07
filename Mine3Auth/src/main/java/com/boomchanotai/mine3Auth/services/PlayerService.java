@@ -1,6 +1,6 @@
-package com.boomchanotai.mine3Auth.service;
+package com.boomchanotai.mine3Auth.services;
 
-import com.boomchanotai.mine3Auth.entity.PlayerData;
+import com.boomchanotai.mine3Auth.entities.PlayerData;
 import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 

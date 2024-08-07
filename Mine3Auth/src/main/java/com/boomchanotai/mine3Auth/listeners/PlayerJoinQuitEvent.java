@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.boomchanotai.mine3Auth.service.AuthService;
+import com.boomchanotai.mine3Auth.services.AuthService;
 
 public class PlayerJoinQuitEvent implements Listener {
 

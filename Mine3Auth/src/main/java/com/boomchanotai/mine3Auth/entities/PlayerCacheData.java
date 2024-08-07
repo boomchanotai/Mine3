@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3Auth.entity;
+package com.boomchanotai.mine3Auth.entities;
 
 import com.boomchanotai.mine3Lib.address.Address;
 

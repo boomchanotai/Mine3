@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Auth.logger.Logger;
-import com.boomchanotai.mine3Auth.repository.PostgresRepository;
+import com.boomchanotai.mine3Auth.repositories.PostgresRepository;
 import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 

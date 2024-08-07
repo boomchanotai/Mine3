@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import com.boomchanotai.mine3Auth.entity.PlayerData;
-import com.boomchanotai.mine3Auth.entity.PlayerLocation;
+import com.boomchanotai.mine3Auth.entities.PlayerData;
+import com.boomchanotai.mine3Auth.entities.PlayerLocation;
 import com.boomchanotai.mine3Auth.logger.Logger;
-import com.boomchanotai.mine3Auth.repository.PostgresRepository;
-import com.boomchanotai.mine3Auth.service.PlayerService;
+import com.boomchanotai.mine3Auth.repositories.PostgresRepository;
+import com.boomchanotai.mine3Auth.services.PlayerService;
 import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;

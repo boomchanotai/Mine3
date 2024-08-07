@@ -7,7 +7,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.boomchanotai.mine3Auth.service.PlayerService;
+import com.boomchanotai.mine3Auth.services.PlayerService;
 
 public class PreventPlayerActionWhenNotLoggedIn implements Listener {
     private PlayerService playerService;

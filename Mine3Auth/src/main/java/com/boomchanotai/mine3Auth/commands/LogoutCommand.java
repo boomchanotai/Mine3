@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import com.boomchanotai.mine3Auth.service.AuthService;
+import com.boomchanotai.mine3Auth.services.AuthService;
 
 public class LogoutCommand implements CommandExecutor {
     private AuthService authService;

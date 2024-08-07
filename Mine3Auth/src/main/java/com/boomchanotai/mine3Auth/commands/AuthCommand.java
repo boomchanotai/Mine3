@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Auth.config.Config;
 import com.boomchanotai.mine3Auth.logger.Logger;
-import com.boomchanotai.mine3Auth.service.SpawnService;
+import com.boomchanotai.mine3Auth.services.SpawnService;
 import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 
 import net.md_5.bungee.api.ChatColor;

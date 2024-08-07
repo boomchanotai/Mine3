@@ -1,6 +1,6 @@
-package com.boomchanotai.mine3Auth.repository;
+package com.boomchanotai.mine3Auth.repositories;
 
-import com.boomchanotai.mine3Auth.entity.PlayerCacheData;
+import com.boomchanotai.mine3Auth.entities.PlayerCacheData;
 import com.boomchanotai.mine3Auth.logger.Logger;
 import com.boomchanotai.mine3Auth.redis.Redis;
 import com.fasterxml.jackson.databind.JsonNode;
