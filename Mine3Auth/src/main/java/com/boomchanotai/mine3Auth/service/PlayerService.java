@@ -97,6 +97,9 @@ public class PlayerService {
         player.setFlying(false);
         player.setOp(false);
 
+        // cancel disguise
+        provider.undisguise(player);
+
         ProfileBanList profileBanList = Bukkit.getBanList(BanList.Type.PROFILE);
         profileBanList.pardon(player.getPlayerProfile());
 
