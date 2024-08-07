@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3Standard.listener;
+package com.boomchanotai.mine3Standard.listeners;
 
 import static com.boomchanotai.mine3Lib.config.Config.COLOR_CODE_PREFIX;
 import static com.boomchanotai.mine3Standard.config.Config.CHAT_FORMAT;

@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3Standard.listener;
+package com.boomchanotai.mine3Standard.listeners;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
