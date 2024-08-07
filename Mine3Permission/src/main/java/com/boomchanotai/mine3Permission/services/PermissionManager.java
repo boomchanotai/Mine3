@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -15,14 +17,16 @@ import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Permission.Mine3Permission;
 import com.boomchanotai.mine3Permission.repositories.PostgresRepository;
 
+import static com.boomchanotai.mine3Lib.config.Config.COLOR_CODE_PREFIX;
+
 public class PermissionManager {
-    private PostgresRepository postgresRepository;
+    private PostgresRepository pgRepo;
     private static String defaultGroup;
     private static HashMap<String, ArrayList<String>> permissionMap;
     private static HashMap<UUID, PermissionAttachment> permissionAttachmentMap;
 
-    public PermissionManager(PostgresRepository postgresRepository) {
-        this.postgresRepository = postgresRepository;
+    public PermissionManager(PostgresRepository pgRepo) {
+        this.pgRepo = pgRepo;
         defaultGroup = null;
         permissionMap = new HashMap<>();
         permissionAttachmentMap = new HashMap<>();
@@ -75,7 +79,11 @@ public class PermissionManager {
     }
 
     public void attachPermissionGroup(Address address, String group) {
-        postgresRepository.createGroup(address, group);
+        if (group == null) {
+            group = getDefaultGroup();
+        }
+
+        pgRepo.createGroup(address, group);
 
         Player player = PlayerRepository.getPlayer(address);
 
@@ -88,6 +96,14 @@ public class PermissionManager {
             attachment.setPermission(permission, true);
         });
 
+        // set prefix and suffix
+        FileConfiguration config = Mine3Permission.getPlugin().getConfig();
+        String prefix = config.getString("groups." + group + ".metadata.prefix");
+        String suffix = config.getString("groups." + group + ".metadata.suffix");
+        String name = ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, prefix) + address.getShortAddress()
+                + ChatColor.translateAlternateColorCodes(COLOR_CODE_PREFIX, suffix);
+        player.setDisplayName(name);
+
         permissionAttachmentMap.put(player.getUniqueId(), attachment);
     }
 
@@ -97,5 +113,18 @@ public class PermissionManager {
         }
 
         player.removeAttachment(permissionAttachmentMap.remove(player.getUniqueId()));
+    }
+
+    public void reloadPermission() {
+        permissionMap.clear();
+        permissionAttachmentMap.clear();
+        defaultGroup = null;
+        initializePermission();
+
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            Address address = PlayerRepository.getAddress(p.getUniqueId());
+            String group = pgRepo.getGroup(address);
+            attachPermissionGroup(address, group);
+        }
     }
 }

@@ -31,6 +31,7 @@ import com.boomchanotai.mine3Standard.commands.TpacceptCommand;
 import com.boomchanotai.mine3Standard.commands.VanishCommand;
 import com.boomchanotai.mine3Standard.config.Config;
 import com.boomchanotai.mine3Standard.config.SpawnConfig;
+import com.boomchanotai.mine3Standard.listener.PlayerChat;
 import com.boomchanotai.mine3Standard.listener.PlayerDeath;
 import com.boomchanotai.mine3Standard.listener.PlayerJoinServer;
 import com.boomchanotai.mine3Standard.services.TpaService;
@@ -82,6 +83,7 @@ public final class Mine3Standard extends JavaPlugin {
         // Event Listeners
         getServer().getPluginManager().registerEvents(new PlayerJoinServer(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
+        getServer().getPluginManager().registerEvents(new PlayerChat(), this);
 
         // tp
         getCommand("tp").setExecutor(new TpCommand());

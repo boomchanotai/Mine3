@@ -3,9 +3,6 @@
 # Repository: https://github.com/boomchanotai/Mine3
 # Author: Boom Chanotai (https://www.boomchanotai.com/)
 
-# Plugins settings
-color_code_prefix: "&" # Color code prefix
-
 # Postgres Settings
 postgres:
   host: "jdbc:postgresql://localhost:5432/postgres"
@@ -22,7 +19,7 @@ groups:
       - mine3.tpaccept
       - mine3.tpacancel
     metadata:
-      prefix: "&7[&fDefault&7]"
+      prefix: "&7"
       suffix: ""
   admin:
     default: false
@@ -42,5 +39,5 @@ groups:
     inheritance:
       - default
     metadata:
-      prefix: "&7[&cAdmin&7]"
+      prefix: "&cAdmin &f"
       suffix: ""

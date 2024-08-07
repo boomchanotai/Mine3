@@ -2,13 +2,11 @@ package com.boomchanotai.mine3Standard.config;
 
 import com.boomchanotai.mine3Standard.Mine3Standard;
 
-import java.util.Objects;
-
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
-    // Plugin Settings
-    public static char COLOR_CODE_PREFIX;
+    // Chat Settings
+    public static String CHAT_FORMAT;
 
     // Teleport Settings
     public static int TELEPORT_TIMEOUT;
@@ -19,7 +17,7 @@ public class Config {
 
     public static void loadConfig() {
         FileConfiguration config = Mine3Standard.getPlugin().getConfig();
-        COLOR_CODE_PREFIX = Objects.requireNonNull(config.getString("color_code_prefix")).charAt(0);
+        CHAT_FORMAT = config.getString("chat_format");
 
         TELEPORT_TIMEOUT = config.getInt("teleport_timeout");
     }

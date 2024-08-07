@@ -35,6 +35,7 @@ public class PermissionCommand implements CommandExecutor {
             }
 
             Config.reloadConfig();
+            permissionManager.reloadPermission();
 
             if (sender instanceof Player) {
                 PlayerRepository.sendMessage((Player) sender, "Mine3Permission config has been reloaded.");

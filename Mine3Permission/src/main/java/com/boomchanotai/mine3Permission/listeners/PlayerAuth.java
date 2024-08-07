@@ -20,9 +20,6 @@ public class PlayerAuth implements Listener {
     @EventHandler
     public void onPlayerAuth(PlayerAuthEvent event) {
         String group = pgRepo.getGroup(event.getAddress());
-        if (group == null) {
-            permissionManager.getDefaultGroup();
-        }
         permissionManager.attachPermissionGroup(event.getAddress(), group);
     }
 
