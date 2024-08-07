@@ -21,23 +21,30 @@ groups:
     metadata:
       prefix: "&7"
       suffix: ""
-  admin:
+  staff:
     default: false
     permissions:
-      - mine3.op
-      - mine3.deop
       - mine3.tp
       - mine3.tphere
       - mine3.heal
       - mine3.feed
       - mine3.gamemode
       - mine3.give
-      - mine3.kill
-      - mine3.ban
       - mine3.kick
       - mine3.fly
     inheritance:
       - default
+    metadata:
+      prefix: "&dStaff &f"
+      suffix: ""
+  admin:
+    default: false
+    permissions:
+      - mine3.op
+      - mine3.deop
+      - mine3.ban
+    inheritance:
+      - staff
     metadata:
       prefix: "&cAdmin &f"
       suffix: ""

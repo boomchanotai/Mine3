@@ -45,12 +45,21 @@ public class PermissionManager {
             });
 
             // Add permission from inheritance
-            if (config.contains("groups." + key + ".inheritance")) {
-                config.getList("groups." + key + ".inheritance").forEach(inheritance -> {
-                    config.getList("groups." + inheritance + ".permissions").forEach(permission -> {
-                        permissions.add(permission.toString());
+            ArrayList<String> inheritanceList = new ArrayList<>();
+            inheritanceList.add(key);
+            while (!inheritanceList.isEmpty()) {
+                String inheritance = inheritanceList.remove(0);
+                if (config.contains("groups." + inheritance + ".inheritance")) {
+                    config.getList("groups." + inheritance + ".inheritance").forEach(inheritanceGroup -> {
+                        String group = inheritanceGroup.toString();
+                        if (!inheritanceList.contains(group)) {
+                            inheritanceList.add(group);
+                        }
+                        config.getList("groups." + group + ".permissions").forEach(permission -> {
+                            permissions.add(permission.toString());
+                        });
                     });
-                });
+                }
             }
 
             // Init default group
@@ -59,6 +68,10 @@ public class PermissionManager {
             }
 
             permissionMap.put(key, permissions);
+        });
+
+        permissionMap.forEach((key, value) -> {
+            System.out.println(key + ": " + value);
         });
     }
 
