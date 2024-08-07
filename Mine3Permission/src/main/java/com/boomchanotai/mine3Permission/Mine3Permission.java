@@ -30,7 +30,7 @@ public final class Mine3Permission extends JavaPlugin {
 
         // Dependencies
         PostgresRepository pgRepo = new PostgresRepository();
-        PermissionManager permissionManager = new PermissionManager();
+        PermissionManager permissionManager = new PermissionManager(pgRepo);
         permissionManager.initializePermission();
 
         // Register Event
@@ -39,7 +39,7 @@ public final class Mine3Permission extends JavaPlugin {
         // Commands
         // permission
         getCommand("permission").setExecutor(new PermissionCommand(permissionManager));
-        getCommand("permission").setTabCompleter(new PermissionTabCompletion());
+        getCommand("permission").setTabCompleter(new PermissionTabCompletion(permissionManager));
     }
 
     @Override

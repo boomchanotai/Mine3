@@ -2,19 +2,30 @@ package com.boomchanotai.mine3Permission.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 
+import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.repository.PlayerRepository;
 import com.boomchanotai.mine3Permission.Mine3Permission;
+import com.boomchanotai.mine3Permission.repositories.PostgresRepository;
 
 public class PermissionManager {
+    private PostgresRepository postgresRepository;
     private static String defaultGroup;
     private static HashMap<String, ArrayList<String>> permissionMap;
+    private static HashMap<UUID, PermissionAttachment> permissionAttachmentMap;
 
-    public PermissionManager() {
+    public PermissionManager(PostgresRepository postgresRepository) {
+        this.postgresRepository = postgresRepository;
         defaultGroup = null;
         permissionMap = new HashMap<>();
+        permissionAttachmentMap = new HashMap<>();
     }
 
     public void initializePermission() {
@@ -55,7 +66,36 @@ public class PermissionManager {
         return defaultGroup;
     }
 
-    public static HashMap<String, ArrayList<String>> getPermissionMap() {
+    public Set<String> getGroups() {
+        return permissionMap.keySet();
+    }
+
+    public HashMap<String, ArrayList<String>> getPermissionMap() {
         return permissionMap;
+    }
+
+    public void attachPermissionGroup(Address address, String group) {
+        postgresRepository.createGroup(address, group);
+
+        Player player = PlayerRepository.getPlayer(address);
+
+        // Remove previous permission attachment
+        unattachPermissionGroup(player);
+
+        // Create new permission attachment
+        PermissionAttachment attachment = player.addAttachment(Mine3Permission.getPlugin());
+        permissionMap.get(group).forEach(permission -> {
+            attachment.setPermission(permission, true);
+        });
+
+        permissionAttachmentMap.put(player.getUniqueId(), attachment);
+    }
+
+    public void unattachPermissionGroup(Player player) {
+        if (!permissionAttachmentMap.containsKey(player.getUniqueId())) {
+            return;
+        }
+
+        player.removeAttachment(permissionAttachmentMap.remove(player.getUniqueId()));
     }
 }

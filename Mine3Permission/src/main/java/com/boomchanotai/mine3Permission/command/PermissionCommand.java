@@ -85,7 +85,20 @@ public class PermissionCommand implements CommandExecutor {
             return true;
         }
 
-        if (args[0].equals("test")) {
+        // permission set-group <group> <address> - (Player, Console)
+        if (args[0].equals("set-group") && args.length == 3) {
+            if (!Utils.hasPermission(sender, "mine3.permission.set-group")) {
+                return true;
+            }
+
+            String group = args[1];
+            Address address = new Address(args[2]);
+            permissionManager.attachPermissionGroup(address, group);
+
+            Player player = PlayerRepository.getPlayer(address);
+            PlayerRepository.sendMessage(player, "you have been changed to " + group + " group.");
+
+            Utils.sendCommandReturnMessage(sender, address.getShortAddress() + " has been set to " + group + " group.");
 
             return true;
         }

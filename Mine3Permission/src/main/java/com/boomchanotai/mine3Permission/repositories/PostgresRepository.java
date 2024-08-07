@@ -10,7 +10,10 @@ import com.boomchanotai.mine3Permission.postgres.Postgres;
 
 public class PostgresRepository {
     public void createGroup(Address address, String group) {
-        String query = "INSERT INTO groups (address, \"group\") VALUES (?, ?) ON CONFLICT DO NOTHING";
+        String query = "INSERT INTO groups (address, \"group\") \n" +
+                "VALUES (?, ?) \n" +
+                "ON CONFLICT (address) \n" +
+                "DO UPDATE SET \"group\" = EXCLUDED.\"group\";";
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
@@ -22,25 +25,12 @@ public class PostgresRepository {
         }
     }
 
-    public void updateGroup(Address address, String group) {
-        String query = "UPDATE groups SET group = ? WHERE address = ?";
-
-        try {
-            PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, group);
-            preparedStatement.setString(2, address.getValue());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            Logger.warning(e.getMessage(), "failed to update group");
-        }
-    }
-
-    public String getGroup() {
+    public String getGroup(Address address) {
         String query = "SELECT * FROM groups WHERE address = ?";
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, "address");
+            preparedStatement.setString(1, address.getValue());
             ResultSet res = preparedStatement.executeQuery();
 
             if (res.next()) {

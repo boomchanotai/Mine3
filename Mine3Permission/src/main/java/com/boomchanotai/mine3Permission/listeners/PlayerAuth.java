@@ -2,6 +2,7 @@ package com.boomchanotai.mine3Permission.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
 import com.boomchanotai.mine3Permission.repositories.PostgresRepository;
@@ -18,8 +19,16 @@ public class PlayerAuth implements Listener {
 
     @EventHandler
     public void onPlayerAuth(PlayerAuthEvent event) {
-        pgRepo.createGroup(event.getAddress(), permissionManager.getDefaultGroup());
-        System.out.println(event.getAddress() + " authenticated !");
+        String group = pgRepo.getGroup(event.getAddress());
+        if (group == null) {
+            permissionManager.getDefaultGroup();
+        }
+        permissionManager.attachPermissionGroup(event.getAddress(), group);
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        permissionManager.unattachPermissionGroup(event.getPlayer());
     }
 
 }

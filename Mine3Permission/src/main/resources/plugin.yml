@@ -12,23 +12,12 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> has <permission> - check yourself has permission
       /<command> has <permission> <address> - check player has permission
+      /<command> set - group <group> <address> - set player group
       /<command> reload - reload plugin config
-  permission reload:
-    description: reload plugin config
-    usage: /permission reload
-    permission: "mine3.permission.reload"
-    permission-message: You don't have permission to use this command
-  permission has:
-    description: check player has permission
-    usage: |
-      Use /help <command> [subcommand] for more information
-      /<command> <permission> - check yourself has permission
-      /<command> <permission> <address> - check player has permission
-    permission: "mine3.permission.has"
-    permission-message: You don't have permission to use this command
 permissions:
   mine3.permission.reload:
     description: allow player to reload plugin config
   mine3.permission.has:
     description: allow player to check player has permission
-    default: true
+  mine3.permission.set-group:
+    description: allow player to set group
