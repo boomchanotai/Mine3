@@ -76,10 +76,6 @@ public class PermissionManager {
 
             permissionMap.put(key, permissions);
         });
-
-        permissionMap.forEach((key, value) -> {
-            System.out.println(key + ": " + value);
-        });
     }
 
     public void getGroupPermission(String group) {
