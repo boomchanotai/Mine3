@@ -2,6 +2,7 @@ package com.boomchanotai.mine3Permission.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -46,18 +47,24 @@ public class PermissionManager {
 
             // Add permission from inheritance
             ArrayList<String> inheritanceList = new ArrayList<>();
+            Set<String> inheritanceSet = new HashSet<>();
             inheritanceList.add(key);
+            inheritanceSet.add(key);
             while (!inheritanceList.isEmpty()) {
                 String inheritance = inheritanceList.remove(0);
                 if (config.contains("groups." + inheritance + ".inheritance")) {
                     config.getList("groups." + inheritance + ".inheritance").forEach(inheritanceGroup -> {
                         String group = inheritanceGroup.toString();
-                        if (!inheritanceList.contains(group)) {
-                            inheritanceList.add(group);
+                        if (!inheritanceSet.contains(group)) {
+                            if (!inheritanceList.contains(group)) {
+                                inheritanceList.add(group);
+                                inheritanceSet.add(group);
+                            }
+
+                            config.getList("groups." + group + ".permissions").forEach(permission -> {
+                                permissions.add(permission.toString());
+                            });
                         }
-                        config.getList("groups." + group + ".permissions").forEach(permission -> {
-                            permissions.add(permission.toString());
-                        });
                     });
                 }
             }
