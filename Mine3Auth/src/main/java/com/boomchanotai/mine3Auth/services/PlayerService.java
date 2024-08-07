@@ -2,7 +2,7 @@ package com.boomchanotai.mine3Auth.services;
 
 import com.boomchanotai.mine3Auth.entities.PlayerData;
 import com.boomchanotai.mine3Lib.address.Address;
-import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 import dev.iiahmed.disguise.Disguise;
 import dev.iiahmed.disguise.DisguiseProvider;

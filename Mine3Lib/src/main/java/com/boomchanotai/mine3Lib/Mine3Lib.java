@@ -6,7 +6,7 @@ import com.boomchanotai.mine3Lib.commands.LibCommand;
 import com.boomchanotai.mine3Lib.commands.LibTabCompletion;
 import com.boomchanotai.mine3Lib.config.Config;
 import com.boomchanotai.mine3Lib.redis.Redis;
-import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 public final class Mine3Lib extends JavaPlugin {
     private static Mine3Lib plugin;

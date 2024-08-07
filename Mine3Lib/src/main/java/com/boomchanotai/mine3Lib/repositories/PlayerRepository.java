@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3Lib.repository;
+package com.boomchanotai.mine3Lib.repositories;
 
 import static com.boomchanotai.mine3Lib.config.Config.*;
 

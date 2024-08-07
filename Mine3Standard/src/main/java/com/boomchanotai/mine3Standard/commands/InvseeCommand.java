@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.boomchanotai.mine3Standard.logger.Logger;
 import com.boomchanotai.mine3Lib.address.Address;
-import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
 public class InvseeCommand implements CommandExecutor, Listener {

@@ -7,7 +7,7 @@ import com.boomchanotai.mine3Standard.logger.Logger;
 
 import net.md_5.bungee.api.ChatColor;
 
-import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 public class Utils {
     public static boolean hasPermission(CommandSender sender, String permission) {

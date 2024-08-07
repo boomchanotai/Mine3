@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Auth.logger.Logger;
 import com.boomchanotai.mine3Lib.address.Address;
-import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 import net.md_5.bungee.api.ChatColor;
 

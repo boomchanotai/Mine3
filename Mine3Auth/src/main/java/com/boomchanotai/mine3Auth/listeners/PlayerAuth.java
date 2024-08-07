@@ -13,7 +13,7 @@ import com.boomchanotai.mine3Auth.repositories.PostgresRepository;
 import com.boomchanotai.mine3Auth.services.PlayerService;
 import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
-import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 public class PlayerAuth implements Listener {
     private PostgresRepository pgRepo;

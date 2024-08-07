@@ -17,7 +17,7 @@ import com.boomchanotai.mine3Auth.entities.PlayerLocation;
 import com.boomchanotai.mine3Auth.logger.Logger;
 import com.boomchanotai.mine3Auth.repositories.PostgresRepository;
 import com.boomchanotai.mine3Auth.repositories.RedisRepository;
-import com.boomchanotai.mine3Lib.repository.PlayerRepository;
+import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 public class AuthService {
     private PlayerService playerService;
