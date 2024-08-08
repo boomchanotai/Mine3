@@ -1,5 +1,13 @@
 FROM node:20-alpine as deps
 
+# Define build arguments for environment variables
+ARG VITE_PROJECT_ID
+ARG VITE_API_BASE_URL
+
+# Set environment variables during the build process
+ENV VITE_PROJECT_ID=$VITE_PROJECT_ID
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+
 WORKDIR /app
 
 RUN apk add g++ make py3-pip
