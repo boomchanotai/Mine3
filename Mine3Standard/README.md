@@ -54,3 +54,10 @@ Similar to the EssentialX plugin, Mine3Standard provides standard commands to su
 | `/op <address>`                   | `mine3.op`                    | Make player as operator.        |
 | `/deop <address>`                 | `mine3.deop`                  | Remove player as operator.      |
 | `/standard reload`                | `mine3.standard.reload`       | Reload configuration.           |
+
+## Technical Information
+
+- **Database Interaction**: Mine3Standard does not have its own database entry points, such as Redis or PostgreSQL.
+- **Data Access**: Instead, it retrieves data from **Mine3Lib**'s repositories, leveraging the centralized data management provided by **Mine3Lib**.
+
+This design ensures consistency and reduces redundancy by using the existing data infrastructure provided by Mine3Lib.

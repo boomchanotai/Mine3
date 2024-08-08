@@ -2,12 +2,13 @@
 
 A group of open-source Minecraft plugins that enable Minecraft to interact with the Web3 world. These plugins allow authentication with an EVM wallet, use address-based commands like `/tp <address>`, and seamlessly connect Minecraft with Web3 services.
 
-Mine3 offers four modules you can choose from:
+Mine3 offers 5 modules you can choose from:
 
-1. **Mine3Lib**: A central library for Mine3 plugins, providing standards for integrating Web3 services with our infrastructure - [documents](/Mine3Lib/README.md)
-2. **Mine3Auth**: An authentication service plugin for Minecraft servers, ensuring secure and efficient user authentication - [documents](/Mine3Auth/README.md)
-3. **Mine3Permission**: A permission manager plugin for Mine3, driven by the address concept, designed to manage player permissions effectively - [documents](/Mine3Permission/README.md)
-4. **Mine3Standard**: Similar to the EssentialX plugin, providing standard commands to support address-based operations - [documents](/Mine3Standard//README.md)
+1. **Mine3 Frontend**: A server's website for authenticating players using an EVM wallet - [document](/mine3-frontend/README.md)
+1. **Mine3Lib**: A central library for Mine3 plugins, providing standards for integrating Web3 services with our infrastructure - [document](/Mine3Lib/README.md)
+1. **Mine3Auth**: An authentication service plugin for Minecraft servers, ensuring secure and efficient user authentication - [document](/Mine3Auth/README.md)
+1. **Mine3Permission**: A permission manager plugin for Mine3, driven by the address concept, designed to manage player permissions effectively - [document](/Mine3Permission/README.md)
+1. **Mine3Standard**: Similar to the EssentialX plugin, providing standard commands to support address-based operations - [document](/Mine3Standard//README.md)
 
 ## Quickstart
 

@@ -45,3 +45,12 @@ Authentication service plugin for Minecraft servers, providing secure and effici
 | `/mine3 reload`     | `mine3.auth.reload`   | Reload configuration.                                                    |
 | `/ban <address>`    | `mine3.ban`           | Ban address.                                                             |
 | `/pardon <address>` | `mine3.pardon`        | Pardon address.                                                          |
+
+## Technical Information
+
+- **Login Token Storage**: Redis is used to store login tokens securely.
+- **Player Cache Data**: The plugin stores player cache data by calling `void setPlayer(Address address, Player player)` from **Mine3Lib**, integrating with **Mine3Lib**’s data management system.
+- **Player Data Storage**: PostgreSQL is used to store the player's state before the player logs out, capturing data at quit time.
+- **HTTP Handling**: Javalin is employed as the HTTP handler to verify signatures and act as the trigger point for player authentication.
+
+This setup ensures secure and efficient management of player data and authentication processes within the Mine3 ecosystem.
