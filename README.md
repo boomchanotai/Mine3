@@ -1,83 +1,39 @@
 # Mine3
 
-Authenticate minecraft server with EVM Wallet
+A group of open-source Minecraft plugins that enable Minecraft to interact with the Web3 world. These plugins allow authentication with an EVM wallet, use address-based commands like `/tp <address>`, and seamlessly connect Minecraft with Web3 services.
 
-Features:
+Mine3 offers four modules you can choose from:
 
-- Login with EVM Wallet Website using:
-  - [React](https://react.dev/)
-  - [VITE](https://vitejs.dev/guide/)
-  - [Rainbowkit](https://www.rainbowkit.com/)
-  - [Wagmi](https://wagmi.sh/)
-- Support for storing player data in a database, including:
-
-1. Address
-2. Xp Level
-3. Xp Exp
-4. Health
-5. Food Level
-6. Gamemode
-7. Flying speed
-8. Walking speed
-9. Is flying
-10. Is op
-11. Potion effects
-12. Last location
-
-Commands:
-
-- `/address` - Get sender's address.
-- `/address <player>` - Get player's address.
-- `/logout` - Logout (which will save the player's inventory) and generate a new token.
-- `/mine3 setspawn` - Set spawn points when a player is not logged in.
-- `/mine3 spawn` - Go to Mine3's spawn points.
-
-**Note:** Mine3 spawn points are not the same as Essentials' spawn points.
-
-This plugin is a proof of concept to enhance the Minecraft experience with the Web3 world. There are many tasks to complete before it can be used in production, such as replacing player names with addresses and handling every command that currently uses player names to use addresses instead. and there's some question for further improvement:
-
-- Should we replace player names with addresses?
-- How can we handle /tp, /give, /op, /gamemode with addresses only?
-- How can we build an ecosystem with all plugins that support Web3, such as an interface for storing player data?
-
-## Compatibility
-
-Currently support only Spigot-1.21
-
-- Java 21
-- Minecraft 1.21
+1. **Mine3Lib**: A central library for Mine3 plugins, providing standards for integrating Web3 services with our infrastructure - [documents](/Mine3Lib/README.md)
+2. **Mine3Auth**: An authentication service plugin for Minecraft servers, ensuring secure and efficient user authentication - [documents](/Mine3Auth/README.md)
+3. **Mine3Permission**: A permission manager plugin for Mine3, driven by the address concept, designed to manage player permissions effectively -[documents](/Mine3Permission/README.md)
+4. **Mine3Standard**: Similar to the EssentialX plugin, providing standard commands to support address-based operations - [documents](/Mine3Standard//README.md)
 
 ## Quickstart
 
 We've already provided `docker-compose.yml` for additional services for your Minecraft server, including PostgreSQL, Redis, and a frontend to sign your EVM wallet.
 
 1. Install [docker](https://www.docker.com/)
-2. Go to your **Mine3** directory using:
+2. Config `docker-compose.yml`
 
-```bash
-cd /your_folder_path/Mine3
-```
+   - Register & Create new project in [Rainbowkit](https://www.rainbowkit.com/)
+   - Set Rainbowkit project id at `VITE_PROJECT_ID` in `services.mine3_frontend.build.args`
 
-3. Create project in [Rainbowkit](https://www.rainbowkit.com/) and create `.env.local` file in `/mine3-frontend` (example in `.env.example`)
+3. Run `docker-compose.yml`:
 
-- `VITE_PROJECT_ID` is Rainbowkit's project id.
-- `VITE_API_BASE_URL` is Mine3's HTTP handler url (this url same as your server IP Address but you can config port at plugin configuration file)
+   ```bash
+   docker compose up -d
+   ```
 
-4. Run `docker-compose.yml`:
+4. Create your own Spigot server
+5. Move Mine3 plugins to your `plugins` folder
+6. Start your server.
+7. Config all **Mine3** plugins in plugins folder
 
-```bash
-docker compose up -d
-```
-
-5. Create your own Spigot server
-6. Move `Mine3-1.0-SNAPSHOT.jar` to your `plugins` folder
-7. Start your server.
-8. Configure your **Mine3** settings in `plugins/Mine3/config.yml` as follows:
-
-- Set your Redis host and port.
-- Set your PostgreSQL URL.
-- Set your HTTP server port.
-- Set `auth.website_token_base_url` to your server domain or IP address. (frontend url)
+   - Set your Redis host and port.
+   - Set your PostgreSQL URL.
+   - Set your HTTP server port.
+   - Set `auth.website_token_base_url` to your server domain or IP address. (frontend url)
 
 ## Authors
 
