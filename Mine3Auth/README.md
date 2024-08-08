@@ -48,6 +48,7 @@ Authentication service plugin for Minecraft servers, providing secure and effici
 
 ## Technical Information
 
+- **Player Name Changer**: Uses [Modendisguise](https://github.com/iiAhmedYT/ModernDisguise) to change player names.
 - **Login Token Storage**: Redis is used to store login tokens securely.
 - **Player Cache Data**: The plugin stores player cache data by calling `void setPlayer(Address address, Player player)` from **Mine3Lib**, integrating with **Mine3Lib**’s data management system.
 - **Player Data Storage**: PostgreSQL is used to store the player's state before the player logs out, capturing data at quit time.

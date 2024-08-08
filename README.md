@@ -38,7 +38,7 @@ We've already provided `docker-compose.yml` for additional services for your Min
 
 ## Authors
 
-- [BoomChanotai](https://github.com/boomchanotai)
+- BoomChanotai - [Github](https://github.com/boomchanotai), [Twitter](https://x.com/CentosZ3)
 
 ## Screenshots
 
