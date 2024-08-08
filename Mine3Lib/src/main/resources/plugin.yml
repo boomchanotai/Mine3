@@ -1,0 +1,17 @@
+name: Mine3Lib
+version: "1.0-SNAPSHOT"
+main: com.boomchanotai.mine3Lib.Mine3Lib
+api-version: "1.21"
+authors: [BoomChanotai]
+description: Mine3Lib
+website: https://boomchanotai.com
+commands:
+  mine3lib:
+    description: mine3lib command
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - mine3lib command
+      /<command> reload - reload plugin config (admin only)
+permissions:
+  mine3.lib.reload:
+    description: allow player to reload plugin config

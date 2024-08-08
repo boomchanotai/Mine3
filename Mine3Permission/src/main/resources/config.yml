@@ -1,0 +1,50 @@
+# Mine3Permission
+# Minecraft Authentication with web3 wallet (EVM)
+# Repository: https://github.com/boomchanotai/Mine3
+# Author: Boom Chanotai (https://www.boomchanotai.com/)
+
+# Postgres Settings
+postgres:
+  host: "jdbc:postgresql://localhost:5432/postgres"
+  username: "postgres"
+  password: "password"
+
+# Permissions
+groups:
+  default:
+    default: true
+    permissions:
+      - mine3.tpa
+      - mine3.tpahere
+      - mine3.tpaccept
+      - mine3.tpacancel
+    metadata:
+      prefix: "&7"
+      suffix: ""
+  staff:
+    default: false
+    permissions:
+      - mine3.tp
+      - mine3.tphere
+      - mine3.heal
+      - mine3.feed
+      - mine3.gamemode
+      - mine3.give
+      - mine3.kick
+      - mine3.fly
+    inheritance:
+      - default
+    metadata:
+      prefix: "&dStaff &f"
+      suffix: ""
+  admin:
+    default: false
+    permissions:
+      - mine3.op
+      - mine3.deop
+      - mine3.ban
+    inheritance:
+      - staff
+    metadata:
+      prefix: "&cAdmin &f"
+      suffix: ""

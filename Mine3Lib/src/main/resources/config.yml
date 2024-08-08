@@ -1,0 +1,21 @@
+# Mine3Lib
+# Central protocol for store player data with EVM address
+# Repository: https://github.com/boomchanotai/Mine3
+# Author: BoomChanotai (https://www.boomchanotai.com/)
+
+# Plugins settings
+# Chat title when plugin send message to player
+title: "&9[Mine3] &7"
+# Color code prefix
+color_code_prefix: "&"
+
+# Redis Settings
+# you can't disable this because we store player data in redis
+redis:
+  host: "localhost"
+  port: 6379
+
+# Player data settings
+player:
+  address_key: "mine3:auth:address" # redis key (hash) key: address, value: uuid
+  player_key: "mine3:auth:player" # redis key (hash) key: uuid, value: json (address)

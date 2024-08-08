@@ -1,0 +1,24 @@
+name: Mine3Permission
+version: "1.0-SNAPSHOT"
+main: com.boomchanotai.mine3Permission.Mine3Permission
+api-version: "1.21"
+authors: [BoomChanotai]
+depend: [Mine3Lib]
+description: permission manager plugin for mine3
+website: https://boomchanotai.com
+commands:
+  permission:
+    description: permission command
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> has <permission> - check yourself has permission
+      /<command> has <permission> <address> - check player has permission
+      /<command> set-group <group> <address> - set player group
+      /<command> reload - reload plugin config
+permissions:
+  mine3.permission.reload:
+    description: allow player to reload plugin config
+  mine3.permission.has:
+    description: allow player to check player has permission
+  mine3.permission.set-group:
+    description: allow player to set group

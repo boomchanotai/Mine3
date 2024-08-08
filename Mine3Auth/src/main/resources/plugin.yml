@@ -1,0 +1,48 @@
+name: Mine3Auth
+version: "${project.version}"
+main: com.boomchanotai.mine3Auth.Mine3Auth
+api-version: "1.21"
+description: "minecraft authentication system with evm wallet"
+author: boomchanotai
+website: https://github.com/boomchanotai/Mine3
+depend: [Mine3Lib]
+commands:
+  address:
+    description: get address
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> - get player's address
+      /<command> <player> - get other player's address
+  logout:
+    description: logout
+    usage: /<command>
+  auth:
+    description: mine3 command
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> spawn - go to spawn point
+      /<command> setspawn - set spawn point (admin only)
+      /<command> reload - reload plugin config (admin only)
+  ban:
+    description: ban player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <player> - ban player
+      /<command> <player> <reason> - ban player with reason
+    permission: "mine3.ban"
+    permission-message: You don't have permission to use this command
+  pardon:
+    description: unban player
+    usage: /<command> <player>
+    aliases: [unban]
+    permission: "mine3.pardon"
+    permission-message: You don't have permission to use this command
+permissions:
+  mine3.auth.setspawn:
+    description: allow player to set spawn point
+  mine3.auth.reload:
+    description: allow player to reload plugin config
+  mine3.ban:
+    description: allow player to ban other player
+  mine3.pardon:
+    description: allow player to unban other player

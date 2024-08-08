@@ -19,6 +19,9 @@ services:
     build:
       context: ./mine3-frontend
       dockerfile: Dockerfile
+      args:
+        - VITE_PROJECT_ID=your_project_id
+        - VITE_API_BASE_URL=http://localhost:4000
     container_name: mine3-frontend
     ports:
       - "5173:80"

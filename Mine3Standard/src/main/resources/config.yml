@@ -1,0 +1,10 @@
+# Mine3Standard
+# Minecraft Authentication with web3 wallet (EVM)
+# Repository: https://github.com/boomchanotai/Mine3
+# Author: Boom Chanotai (https://www.boomchanotai.com/)
+
+# {displayname} will be replaced with the player's display name with prefix and suffix group
+# {message} will be replaced with the message
+chat_format: "{displayname} &f: {message}"
+
+teleport_timeout: 300 # Teleport timeout in seconds (5 minutes)
