@@ -4,12 +4,9 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import com.boomchanotai.mine3Lib.address.Address;
-import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
 import com.boomchanotai.mine3Auth.Mine3Auth;
 import com.boomchanotai.mine3Auth.entities.PlayerCacheData;
 import com.boomchanotai.mine3Auth.entities.PlayerData;
@@ -88,16 +85,6 @@ public class AuthService {
         PlayerRepository.setPlayer(address, player); // Set player in Mine3Lib
         playerService.addPlayer(playerUUID); // Add player to player list
         redisRepo.deleteToken(token); // Delete login token
-
-        // 5. Call PlayerAuthEvent
-        BukkitRunnable runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                PlayerAuthEvent playerAuthEvent = new PlayerAuthEvent(address, player);
-                Bukkit.getPluginManager().callEvent(playerAuthEvent);
-            }
-        };
-        runnable.runTaskLater(Mine3Auth.getPlugin(), 0);
     }
 
     public void disconnect(Player player) {

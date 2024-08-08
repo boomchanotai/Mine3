@@ -8,10 +8,12 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONObject;
 
 import com.boomchanotai.mine3Lib.Mine3Lib;
 import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.redis.Redis;
 
@@ -97,6 +99,16 @@ public class PlayerRepository {
         }
 
         playerList.add(address);
+
+        // 3. Call PlayerAuthEvent
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                PlayerAuthEvent playerAuthEvent = new PlayerAuthEvent(address, player);
+                Bukkit.getPluginManager().callEvent(playerAuthEvent);
+            }
+        };
+        runnable.runTaskLater(Mine3Lib.getPlugin(), 0);
     }
 
     public static void removePlayer(Address address) {
