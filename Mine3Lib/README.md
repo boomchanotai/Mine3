@@ -27,6 +27,8 @@ Events
 
 - `PlayerAuthEvent` - trigger when user authenticated
 
+  **Note: If you want to implement your own authentication plugin after login success please trigger `PlayerAuthEvent` to use with Permision plugin**
+
 ## Commands & Permission
 
 | Commands           | Permission         | Description           |

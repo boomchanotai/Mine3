@@ -33,7 +33,7 @@ Authentication service plugin for Minecraft servers, providing secure and effici
 3. Support ban address
 4. Rename player to short address so, every player will show as address only.
 
-## Commands & Permission
+## Commands & Permissions
 
 | Commands            | Permission            | Description                                                              |
 | ------------------- | --------------------- | ------------------------------------------------------------------------ |
