@@ -97,9 +97,6 @@ public class PlayerService {
         player.setFlying(false);
         player.setOp(false);
 
-        // cancel disguise
-        provider.undisguise(player);
-
         ProfileBanList profileBanList = Bukkit.getBanList(BanList.Type.PROFILE);
         profileBanList.pardon(player.getPlayerProfile());
 
@@ -125,6 +122,7 @@ public class PlayerService {
                 .setSkin(Skin.of(player))
                 .build();
         provider.disguise(player, disguise);
+        player.setPlayerListName(playerData.getAddress().getShortAddress());
 
         // Set Player State
         player.setLevel(playerData.getXpLevel());
@@ -165,6 +163,9 @@ public class PlayerService {
 
         // Teleport Player to Spawn Location
         player.teleport(spawnService.getSpawnLocation());
+
+        // cancel disguise
+        provider.undisguise(player);
     }
 
     // setPlayerActiveState is set player state for active player
