@@ -47,3 +47,7 @@ See demo video [here](https://www.youtube.com/watch?v=nqnzk2r-nzQ).
 ![login](/screenshots/mine3-1.png)
 ![sign-wallet](/screenshots/mine3-2.png)
 ![login-success](/screenshots/mine3-3.png)
+![gamemode](/screenshots/mine3-gamemode.png)
+![op](/screenshots/mine3-op.png)
+![set-group](/screenshots/mine3-set-group.png)
+![tpa](/screenshots/mine3-tpa.png)
