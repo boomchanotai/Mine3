@@ -42,16 +42,16 @@ public final class Mine3Auth extends JavaPlugin {
         // Redis
         Redis.connect();
 
-        // Start HTTP Server
-        Server server = new Server(authService);
-        server.startServer();
-
         // Dependencies
         RedisRepository redisRepo = new RedisRepository();
 
         // Services
         playerService = new PlayerService();
         authService = new AuthService(playerService, redisRepo);
+
+        // Start HTTP Server
+        Server server = new Server(authService);
+        server.startServer();
 
         // Register Events
         getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(authService), this);

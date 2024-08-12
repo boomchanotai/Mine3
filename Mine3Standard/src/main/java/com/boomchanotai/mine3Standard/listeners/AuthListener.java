@@ -63,6 +63,11 @@ public class AuthListener implements Listener {
 
         playerService.restorePlayerState(player, playerData);
         playerService.setPlayerActiveState(player);
+
+        // Teleport Player to Last Location
+        if (!event.isForceRespawn()) {
+            playerService.teleportPlayerToLastLocation(player, playerData);
+        }
     }
 
     @EventHandler

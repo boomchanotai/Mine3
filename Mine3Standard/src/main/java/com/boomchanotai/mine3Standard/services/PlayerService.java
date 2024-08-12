@@ -81,7 +81,9 @@ public class PlayerService {
         for (PotionEffect potionEffect : playerData.getPotionEffects()) {
             player.addPotionEffect(potionEffect);
         }
+    }
 
+    public void teleportPlayerToLastLocation(Player player, PlayerData playerData) {
         // Teleport Player to Last Location
         Location lastLocation = new Location(
                 playerData.getPlayerLocation().getWorld(),

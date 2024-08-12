@@ -7,6 +7,20 @@ description: Mine3Lib
 website: https://boomchanotai.com
 depend: [Mine3Lib]
 commands:
+  ban:
+    description: ban player
+    usage: |
+      Use /help <command> [subcommand] for more information
+      /<command> <player> - ban player
+      /<command> <player> <reason> - ban player with reason
+    permission: "mine3.ban"
+    permission-message: You don't have permission to use this command
+  pardon:
+    description: unban player
+    usage: /<command> <player>
+    aliases: [unban]
+    permission: "mine3.pardon"
+    permission-message: You don't have permission to use this command
   tp:
     description: Teleport to player
     usage: |
@@ -212,6 +226,10 @@ commands:
       Use /help <command> [subcommand] for more information
       /<command> reload - show standard command
 permissions:
+  mine3.ban:
+    description: allow player to ban other player
+  mine3.pardon:
+    description: allow player to unban other player
   mine3.tp:
     description: allow player to teleport to player
   mine3.tp.others:
