@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.boomchanotai.mine3Lib.commands.LibCommand;
 import com.boomchanotai.mine3Lib.commands.LibTabCompletion;
 import com.boomchanotai.mine3Lib.config.Config;
+import com.boomchanotai.mine3Lib.listeners.PlayerListener;
 import com.boomchanotai.mine3Lib.redis.Redis;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
@@ -24,6 +25,8 @@ public final class Mine3Lib extends JavaPlugin {
         Config.loadConfig();
 
         Redis.connect();
+
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         getCommand("mine3lib").setExecutor(new LibCommand());
         getCommand("mine3lib").setTabCompleter(new LibTabCompletion());

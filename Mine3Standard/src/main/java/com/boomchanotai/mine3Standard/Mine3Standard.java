@@ -37,6 +37,7 @@ import com.boomchanotai.mine3Standard.config.Config;
 import com.boomchanotai.mine3Standard.config.SpawnConfig;
 import com.boomchanotai.mine3Standard.listeners.AuthListener;
 import com.boomchanotai.mine3Standard.listeners.PlayerListener;
+import com.boomchanotai.mine3Standard.postgres.Postgres;
 import com.boomchanotai.mine3Standard.repositories.ItemStackAdapter;
 import com.boomchanotai.mine3Standard.repositories.PostgresRepository;
 import com.boomchanotai.mine3Standard.repositories.PotionEffectAdapter;
@@ -84,6 +85,9 @@ public final class Mine3Standard extends JavaPlugin {
         // Configuration
         Config.saveDefaultConfig();
         Config.loadConfig();
+
+        // Postgres
+        Postgres.connect();
 
         // Spawn Configuration
         SpawnConfig.saveDefaultSpawnConfig();

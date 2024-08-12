@@ -54,9 +54,9 @@ public final class Mine3Auth extends JavaPlugin {
         server.startServer();
 
         // Register Events
-        getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(authService), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(), this);
         getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(playerService), this);
-        getServer().getPluginManager().registerEvents(new AuthListener(playerService), this);
+        getServer().getPluginManager().registerEvents(new AuthListener(authService, playerService), this);
 
         // Register Commands
         getCommand("address").setExecutor(new AddressCommand());

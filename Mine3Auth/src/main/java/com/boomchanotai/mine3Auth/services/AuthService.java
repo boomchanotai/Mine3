@@ -82,9 +82,12 @@ public class AuthService {
             return;
         }
 
+        disconnect(address, player);
+    }
+
+    public void disconnect(Address address, Player player) {
         playerService.removePlayer(player.getUniqueId()); // Remove player from player list
         PlayerRepository.removePlayer(address); // Remove player from Mine3Lib
-
         playerService.sendQuitMessage(address);
     }
 }
