@@ -95,6 +95,10 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>gravemc-repo</id>
+            <url>https://repo.gravemc.net/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -105,11 +109,23 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>dev.iiahmed</groupId>
+            <artifactId>ModernDisguise</artifactId>
+            <version>3.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.boomchanotai</groupId>
             <artifactId>Mine3Lib</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>
             <systemPath>/Users/boom/Desktop/Mine3/Mine3Lib-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.3</version>
         </dependency>
     </dependencies>
 </project>

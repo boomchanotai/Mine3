@@ -100,7 +100,7 @@ public class Server {
         }
 
         try {
-            authService.authenticate(loginRequest.token, loginRequest.address);
+            authService.authenticate(loginRequest.token, address);
         } catch (Exception e) {
             JSONObject res = new JSONObject();
             res.put("error", e.getMessage());

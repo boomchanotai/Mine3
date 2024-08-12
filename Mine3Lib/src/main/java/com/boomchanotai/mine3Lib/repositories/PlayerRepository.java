@@ -79,7 +79,7 @@ public class PlayerRepository {
         return player;
     }
 
-    public static void setPlayer(Address address, Player player) {
+    public static void setPlayer(Address address, Player player, boolean forceRespawn) {
         // 1. Set player pair of address, (string) uuid
         try (Jedis j = Redis.getPool().getResource()) {
             j.hset(PLAYER_ADDRESS_KEY, address.getValue(), player.getUniqueId().toString());
@@ -104,11 +104,15 @@ public class PlayerRepository {
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                PlayerAuthEvent playerAuthEvent = new PlayerAuthEvent(address, player);
+                PlayerAuthEvent playerAuthEvent = new PlayerAuthEvent(address, player, forceRespawn);
                 Bukkit.getPluginManager().callEvent(playerAuthEvent);
             }
         };
         runnable.runTaskLater(Mine3Lib.getPlugin(), 0);
+    }
+
+    public static void setPlayer(Address address, Player player) {
+        setPlayer(address, player, false);
     }
 
     public static void removePlayer(Address address) {

@@ -1,6 +1,5 @@
 package com.boomchanotai.mine3Auth.services;
 
-import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -8,27 +7,22 @@ import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Auth.Mine3Auth;
-import com.boomchanotai.mine3Auth.entities.PlayerCacheData;
-import com.boomchanotai.mine3Auth.entities.PlayerData;
-import com.boomchanotai.mine3Auth.entities.PlayerLocation;
 import com.boomchanotai.mine3Auth.logger.Logger;
-import com.boomchanotai.mine3Auth.repositories.PostgresRepository;
 import com.boomchanotai.mine3Auth.repositories.RedisRepository;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
+
+import static com.boomchanotai.mine3Auth.config.Config.AUTH_FORCE_RESPAWN;
 
 public class AuthService {
     private PlayerService playerService;
 
-    private PostgresRepository pgRepo;
     private RedisRepository redisRepo;
 
     private static final int TOKEN_LENGTH = 32;
 
     public AuthService(PlayerService playerService,
-            PostgresRepository pgRepo,
             RedisRepository redisRepo) {
         this.playerService = playerService;
-        this.pgRepo = pgRepo;
         this.redisRepo = redisRepo;
     }
 
@@ -44,23 +38,18 @@ public class AuthService {
 
     // When player connect to server
     public void connect(Player player) {
-        // 1. Set Player to idle state
-        playerService.setPlayerIdleState(player);
-
-        // 2. Set Redis Token
+        // Create Token & set Redis Token
         UUID playerUUID = player.getUniqueId();
         String token = getRandomHexString(TOKEN_LENGTH);
         redisRepo.setToken(token, playerUUID);
 
-        // 3. Send Login URL & Title
+        // Send Login URL & Title
         playerService.sendLoginURL(player, token);
         playerService.sendWelcomeTitle(player);
     }
 
     // When player login with website
-    public void authenticate(String token, String addr) throws Exception {
-        Address address = new Address(addr);
-
+    public void authenticate(String token, Address address) throws Exception {
         // 1. Get player UUID
         UUID playerUUID = redisRepo.getPlayerUUIDFromToken(token);
         if (playerUUID == null) {
@@ -82,56 +71,20 @@ public class AuthService {
         }
 
         // 4. Set Player
-        PlayerRepository.setPlayer(address, player); // Set player in Mine3Lib
+        PlayerRepository.setPlayer(address, player, AUTH_FORCE_RESPAWN); // Set player in Mine3Lib
         playerService.addPlayer(playerUUID); // Add player to player list
         redisRepo.deleteToken(token); // Delete login token
     }
 
     public void disconnect(Player player) {
-        UUID playerUUID = player.getUniqueId();
-
-        // 1. If Player is not logged in, do nothing
-        PlayerCacheData playerCacheData = redisRepo.getPlayerInfo(playerUUID);
-        if (playerCacheData == null) {
+        Address address = PlayerRepository.getAddress(player.getUniqueId());
+        if (address == null) {
             return;
         }
 
-        // 2. Update user inventory & Clear player state
-        PlayerLocation playerLocation = new PlayerLocation(
-                player.getLocation().getX(),
-                player.getLocation().getY(),
-                player.getLocation().getZ(),
-                player.getLocation().getYaw(),
-                player.getLocation().getPitch(),
-                Objects.requireNonNull(player.getLocation().getWorld()));
+        playerService.removePlayer(player.getUniqueId()); // Remove player from player list
+        PlayerRepository.removePlayer(address); // Remove player from Mine3Lib
 
-        PlayerData playerData = new PlayerData(
-                playerCacheData.getAddress(),
-                "",
-                false,
-                player.getLevel(),
-                player.getExp(),
-                player.getHealth(),
-                player.getFoodLevel(),
-                player.getGameMode(),
-                player.getFlySpeed(),
-                player.getWalkSpeed(),
-                player.getAllowFlight(),
-                player.isFlying(),
-                player.isOp(),
-                player.isBanned(),
-                player.getActivePotionEffects(),
-                player.getInventory().getContents(),
-                player.getEnderChest().getContents(),
-                playerLocation);
-
-        pgRepo.updateUserInventory(playerData);
-
-        // 3. Remove player from system
-        playerService.removePlayer(playerUUID); // Remove player from player list
-        playerService.clearPlayerState(player); // Clear player state
-        PlayerRepository.removePlayer(playerCacheData.getAddress()); // Remove player from Mine3Lib
-
-        playerService.sendQuitMessage(playerCacheData.getAddress());
+        playerService.sendQuitMessage(address);
     }
 }

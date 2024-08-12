@@ -1,7 +1,10 @@
 package com.boomchanotai.mine3Standard;
 
+import java.util.regex.Pattern;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.boomchanotai.mine3Standard.commands.BanCommand;
 import com.boomchanotai.mine3Standard.commands.BroadcastCommand;
 import com.boomchanotai.mine3Standard.commands.BurnCommand;
 import com.boomchanotai.mine3Standard.commands.ClearInventoryCommand;
@@ -18,6 +21,7 @@ import com.boomchanotai.mine3Standard.commands.InvseeCommand;
 import com.boomchanotai.mine3Standard.commands.KickCommand;
 import com.boomchanotai.mine3Standard.commands.KillCommand;
 import com.boomchanotai.mine3Standard.commands.OpCommand;
+import com.boomchanotai.mine3Standard.commands.PardonCommand;
 import com.boomchanotai.mine3Standard.commands.SetSpawnCommand;
 import com.boomchanotai.mine3Standard.commands.SpawnCommand;
 import com.boomchanotai.mine3Standard.commands.SpeedCommand;
@@ -31,10 +35,14 @@ import com.boomchanotai.mine3Standard.commands.TpacceptCommand;
 import com.boomchanotai.mine3Standard.commands.VanishCommand;
 import com.boomchanotai.mine3Standard.config.Config;
 import com.boomchanotai.mine3Standard.config.SpawnConfig;
-import com.boomchanotai.mine3Standard.listeners.PlayerChat;
-import com.boomchanotai.mine3Standard.listeners.PlayerDeath;
-import com.boomchanotai.mine3Standard.listeners.PlayerJoinServer;
+import com.boomchanotai.mine3Standard.listeners.AuthListener;
+import com.boomchanotai.mine3Standard.listeners.PlayerListener;
+import com.boomchanotai.mine3Standard.repositories.ItemStackAdapter;
+import com.boomchanotai.mine3Standard.repositories.PostgresRepository;
+import com.boomchanotai.mine3Standard.repositories.PotionEffectAdapter;
+import com.boomchanotai.mine3Standard.services.PlayerService;
 import com.boomchanotai.mine3Standard.services.TpaService;
+import com.boomchanotai.mine3Standard.tabcompletion.BanTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.BurnTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.ClearInventoryTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.DeOpTabCompletion;
@@ -50,6 +58,7 @@ import com.boomchanotai.mine3Standard.tabcompletion.InvseeTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.KickTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.KillTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.OpTabCompletion;
+import com.boomchanotai.mine3Standard.tabcompletion.PardonTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.SpeedTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.StandardTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TpHereTabCompletion;
@@ -57,6 +66,9 @@ import com.boomchanotai.mine3Standard.tabcompletion.TpTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TpaHereTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.TpaTabCompletion;
 import com.boomchanotai.mine3Standard.tabcompletion.VanishTabCompletion;
+
+import dev.iiahmed.disguise.DisguiseManager;
+import dev.iiahmed.disguise.DisguiseProvider;
 
 public final class Mine3Standard extends JavaPlugin {
     private static Mine3Standard plugin;
@@ -78,12 +90,34 @@ public final class Mine3Standard extends JavaPlugin {
         SpawnConfig.loadConfig();
 
         // Dependency
+        DisguiseProvider disguiseProvider = DisguiseManager.getProvider();
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9_.]{1,16}$");
+        disguiseProvider.setNamePattern(pattern);
+        DisguiseManager.initialize(this, true);
+
         TpaService tpaService = new TpaService(this);
 
+        // Adapter
+        ItemStackAdapter itemStackAdapter = new ItemStackAdapter();
+        PotionEffectAdapter potionEffectAdapter = new PotionEffectAdapter();
+
+        // Repository
+        PostgresRepository pgRepo = new PostgresRepository(itemStackAdapter, potionEffectAdapter);
+
+        // Service
+        PlayerService playerService = new PlayerService(disguiseProvider);
+
         // Event Listeners
-        getServer().getPluginManager().registerEvents(new PlayerJoinServer(), this);
-        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
-        getServer().getPluginManager().registerEvents(new PlayerChat(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        getServer().getPluginManager().registerEvents(new AuthListener(playerService, pgRepo), this);
+
+        // ban
+        getCommand("ban").setExecutor(new BanCommand());
+        getCommand("ban").setTabCompleter(new BanTabCompletion());
+
+        // pardon
+        getCommand("pardon").setExecutor(new PardonCommand(pgRepo));
+        getCommand("pardon").setTabCompleter(new PardonTabCompletion(pgRepo));
 
         // tp
         getCommand("tp").setExecutor(new TpCommand());

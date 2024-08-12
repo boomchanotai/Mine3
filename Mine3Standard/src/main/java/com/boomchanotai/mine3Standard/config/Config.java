@@ -5,6 +5,11 @@ import com.boomchanotai.mine3Standard.Mine3Standard;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
+    // Postgres Settings
+    public static String POSTGRES_HOST;
+    public static String POSTGRES_USERNAME;
+    public static String POSTGRES_PASSWORD;
+
     // Chat Settings
     public static String CHAT_FORMAT;
 
@@ -17,6 +22,11 @@ public class Config {
 
     public static void loadConfig() {
         FileConfiguration config = Mine3Standard.getPlugin().getConfig();
+
+        POSTGRES_HOST = config.getString("postgres.host");
+        POSTGRES_USERNAME = config.getString("postgres.username");
+        POSTGRES_PASSWORD = config.getString("postgres.password");
+
         CHAT_FORMAT = config.getString("chat_format");
 
         TELEPORT_TIMEOUT = config.getInt("teleport_timeout");

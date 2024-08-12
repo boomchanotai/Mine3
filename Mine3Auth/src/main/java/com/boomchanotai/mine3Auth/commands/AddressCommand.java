@@ -1,9 +1,7 @@
 package com.boomchanotai.mine3Auth.commands;
 
 import com.boomchanotai.mine3Auth.Mine3Auth;
-import com.boomchanotai.mine3Auth.entities.PlayerCacheData;
 import com.boomchanotai.mine3Auth.logger.Logger;
-import com.boomchanotai.mine3Auth.repositories.RedisRepository;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 import org.bukkit.command.Command;
@@ -14,12 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import com.boomchanotai.mine3Lib.address.Address;
 
 public class AddressCommand implements CommandExecutor {
-    private RedisRepository redisRepo;
-
-    public AddressCommand(RedisRepository redisRepo) {
-        this.redisRepo = redisRepo;
-    }
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String[] args) {
@@ -40,15 +32,14 @@ public class AddressCommand implements CommandExecutor {
             return false;
         }
 
-        PlayerCacheData playerCacheData = redisRepo.getPlayerInfo(player.getUniqueId());
-        if (playerCacheData == null) {
+        Address address = PlayerRepository.getAddress(player.getUniqueId());
+        if (address == null) {
             Logger.warning(
                     "Unexpected Event: Not found playerInfo!, UUID: " + player.getUniqueId()
                             + ", Command: /address");
             return false;
         }
 
-        Address address = playerCacheData.getAddress();
         PlayerRepository.sendMessage(player, address.getValue());
         return true;
     }
