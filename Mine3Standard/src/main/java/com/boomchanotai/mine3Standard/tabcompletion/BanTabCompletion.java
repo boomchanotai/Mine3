@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3Auth.commands;
+package com.boomchanotai.mine3Standard.tabcompletion;
 
 import java.util.ArrayList;
 import java.util.List;

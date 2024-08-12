@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3Auth.entities;
+package com.boomchanotai.mine3Standard.entities;
 
 import java.util.Collection;
 

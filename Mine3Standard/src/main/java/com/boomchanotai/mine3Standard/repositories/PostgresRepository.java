@@ -1,11 +1,10 @@
-package com.boomchanotai.mine3Auth.repositories;
+package com.boomchanotai.mine3Standard.repositories;
 
-import com.boomchanotai.mine3Auth.postgres.Postgres;
-import com.boomchanotai.mine3Lib.address.Address;
-import com.boomchanotai.mine3Auth.logger.Logger;
-import com.boomchanotai.mine3Auth.Mine3Auth;
-import com.boomchanotai.mine3Auth.entities.PlayerData;
-import com.boomchanotai.mine3Auth.entities.PlayerLocation;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -13,11 +12,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.postgresql.util.PGobject;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
+import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Standard.Mine3Standard;
+import com.boomchanotai.mine3Standard.entities.PlayerData;
+import com.boomchanotai.mine3Standard.entities.PlayerLocation;
+import com.boomchanotai.mine3Standard.logger.Logger;
+import com.boomchanotai.mine3Standard.postgres.Postgres;
 
 public class PostgresRepository {
     private ItemStackAdapter itemStackAdapter;
@@ -59,7 +59,7 @@ public class PostgresRepository {
                 float lastLocationYaw = res.getFloat("last_location_yaw");
                 float lastLocationPitch = res.getFloat("last_location_pitch");
                 String lastLocationWorld = res.getString("last_location_world");
-                World world = Mine3Auth.getPlugin().getServer().getWorld(lastLocationWorld);
+                World world = Mine3Standard.getPlugin().getServer().getWorld(lastLocationWorld);
 
                 PlayerLocation playerLocation = new PlayerLocation(lastLocationX, lastLocationY, lastLocationZ,
                         lastLocationYaw, lastLocationPitch, world);
@@ -248,5 +248,4 @@ public class PostgresRepository {
             Logger.warning(e.getMessage(), "failed to update user ban status");
         }
     }
-
 }

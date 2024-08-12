@@ -1,15 +1,15 @@
-package com.boomchanotai.mine3Auth.postgres;
-
-import org.postgresql.Driver;
-
-import com.boomchanotai.mine3Auth.logger.Logger;
+package com.boomchanotai.mine3Standard.postgres;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static com.boomchanotai.mine3Auth.config.Config.*;
+import org.postgresql.Driver;
+
+import com.boomchanotai.mine3Standard.logger.Logger;
+
+import static com.boomchanotai.mine3Standard.config.Config.*;
 
 public class Postgres {
     private static Connection connection;
