@@ -86,7 +86,7 @@ public final class Mine3Auth extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerAuth(playerService, pgRepo), this);
 
         // Register Commands
-        getCommand("address").setExecutor(new AddressCommand(redisRepo));
+        getCommand("address").setExecutor(new AddressCommand());
 
         getCommand("logout").setExecutor(new LogoutCommand(authService));
 

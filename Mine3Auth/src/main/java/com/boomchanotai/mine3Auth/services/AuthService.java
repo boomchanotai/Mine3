@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Auth.Mine3Auth;
-import com.boomchanotai.mine3Auth.entities.PlayerCacheData;
 import com.boomchanotai.mine3Auth.entities.PlayerData;
 import com.boomchanotai.mine3Auth.entities.PlayerLocation;
 import com.boomchanotai.mine3Auth.logger.Logger;
@@ -88,11 +87,9 @@ public class AuthService {
     }
 
     public void disconnect(Player player) {
-        UUID playerUUID = player.getUniqueId();
-
         // 1. If Player is not logged in, do nothing
-        PlayerCacheData playerCacheData = redisRepo.getPlayerInfo(playerUUID);
-        if (playerCacheData == null) {
+        Address address = PlayerRepository.getAddress(player.getUniqueId());
+        if (address == null) {
             return;
         }
 
@@ -106,7 +103,7 @@ public class AuthService {
                 Objects.requireNonNull(player.getLocation().getWorld()));
 
         PlayerData playerData = new PlayerData(
-                playerCacheData.getAddress(),
+                address,
                 "",
                 false,
                 player.getLevel(),
@@ -128,10 +125,10 @@ public class AuthService {
         pgRepo.updateUserInventory(playerData);
 
         // 3. Remove player from system
-        playerService.removePlayer(playerUUID); // Remove player from player list
+        playerService.removePlayer(player.getUniqueId()); // Remove player from player list
         playerService.clearPlayerState(player); // Clear player state
-        PlayerRepository.removePlayer(playerCacheData.getAddress()); // Remove player from Mine3Lib
+        PlayerRepository.removePlayer(address); // Remove player from Mine3Lib
 
-        playerService.sendQuitMessage(playerCacheData.getAddress());
+        playerService.sendQuitMessage(address);
     }
 }
