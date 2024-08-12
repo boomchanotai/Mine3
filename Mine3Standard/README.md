@@ -11,6 +11,29 @@ Similar to the EssentialX plugin, Mine3Standard provides standard commands to su
 - Java 21
 - Minecraft 1.21
 
+## Feature
+
+Update (12 Aug 2024) - Move player state to **Mine3Standard**
+
+1. Support for storing player data in a database, including:
+   - Address
+   - ENS Domain (v2)
+   - Xp Level
+   - Xp Exp
+   - Health
+   - Food Level
+   - Gamemode
+   - Flying speed
+   - Walking speed
+   - Allow Flight (v2)
+   - Is flying
+   - Is op
+   - Is banned (v2)
+   - Potion effects
+   - Last location
+2. Support ban address
+3. Support address-based for basic commands
+
 ## Commands & Permission
 
 | Commands                          | Permission                    | Description                     |
@@ -54,10 +77,14 @@ Similar to the EssentialX plugin, Mine3Standard provides standard commands to su
 | `/op <address>`                   | `mine3.op`                    | Make player as operator.        |
 | `/deop <address>`                 | `mine3.deop`                  | Remove player as operator.      |
 | `/standard reload`                | `mine3.standard.reload`       | Reload configuration.           |
+| `/ban <address>`                  | `mine3.ban`                   | Ban address.                    |
+| `/pardon <address>`               | `mine3.pardon`                | Pardon address.                 |
 
 ## Technical Information
 
+- **Player Name Changer**: Uses [Modendisguise](https://github.com/iiAhmedYT/ModernDisguise) to change player names.
 - **Database Interaction**: Mine3Standard does not have its own database entry points, such as Redis or PostgreSQL.
 - **Data Access**: Instead, it retrieves data from **Mine3Lib**'s repositories, leveraging the centralized data management provided by **Mine3Lib**.
+- **Player Data Storage**: PostgreSQL is used to store the player's state before the player logs out, capturing data at quit time.
 
 This design ensures consistency and reduces redundancy by using the existing data infrastructure provided by Mine3Lib.
