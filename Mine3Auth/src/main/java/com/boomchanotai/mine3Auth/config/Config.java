@@ -31,6 +31,7 @@ public class Config {
     public static int AUTH_LOGGED_IN_TITLE_FADE_IN;
     public static int AUTH_LOGGED_IN_TITLE_STAY;
     public static int AUTH_LOGGED_IN_TITLE_FADE_OUT;
+    public static boolean AUTH_FORCE_RESPAWN;
 
     public static String AUTH_JOIN_MESSAGE;
     public static String AUTH_QUIT_MESSAGE;
@@ -64,6 +65,8 @@ public class Config {
         AUTH_LOGGED_IN_TITLE_FADE_IN = config.getInt("auth.logged_in_title.fade_in");
         AUTH_LOGGED_IN_TITLE_STAY = config.getInt("auth.logged_in_title.stay");
         AUTH_LOGGED_IN_TITLE_FADE_OUT = config.getInt("auth.logged_in_title.fade_out");
+
+        AUTH_FORCE_RESPAWN = config.getBoolean("auth.force_respawn");
 
         AUTH_JOIN_MESSAGE = config.getString("join_message");
         AUTH_QUIT_MESSAGE = config.getString("quit_message");

@@ -11,6 +11,8 @@ import com.boomchanotai.mine3Auth.logger.Logger;
 import com.boomchanotai.mine3Auth.repositories.RedisRepository;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
+import static com.boomchanotai.mine3Auth.config.Config.AUTH_FORCE_RESPAWN;
+
 public class AuthService {
     private PlayerService playerService;
 
@@ -69,7 +71,7 @@ public class AuthService {
         }
 
         // 4. Set Player
-        PlayerRepository.setPlayer(address, player); // Set player in Mine3Lib
+        PlayerRepository.setPlayer(address, player, AUTH_FORCE_RESPAWN); // Set player in Mine3Lib
         playerService.addPlayer(playerUUID); // Add player to player list
         redisRepo.deleteToken(token); // Delete login token
     }

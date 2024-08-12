@@ -31,6 +31,7 @@ auth:
     fade_in: 10
     stay: 70
     fade_out: 20
+  force_respawn: false
 
 # Join Quit Server Settings
 # {address} = Ethereum Address
