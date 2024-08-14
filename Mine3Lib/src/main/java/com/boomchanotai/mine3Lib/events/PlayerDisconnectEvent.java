@@ -5,7 +5,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.core.entities.Address;
 
 public class PlayerDisconnectEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();

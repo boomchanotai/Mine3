@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.postgresql.util.PGobject;
 
-import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.core.entities.Address;
 import com.boomchanotai.mine3Standard.Mine3Standard;
 import com.boomchanotai.mine3Standard.entities.PlayerData;
 import com.boomchanotai.mine3Standard.entities.PlayerLocation;

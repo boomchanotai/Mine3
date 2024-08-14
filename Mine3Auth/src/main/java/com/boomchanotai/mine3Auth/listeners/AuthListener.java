@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 
 import com.boomchanotai.mine3Auth.services.AuthService;
 import com.boomchanotai.mine3Auth.services.PlayerService;
-import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.core.entities.Address;
 import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
 import com.boomchanotai.mine3Lib.events.PlayerDisconnectEvent;
 import com.boomchanotai.mine3Lib.events.PreAuthEvent;

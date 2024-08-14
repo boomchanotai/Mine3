@@ -6,12 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.core.entities.Address;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 import com.boomchanotai.mine3Standard.Mine3Standard;
 import com.boomchanotai.mine3Standard.utils.Utils;
 
-import kotlin.Pair;
+import javafx.util.Pair;
 
 import static com.boomchanotai.mine3Standard.constants.Constants.TICKS_PER_SECOND;
 import static com.boomchanotai.mine3Standard.config.Config.TELEPORT_TIMEOUT;
@@ -39,7 +39,7 @@ public class TpaService {
         task = Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
             @Override
             public void run() {
-                if (hasTpaRequest(toAddress, "TPA") && getTpaRequest(toAddress).getFirst().equals(fromAddress)) {
+                if (hasTpaRequest(toAddress, "TPA") && getTpaRequest(toAddress).getKey().equals(fromAddress)) {
                     removeTpaRequest(toAddress);
                 }
 
@@ -59,7 +59,7 @@ public class TpaService {
         task = Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
             @Override
             public void run() {
-                if (hasTpaRequest(toAddress, "TPAHERE") && getTpaRequest(toAddress).getFirst().equals(fromAddress)) {
+                if (hasTpaRequest(toAddress, "TPAHERE") && getTpaRequest(toAddress).getKey().equals(fromAddress)) {
                     removeTpaRequest(toAddress);
                 }
 
@@ -86,7 +86,7 @@ public class TpaService {
             return false;
         }
 
-        return tpaRequests.containsKey(address) && tpaRequests.get(address).getSecond() == tpaType;
+        return tpaRequests.containsKey(address) && tpaRequests.get(address).getValue() == tpaType;
     }
 
     public Pair<Address, TpaType> getTpaRequest(Address address) {
@@ -107,7 +107,7 @@ public class TpaService {
 
         removeTpaRequest(address);
 
-        if (request.getSecond() == TpaType.TPA) {
+        if (request.getValue() == TpaType.TPA) {
             Address toPlayerAddress = address;
 
             Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
@@ -116,7 +116,7 @@ public class TpaService {
                 return;
             }
 
-            Address fromPlayerAddress = request.getFirst();
+            Address fromPlayerAddress = request.getKey();
 
             Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
             if (fromPlayer == null) {
@@ -132,7 +132,7 @@ public class TpaService {
                     "Teleporting " + fromPlayerAddress.getShortAddress() + " to you...");
 
             return;
-        } else if (request.getSecond() == TpaType.TPAHERE) {
+        } else if (request.getValue() == TpaType.TPAHERE) {
             Address fromPlayerAddress = address;
 
             Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
@@ -141,7 +141,7 @@ public class TpaService {
                 return;
             }
 
-            Address toPlayerAddress = request.getFirst();
+            Address toPlayerAddress = request.getKey();
 
             Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
             if (toPlayer == null) {
@@ -170,7 +170,7 @@ public class TpaService {
 
         removeTpaRequest(address);
 
-        if (request.getSecond() == TpaType.TPA) {
+        if (request.getValue() == TpaType.TPA) {
             Address toPlayerAddress = address;
 
             Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
@@ -179,7 +179,7 @@ public class TpaService {
                 return;
             }
 
-            Address fromPlayerAddress = request.getFirst();
+            Address fromPlayerAddress = request.getKey();
 
             Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
             if (fromPlayer == null) {
@@ -194,7 +194,7 @@ public class TpaService {
                     "Tpa request from " + fromPlayerAddress.getShortAddress() + " has been canceled.");
 
             return;
-        } else if (request.getSecond() == TpaType.TPAHERE) {
+        } else if (request.getValue() == TpaType.TPAHERE) {
             Address fromPlayerAddress = address;
 
             Player fromPlayer = PlayerRepository.getPlayer(fromPlayerAddress);
@@ -203,7 +203,7 @@ public class TpaService {
                 return;
             }
 
-            Address toPlayerAddress = request.getFirst();
+            Address toPlayerAddress = request.getKey();
 
             Player toPlayer = PlayerRepository.getPlayer(toPlayerAddress);
             if (toPlayer == null) {

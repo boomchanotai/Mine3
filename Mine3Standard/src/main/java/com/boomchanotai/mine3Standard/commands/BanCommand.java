@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.boomchanotai.mine3Standard.logger.Logger;
-import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.core.entities.Address;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 import net.md_5.bungee.api.ChatColor;

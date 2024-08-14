@@ -81,6 +81,12 @@
                                     </excludes>
                                 </filter>
                             </filters>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.boomchanotai.core</pattern>
+                                    <shadedPattern>com.boomchanotai.mine3Lib.core</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -117,14 +123,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.web3j</groupId>
-            <artifactId>crypto</artifactId>
-            <version>4.12.0</version>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>5.1.2</version>
+            <groupId>com.boomchanotai</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

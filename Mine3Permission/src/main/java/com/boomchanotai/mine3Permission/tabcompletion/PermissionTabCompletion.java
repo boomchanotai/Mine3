@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.core.entities.Address;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 import com.boomchanotai.mine3Permission.services.PermissionManager;
 
