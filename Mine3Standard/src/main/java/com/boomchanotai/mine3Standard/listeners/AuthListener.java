@@ -12,7 +12,7 @@ import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
 import com.boomchanotai.mine3Lib.events.PlayerDisconnectEvent;
 import com.boomchanotai.mine3Standard.entities.PlayerData;
 import com.boomchanotai.mine3Standard.entities.PlayerLocation;
-import com.boomchanotai.mine3Standard.logger.Logger;
+import com.boomchanotai.core.logger.Logger;
 import com.boomchanotai.mine3Standard.repositories.PostgresRepository;
 import com.boomchanotai.mine3Standard.services.PlayerService;
 

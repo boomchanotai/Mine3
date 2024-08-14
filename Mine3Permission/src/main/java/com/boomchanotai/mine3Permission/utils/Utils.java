@@ -3,7 +3,7 @@ package com.boomchanotai.mine3Permission.utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.boomchanotai.mine3Permission.logger.Logger;
+import com.boomchanotai.core.logger.Logger;
 
 import net.md_5.bungee.api.ChatColor;
 

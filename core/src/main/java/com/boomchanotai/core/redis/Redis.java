@@ -26,7 +26,7 @@ public class Redis {
         pool = new JedisPool(host, port);
     }
 
-    public static void close() {
+    public static void disconnect() {
         getPool().close();
     }
 }

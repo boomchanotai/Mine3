@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import com.boomchanotai.mine3Lib.core.entities.Address;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 import com.boomchanotai.mine3Permission.config.Config;
-import com.boomchanotai.mine3Permission.logger.Logger;
+import com.boomchanotai.core.logger.Logger;
 import com.boomchanotai.mine3Permission.services.PermissionManager;
 import com.boomchanotai.mine3Permission.utils.Utils;
 

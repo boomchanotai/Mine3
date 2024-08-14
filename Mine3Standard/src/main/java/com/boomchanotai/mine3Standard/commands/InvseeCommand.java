@@ -15,7 +15,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.boomchanotai.mine3Standard.logger.Logger;
+import com.boomchanotai.core.logger.Logger;
 import com.boomchanotai.mine3Lib.core.entities.Address;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 import com.boomchanotai.mine3Standard.utils.Utils;

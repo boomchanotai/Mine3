@@ -63,6 +63,12 @@
                   </excludes>
                 </filter>
               </filters>
+              <relocations>
+                <relocation>
+                  <pattern>com.boomchanotai.core</pattern>
+                  <shadedPattern>com.boomchanotai.mine3Permission.core</shadedPattern>
+                </relocation>
+              </relocations>
             </configuration>
           </execution>
         </executions>

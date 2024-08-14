@@ -80,5 +80,6 @@ public final class Mine3Auth extends JavaPlugin {
 
         // Stop HTTP Server
         Server.stopServer();
+        Redis.disconnect();
     }
 }

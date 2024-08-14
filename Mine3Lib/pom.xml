@@ -105,14 +105,24 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.boomchanotai</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>5.1.2</version>
         </dependency>
         <dependency>
-            <groupId>com.boomchanotai</groupId>
-            <artifactId>core</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.web3j</groupId>
+            <artifactId>crypto</artifactId>
+            <version>4.12.0</version>
         </dependency>
     </dependencies>
 </project>

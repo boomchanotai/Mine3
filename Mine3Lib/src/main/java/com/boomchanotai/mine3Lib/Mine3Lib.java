@@ -41,6 +41,6 @@ public final class Mine3Lib extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         PlayerRepository.clearPlayer();
-        Redis.close();
+        Redis.disconnect();
     }
 }

@@ -8,7 +8,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.potion.PotionEffect;
 import org.postgresql.util.PGobject;
 
-import com.boomchanotai.mine3Standard.logger.Logger;
+import com.boomchanotai.core.logger.Logger;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
