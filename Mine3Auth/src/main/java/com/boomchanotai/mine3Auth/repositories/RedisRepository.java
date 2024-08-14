@@ -1,7 +1,8 @@
 package com.boomchanotai.mine3Auth.repositories;
 
-import com.boomchanotai.mine3Auth.logger.Logger;
-import com.boomchanotai.mine3Auth.redis.Redis;
+import com.boomchanotai.core.logger.Logger;
+import com.boomchanotai.core.redis.Redis;
+
 import redis.clients.jedis.Jedis;
 
 import static com.boomchanotai.mine3Auth.config.Config.*;

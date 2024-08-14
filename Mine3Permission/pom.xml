@@ -101,10 +101,21 @@
     </dependency>
     <dependency>
       <groupId>com.boomchanotai</groupId>
+      <artifactId>core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.boomchanotai</groupId>
       <artifactId>Mine3Lib</artifactId>
       <version>${project.version}</version>
       <scope>system</scope>
       <systemPath>${basedir}/../Mine3Lib-1.0-SNAPSHOT.jar</systemPath>
+      <exclusions>
+        <exclusion>
+          <groupId>com.boomchanotai</groupId>
+          <artifactId>core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 </project>
