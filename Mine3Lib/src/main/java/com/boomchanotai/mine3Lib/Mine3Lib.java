@@ -29,7 +29,7 @@ public final class Mine3Lib extends JavaPlugin {
 
         Redis.init(Config.REDIS_HOST, Config.REDIS_PORT);
 
-        RedisRepository.init(this, Config.PLAYER_ADDRESS_KEY, Config.PLAYER_PLAYER_KEY);
+        RedisRepository.init(Config.PLAYER_ADDRESS_KEY, Config.PLAYER_PLAYER_KEY);
 
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 

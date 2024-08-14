@@ -35,7 +35,13 @@ public class PlayerRepository {
     }
 
     public static Player getPlayer(Address address) {
-        return RedisRepository.getPlayer(address);
+        UUID playerUUID = RedisRepository.getPlayerUUID(address);
+        if (playerUUID == null) {
+            return null;
+        }
+
+        Player player = Mine3Lib.getPlugin().getServer().getPlayer(playerUUID);
+        return player;
     }
 
     public static void setPlayer(Address address, Player player, boolean forceRespawn) {
