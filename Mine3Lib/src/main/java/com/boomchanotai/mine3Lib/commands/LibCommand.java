@@ -5,8 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.boomchanotai.core.logger.Logger;
 import com.boomchanotai.mine3Lib.config.Config;
-import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 import net.md_5.bungee.api.ChatColor;

@@ -2,6 +2,7 @@ package com.boomchanotai.mine3Lib;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.boomchanotai.core.logger.Logger;
 import com.boomchanotai.core.redis.Redis;
 import com.boomchanotai.core.repositories.RedisRepository;
 import com.boomchanotai.mine3Lib.commands.LibCommand;
@@ -20,6 +21,7 @@ public final class Mine3Lib extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        Logger.init(this);
 
         // Config.yml
         Config.saveDefaultConfig();
