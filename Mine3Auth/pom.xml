@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.boomchanotai</groupId>
+    <parent>
+        <groupId>com.boomchanotai</groupId>
+        <artifactId>Mine3</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
     <artifactId>Mine3Auth</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Mine3Auth</name>
@@ -32,8 +35,26 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.2</version>
                 <configuration>
-                    <outputDirectory>/Users/boom/Desktop/server/plugins</outputDirectory>
+                    <outputDirectory>${basedir}/..</outputDirectory>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy file="${basedir}/../Mine3Auth-1.0-SNAPSHOT.jar" todir="/Users/boom/Desktop/server/plugins"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -115,9 +136,9 @@
         <dependency>
             <groupId>com.boomchanotai</groupId>
             <artifactId>Mine3Lib</artifactId>
-            <version>1.0.0</version>
+            <version>${project.version}</version>
             <scope>system</scope>
-            <systemPath>/Users/boom/Desktop/Mine3/Mine3Lib-1.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${basedir}/../Mine3Lib-1.0-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

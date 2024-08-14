@@ -1,3 +1,7 @@
 .vscode
 data/
-.DS_STORE
+
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store

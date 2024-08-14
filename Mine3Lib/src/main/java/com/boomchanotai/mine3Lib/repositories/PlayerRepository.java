@@ -14,7 +14,6 @@ import org.json.JSONObject;
 import com.boomchanotai.mine3Lib.Mine3Lib;
 import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
-import com.boomchanotai.mine3Lib.events.PlayerDisconnectEvent;
 import com.boomchanotai.mine3Lib.logger.Logger;
 import com.boomchanotai.mine3Lib.redis.Redis;
 
@@ -122,34 +121,21 @@ public class PlayerRepository {
             return;
         }
 
-        BukkitRunnable runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                PlayerDisconnectEvent playerDisconnectEvent = new PlayerDisconnectEvent(address, player);
-                Bukkit.getPluginManager().callEvent(playerDisconnectEvent);
+        try (Jedis j = Redis.getPool().getResource()) {
+            j.hdel(PLAYER_ADDRESS_KEY, address.getValue());
+        } catch (Exception e) {
+            Logger.warning(e.getMessage(), "failed to remove player address key", address.getValue());
+        }
 
-                if (playerDisconnectEvent.isCancelled()) {
-                    return;
-                }
+        try (
+                Jedis j = Redis.getPool().getResource()) {
+            j.hdel(PLAYER_PLAYER_KEY, player.getUniqueId().toString());
+        } catch (Exception e) {
+            Logger.warning(e.getMessage(), "failed to remove player player key",
+                    player.getUniqueId().toString());
+        }
 
-                try (Jedis j = Redis.getPool().getResource()) {
-                    j.hdel(PLAYER_ADDRESS_KEY, address.getValue());
-                } catch (Exception e) {
-                    Logger.warning(e.getMessage(), "failed to remove player address key", address.getValue());
-                }
-
-                try (
-                        Jedis j = Redis.getPool().getResource()) {
-                    j.hdel(PLAYER_PLAYER_KEY, player.getUniqueId().toString());
-                } catch (Exception e) {
-                    Logger.warning(e.getMessage(), "failed to remove player player key",
-                            player.getUniqueId().toString());
-                }
-
-                playerList.remove(address);
-            }
-        };
-        runnable.runTaskLater(Mine3Lib.getPlugin(), 0);
+        playerList.remove(address);
     }
 
     public static void clearPlayer() {
