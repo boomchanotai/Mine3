@@ -16,15 +16,12 @@ public class Postgres {
     private static String password;
 
     public static Connection getConnection() {
-        boolean isClosed = false;
         try {
-            isClosed = connection.isClosed();
+            if (connection == null || connection.isClosed()) {
+                connect();
+            }
         } catch (SQLException e) {
             Logger.warning(e.getMessage(), "Fail to check connection status.");
-        }
-
-        if (connection == null || isClosed) {
-            connect();
         }
 
         return connection;

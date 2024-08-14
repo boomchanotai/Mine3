@@ -49,7 +49,7 @@ public final class Mine3Permission extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        // Plugin shutdown logic`
     }
 
     public static void initializeDatabase() throws SQLException {
