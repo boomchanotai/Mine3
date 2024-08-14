@@ -14,5 +14,6 @@
         <module>Mine3Auth</module>
         <module>Mine3Permission</module>
         <module>Mine3Standard</module>
+        <module>Mine3AuthProxy</module>
     </modules>
 </project>
