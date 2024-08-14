@@ -32,6 +32,7 @@ public final class Mine3Permission extends JavaPlugin {
 
         // Postgres
         Postgres.init(Config.POSTGRES_HOST, Config.POSTGRES_USERNAME, Config.POSTGRES_PASSWORD);
+        initializeDatabase();
 
         // Dependencies
         PostgresRepository pgRepo = new PostgresRepository();
@@ -52,14 +53,25 @@ public final class Mine3Permission extends JavaPlugin {
         // Plugin shutdown logic`
     }
 
-    public static void initializeDatabase() throws SQLException {
-        Statement statement = Postgres.getConnection().createStatement();
-        statement.execute("CREATE TABLE IF NOT EXISTS \"groups\" (\n" +
-                "\t\"address\" TEXT PRIMARY KEY,\n" +
-                "\t\"group\" TEXT NOT NULL,\n" +
-                "\t\"metadata\" JSONB NOT NULL DEFAULT '{}',\n" +
-                "\t\"created_at\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
-                "\t\"updated_at\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP\n" +
-                ");");
+    public static void initializeDatabase() {
+        Statement statement;
+        try {
+            statement = Postgres.getConnection().createStatement();
+        } catch (SQLException e) {
+            Logger.warning(e.getMessage(), "Fail to create statement on initialize database.");
+            return;
+        }
+
+        try {
+            statement.execute("CREATE TABLE IF NOT EXISTS \"groups\" (\n" +
+                    "\t\"address\" TEXT PRIMARY KEY,\n" +
+                    "\t\"group\" TEXT NOT NULL,\n" +
+                    "\t\"metadata\" JSONB NOT NULL DEFAULT '{}',\n" +
+                    "\t\"created_at\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                    "\t\"updated_at\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP\n" +
+                    ");");
+        } catch (SQLException e) {
+            Logger.warning(e.getMessage(), "Fail to create table groups.");
+        }
     }
 }
