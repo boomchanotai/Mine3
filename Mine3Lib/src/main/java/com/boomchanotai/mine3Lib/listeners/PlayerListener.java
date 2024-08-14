@@ -24,6 +24,9 @@ public class PlayerListener implements Listener {
     public void onPlayerLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         Address address = PlayerRepository.getAddress(player.getUniqueId());
+        if (address == null) {
+            return;
+        }
 
         PlayerDisconnectEvent playerDisconnectEvent = new PlayerDisconnectEvent(address, player);
         Bukkit.getPluginManager().callEvent(playerDisconnectEvent);
