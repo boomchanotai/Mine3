@@ -40,7 +40,7 @@ public class PardonCommand implements CommandExecutor {
         if (sender instanceof Player) {
             PlayerRepository.sendMessage((Player) sender, address + " has been pardoned.");
         } else {
-            Logger.info(address + " has been pardoned.");
+            Logger.getLogger().info(address + " has been pardoned.");
         }
 
         return true;

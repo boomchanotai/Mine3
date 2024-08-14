@@ -26,7 +26,7 @@ public class Utils {
 
     public static boolean isPlayerUsingCommand(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            Logger.info("Only player can use this command!");
+            Logger.getLogger().info("Only player can use this command!");
             return false;
         }
 
@@ -40,6 +40,6 @@ public class Utils {
             return;
         }
 
-        Logger.info(message);
+        Logger.getLogger().info(message);
     }
 }

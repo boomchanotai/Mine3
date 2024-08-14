@@ -34,7 +34,7 @@ public class AddressCommand implements CommandExecutor {
 
         Address address = PlayerRepository.getAddress(player.getUniqueId());
         if (address == null) {
-            Logger.warning(
+            Logger.getLogger().warning(
                     "Unexpected Event: Not found playerInfo!, UUID: " + player.getUniqueId()
                             + ", Command: /address");
             return false;

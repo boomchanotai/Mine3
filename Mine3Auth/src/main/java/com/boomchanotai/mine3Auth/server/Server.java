@@ -42,11 +42,11 @@ public class Server {
             app.get("/", Server::getServerStatus);
             app.post("/login", Server::login);
         } catch (Exception e) {
-            Logger.warning(e.getMessage());
+            Logger.getLogger().warning(e.getMessage());
             Mine3Auth.getPlugin().getServer().shutdown();
         }
 
-        Logger.info("Http server is running!");
+        Logger.getLogger().info("Http server is running!");
     }
 
     public static void stopServer() {
@@ -56,7 +56,7 @@ public class Server {
         }
 
         getApp().stop();
-        Logger.info("Http server has been stopped!");
+        Logger.getLogger().info("Http server has been stopped!");
     }
 
     public static void getServerStatus(Context ctx) {

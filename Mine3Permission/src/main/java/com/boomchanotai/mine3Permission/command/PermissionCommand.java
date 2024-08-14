@@ -40,7 +40,7 @@ public class PermissionCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 PlayerRepository.sendMessage((Player) sender, "Mine3Permission config has been reloaded.");
             } else {
-                Logger.info("Mine3Permission config has been reloaded.");
+                Logger.getLogger().info("Mine3Permission config has been reloaded.");
             }
 
             return true;

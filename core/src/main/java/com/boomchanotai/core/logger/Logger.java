@@ -1,21 +1,23 @@
 package com.boomchanotai.core.logger;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
 public class Logger {
-    private static JavaPlugin plugin;
+    private static LoggerAdapter logger;
 
-    public static void init(JavaPlugin plugin) {
-        Logger.plugin = plugin;
+    public static <T> void init(T logger) {
+        if (logger instanceof java.util.logging.Logger) {
+            Logger.logger = new JavaLogger((java.util.logging.Logger) logger);
+            return;
+        }
+
+        if (logger instanceof org.slf4j.Logger) {
+            Logger.logger = new VelocityLogger((org.slf4j.Logger) logger);
+            return;
+        }
+
+        return;
     }
 
-    public static void info(String message, String... msg) {
-        String allMessage = String.join(" ", msg);
-        plugin.getLogger().info(message + " " + allMessage);
-    }
-
-    public static void warning(String message, String... msg) {
-        String allMessage = String.join(" ", msg);
-        plugin.getLogger().warning(message + " " + allMessage);
+    public static LoggerAdapter getLogger() {
+        return logger;
     }
 }

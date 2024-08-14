@@ -31,7 +31,7 @@ public final class Mine3Auth extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        Logger.init(this);
+        Logger.init(getLogger());
 
         // Configuration
         Config.saveDefaultConfig();

@@ -31,7 +31,7 @@ public class AuthCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 PlayerRepository.sendMessage((Player) sender, "Mine3Auth config has been reloaded.");
             } else {
-                Logger.info("Mine3Auth config has been reloaded.");
+                Logger.getLogger().info("Mine3Auth config has been reloaded.");
             }
 
             return true;

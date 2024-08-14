@@ -19,7 +19,7 @@ public class RedisRepository {
 
             return UUID.fromString(playerUUIDStr);
         } catch (Exception e) {
-            Logger.warning(e.getMessage());
+            Logger.getLogger().warning(e.getMessage());
         }
 
         return null;
@@ -30,7 +30,7 @@ public class RedisRepository {
         try (Jedis j = Redis.getPool().getResource()) {
             j.setex(tokenKey, AUTH_LOGIN_SESSION_TIMEOUT, playerUUID.toString());
         } catch (Exception e) {
-            Logger.warning(e.getMessage());
+            Logger.getLogger().warning(e.getMessage());
         }
     }
 
@@ -39,7 +39,7 @@ public class RedisRepository {
         try (Jedis j = Redis.getPool().getResource()) {
             j.del(tokenKey);
         } catch (Exception e) {
-            Logger.warning(e.getMessage());
+            Logger.getLogger().warning(e.getMessage());
         }
     }
 }

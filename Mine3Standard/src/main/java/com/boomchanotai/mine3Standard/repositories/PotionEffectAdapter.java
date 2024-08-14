@@ -27,7 +27,7 @@ public class PotionEffectAdapter {
         try {
             return objectMapper.writeValueAsString(potionMap);
         } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to serialize potion effect to json");
+            Logger.getLogger().warning(e.getMessage(), "failed to serialize potion effect to json");
         }
 
         return null;
@@ -51,16 +51,16 @@ public class PotionEffectAdapter {
         try {
             potionNode = objectMapper.readTree(potionEffects);
         } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to parse potion effects from PGObject");
+            Logger.getLogger().warning(e.getMessage(), "failed to parse potion effects from PGObject");
         }
 
         if (potionNode == null) {
-            Logger.warning("failed to parse potion effects from PGObject, null node");
+            Logger.getLogger().warning("failed to parse potion effects from PGObject, null node");
             return null;
         }
 
         if (!potionNode.isArray()) {
-            Logger.warning("failed to parse potion effects from PGObject, not an array");
+            Logger.getLogger().warning("failed to parse potion effects from PGObject, not an array");
             return null;
         }
 
@@ -93,7 +93,7 @@ public class PotionEffectAdapter {
         try {
             potionEffectsObject.setValue(potionEffectArray.toString());
         } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to parse potion effects to PGObject");
+            Logger.getLogger().warning(e.getMessage(), "failed to parse potion effects to PGObject");
         }
 
         return potionEffectsObject;

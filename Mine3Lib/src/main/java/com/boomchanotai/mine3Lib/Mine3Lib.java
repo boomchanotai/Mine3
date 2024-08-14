@@ -21,7 +21,7 @@ public final class Mine3Lib extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        Logger.init(this);
+        Logger.init(getLogger());
 
         // Config.yml
         Config.saveDefaultConfig();

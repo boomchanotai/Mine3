@@ -24,7 +24,7 @@ public final class Mine3Permission extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        Logger.init(this);
+        Logger.init(getLogger());
 
         // Configuration
         Config.saveDefaultConfig();
@@ -58,7 +58,7 @@ public final class Mine3Permission extends JavaPlugin {
         try {
             statement = Postgres.getConnection().createStatement();
         } catch (SQLException e) {
-            Logger.warning(e.getMessage(), "Fail to create statement on initialize database.");
+            Logger.getLogger().warning(e.getMessage(), "Fail to create statement on initialize database.");
             return;
         }
 
@@ -71,7 +71,7 @@ public final class Mine3Permission extends JavaPlugin {
                     "\t\"updated_at\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP\n" +
                     ");");
         } catch (SQLException e) {
-            Logger.warning(e.getMessage(), "Fail to create table groups.");
+            Logger.getLogger().warning(e.getMessage(), "Fail to create table groups.");
         }
     }
 }
