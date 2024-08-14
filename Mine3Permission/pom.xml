@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.boomchanotai</groupId>
+  <parent>
+    <groupId>com.boomchanotai</groupId>
+    <artifactId>Mine3</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
   <artifactId>Mine3Permission</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Mine3Permission</name>
@@ -28,42 +31,42 @@
           <target>${java.version}</target>
         </configuration>
       </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
-                <configuration>
-                    <outputDirectory>/Users/boom/Desktop/server/plugins</outputDirectory>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.2</version>
+        <configuration>
+          <outputDirectory>/Users/boom/Desktop/server/plugins</outputDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.6.0</version>
+        <configuration>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
     <resources>
       <resource>
@@ -74,10 +77,10 @@
   </build>
 
   <repositories>
-      <repository>
-        <id>spigotmc-repo</id>
-        <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-      </repository>
+    <repository>
+      <id>spigotmc-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
     <repository>
       <id>sonatype</id>
       <url>https://oss.sonatype.org/content/groups/public/</url>
@@ -92,16 +95,16 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-        <groupId>com.boomchanotai</groupId>
-        <artifactId>Mine3Lib</artifactId>
-        <version>1.0.0</version>
-        <scope>system</scope>
-        <systemPath>/Users/boom/Desktop/Mine3/Mine3Lib-1.0-SNAPSHOT.jar</systemPath>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.7.3</version>
     </dependency>
     <dependency>
-        <groupId>org.postgresql</groupId>
-        <artifactId>postgresql</artifactId>
-        <version>42.7.3</version>
+      <groupId>com.boomchanotai</groupId>
+      <artifactId>Mine3Lib</artifactId>
+      <version>${project.version}</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/../Mine3Lib-1.0-SNAPSHOT.jar</systemPath>
     </dependency>
   </dependencies>
 </project>
