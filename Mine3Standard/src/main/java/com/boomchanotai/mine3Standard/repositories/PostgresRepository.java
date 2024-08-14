@@ -12,12 +12,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.postgresql.util.PGobject;
 
-import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.core.entities.Address;
 import com.boomchanotai.mine3Standard.Mine3Standard;
 import com.boomchanotai.mine3Standard.entities.PlayerData;
 import com.boomchanotai.mine3Standard.entities.PlayerLocation;
-import com.boomchanotai.mine3Standard.logger.Logger;
-import com.boomchanotai.mine3Standard.postgres.Postgres;
+import com.boomchanotai.core.logger.Logger;
+import com.boomchanotai.core.postgres.Postgres;
 
 public class PostgresRepository {
     private ItemStackAdapter itemStackAdapter;

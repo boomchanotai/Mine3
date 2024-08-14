@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.core.entities.Address;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 import com.boomchanotai.mine3Standard.services.TpaService;
 import com.boomchanotai.mine3Standard.utils.Utils;
@@ -56,7 +56,7 @@ public class TpaCommand implements CommandExecutor {
         }
 
         if (tpaService.hasTpaRequest(toPlayerAddress, "TPA")
-                && tpaService.getTpaRequest(toPlayerAddress).getFirst().equals(fromPlayerAddress)) {
+                && tpaService.getTpaRequest(toPlayerAddress).getKey().equals(fromPlayerAddress)) {
             Utils.sendCommandReturnMessage(sender, "Tpa request already sent.");
             return true;
         }

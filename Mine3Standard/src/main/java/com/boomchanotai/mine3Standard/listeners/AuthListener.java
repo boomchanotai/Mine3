@@ -7,12 +7,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.core.entities.Address;
 import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
 import com.boomchanotai.mine3Lib.events.PlayerDisconnectEvent;
 import com.boomchanotai.mine3Standard.entities.PlayerData;
 import com.boomchanotai.mine3Standard.entities.PlayerLocation;
-import com.boomchanotai.mine3Standard.logger.Logger;
+import com.boomchanotai.core.logger.Logger;
 import com.boomchanotai.mine3Standard.repositories.PostgresRepository;
 import com.boomchanotai.mine3Standard.services.PlayerService;
 

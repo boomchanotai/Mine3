@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.bukkit.GameMode;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
-import com.boomchanotai.mine3Lib.address.Address;
+import com.boomchanotai.mine3Lib.core.entities.Address;
 
 public class PlayerData {
     private Address address;

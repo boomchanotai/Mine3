@@ -2,11 +2,13 @@ package com.boomchanotai.mine3Lib;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.boomchanotai.core.logger.Logger;
+import com.boomchanotai.core.redis.Redis;
+import com.boomchanotai.core.repositories.RedisRepository;
 import com.boomchanotai.mine3Lib.commands.LibCommand;
 import com.boomchanotai.mine3Lib.commands.LibTabCompletion;
 import com.boomchanotai.mine3Lib.config.Config;
 import com.boomchanotai.mine3Lib.listeners.PlayerListener;
-import com.boomchanotai.mine3Lib.redis.Redis;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 public final class Mine3Lib extends JavaPlugin {
@@ -19,12 +21,15 @@ public final class Mine3Lib extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        Logger.init(this);
 
         // Config.yml
         Config.saveDefaultConfig();
         Config.loadConfig();
 
-        Redis.connect();
+        Redis.init(Config.REDIS_HOST, Config.REDIS_PORT);
+
+        RedisRepository.init(this, Config.PLAYER_ADDRESS_KEY, Config.PLAYER_PLAYER_KEY);
 
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
@@ -36,6 +41,6 @@ public final class Mine3Lib extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         PlayerRepository.clearPlayer();
-        Redis.close();
+        Redis.disconnect();
     }
 }

@@ -4,9 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.boomchanotai.mine3Lib.address.Address;
-import com.boomchanotai.mine3Permission.logger.Logger;
-import com.boomchanotai.mine3Permission.postgres.Postgres;
+import com.boomchanotai.mine3Lib.core.entities.Address;
+import com.boomchanotai.core.logger.Logger;
+import com.boomchanotai.core.postgres.Postgres;
 
 public class PostgresRepository {
     public void createGroup(Address address, String group) {

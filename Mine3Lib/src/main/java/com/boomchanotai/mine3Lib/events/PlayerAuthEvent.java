@@ -3,7 +3,8 @@ package com.boomchanotai.mine3Lib.events;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import com.boomchanotai.mine3Lib.address.Address;
+
+import com.boomchanotai.core.entities.Address;
 
 public class PlayerAuthEvent extends Event {
     private static final HandlerList handlers = new HandlerList();

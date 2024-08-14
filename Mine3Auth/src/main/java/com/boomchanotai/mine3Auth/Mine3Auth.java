@@ -1,5 +1,7 @@
 package com.boomchanotai.mine3Auth;
 
+import com.boomchanotai.core.logger.Logger;
+import com.boomchanotai.core.redis.Redis;
 import com.boomchanotai.mine3Auth.commands.AddressCommand;
 import com.boomchanotai.mine3Auth.commands.LogoutCommand;
 import com.boomchanotai.mine3Auth.commands.AuthCommand;
@@ -9,7 +11,6 @@ import com.boomchanotai.mine3Auth.config.SpawnConfig;
 import com.boomchanotai.mine3Auth.listeners.AuthListener;
 import com.boomchanotai.mine3Auth.listeners.PlayerJoinQuitEvent;
 import com.boomchanotai.mine3Auth.listeners.PreventPlayerActionWhenNotLoggedIn;
-import com.boomchanotai.mine3Auth.redis.Redis;
 import com.boomchanotai.mine3Auth.repositories.RedisRepository;
 import com.boomchanotai.mine3Auth.server.Server;
 import com.boomchanotai.mine3Auth.services.AuthService;
@@ -30,6 +31,7 @@ public final class Mine3Auth extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        Logger.init(this);
 
         // Configuration
         Config.saveDefaultConfig();
@@ -40,7 +42,7 @@ public final class Mine3Auth extends JavaPlugin {
         SpawnConfig.loadConfig();
 
         // Redis
-        Redis.connect();
+        Redis.init(Config.REDIS_HOST, Config.REDIS_PORT);
 
         // Dependencies
         RedisRepository redisRepo = new RedisRepository();
@@ -78,5 +80,6 @@ public final class Mine3Auth extends JavaPlugin {
 
         // Stop HTTP Server
         Server.stopServer();
+        Redis.disconnect();
     }
 }

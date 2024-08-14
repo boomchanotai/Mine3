@@ -1,4 +1,4 @@
-package com.boomchanotai.mine3Lib.address;
+package com.boomchanotai.core.entities;
 
 public class Address {
     private org.web3j.abi.datatypes.Address address;

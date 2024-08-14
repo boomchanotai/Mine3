@@ -3,41 +3,26 @@ package com.boomchanotai.mine3Lib.repositories;
 import static com.boomchanotai.mine3Lib.config.Config.*;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.json.JSONObject;
 
+import com.boomchanotai.core.entities.Address;
+import com.boomchanotai.core.repositories.RedisRepository;
 import com.boomchanotai.mine3Lib.Mine3Lib;
-import com.boomchanotai.mine3Lib.address.Address;
 import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
-import com.boomchanotai.mine3Lib.logger.Logger;
-import com.boomchanotai.mine3Lib.redis.Redis;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
-import redis.clients.jedis.Jedis;
 
 public class PlayerRepository {
     private static ArrayList<Address> playerList = new ArrayList<>();
 
     // Get All Address in Redis
     public static ArrayList<Address> getAllAddress() {
-        ArrayList<Address> allAddress = new ArrayList<>();
-        try (Jedis j = Redis.getPool().getResource()) {
-            Set<String> addresses = j.hkeys(PLAYER_ADDRESS_KEY);
-            for (String address : addresses) {
-                allAddress.add(new Address(address));
-            }
-        } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to get all address");
-            return null;
-        }
-
-        return allAddress;
+        return RedisRepository.getAllAddress();
     }
 
     // Get All Player in this server
@@ -46,61 +31,18 @@ public class PlayerRepository {
     }
 
     public static Address getAddress(UUID uuid) {
-        String playerInfo = null;
-        try (Jedis j = Redis.getPool().getResource()) {
-            playerInfo = j.hget(PLAYER_PLAYER_KEY, uuid.toString());
-        } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to get player from uuid", uuid.toString());
-            return null;
-        }
-
-        if (playerInfo == null || playerInfo.isEmpty())
-            return null;
-
-        JSONObject player = new JSONObject(playerInfo);
-        String address = player.getString("address");
-        return new Address(address);
+        return RedisRepository.getAddress(uuid);
     }
 
     public static Player getPlayer(Address address) {
-        String playerUUID = null;
-        try (Jedis j = Redis.getPool().getResource()) {
-            playerUUID = j.hget(PLAYER_ADDRESS_KEY, address.getValue());
-        } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to get player from address", address.getValue());
-            return null;
-        }
-
-        if (playerUUID == null || playerUUID.isEmpty())
-            return null;
-
-        UUID uuid = UUID.fromString(playerUUID);
-        Player player = Mine3Lib.getPlugin().getServer().getPlayer(uuid);
-        return player;
+        return RedisRepository.getPlayer(address);
     }
 
     public static void setPlayer(Address address, Player player, boolean forceRespawn) {
-        // 1. Set player pair of address, (string) uuid
-        try (Jedis j = Redis.getPool().getResource()) {
-            j.hset(PLAYER_ADDRESS_KEY, address.getValue(), player.getUniqueId().toString());
-        } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to set player address key", address.getValue());
-        }
-
-        // 2. Set player pair of uuid, (json) { address }
-        JSONObject playerInfo = new JSONObject();
-        playerInfo.put("address", address);
-        playerInfo.put("name", player.getName());
-        playerInfo.put("ipAddress", player.getAddress().getAddress().getHostAddress());
-        try (Jedis j = Redis.getPool().getResource()) {
-            j.hset(PLAYER_PLAYER_KEY, player.getUniqueId().toString(), playerInfo.toString());
-        } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to set player player key", player.getUniqueId().toString());
-        }
-
+        RedisRepository.setPlayer(address, player);
         playerList.add(address);
 
-        // 3. Call PlayerAuthEvent
+        // Call PlayerAuthEvent
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -121,30 +63,12 @@ public class PlayerRepository {
             return;
         }
 
-        try (Jedis j = Redis.getPool().getResource()) {
-            j.hdel(PLAYER_ADDRESS_KEY, address.getValue());
-        } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to remove player address key", address.getValue());
-        }
-
-        try (
-                Jedis j = Redis.getPool().getResource()) {
-            j.hdel(PLAYER_PLAYER_KEY, player.getUniqueId().toString());
-        } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to remove player player key",
-                    player.getUniqueId().toString());
-        }
-
+        RedisRepository.removePlayer(address);
         playerList.remove(address);
     }
 
     public static void clearPlayer() {
-        try (Jedis j = Redis.getPool().getResource()) {
-            j.del(PLAYER_ADDRESS_KEY);
-            j.del(PLAYER_PLAYER_KEY);
-        } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to clear player");
-        }
+        RedisRepository.clearPlayer();
 
         playerList.clear();
     }

@@ -1,14 +1,14 @@
 package com.boomchanotai.mine3Auth.services;
 
-import com.boomchanotai.mine3Lib.address.Address;
-import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
-
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import com.boomchanotai.mine3Lib.core.entities.Address;
+import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 import static com.boomchanotai.mine3Lib.config.Config.COLOR_CODE_PREFIX;
 import static com.boomchanotai.mine3Auth.config.Config.*;
