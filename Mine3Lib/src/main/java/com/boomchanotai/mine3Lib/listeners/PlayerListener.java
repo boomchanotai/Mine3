@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.boomchanotai.core.entities.Address;
+import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
 import com.boomchanotai.mine3Lib.events.PlayerDisconnectEvent;
 import com.boomchanotai.mine3Lib.events.PreAuthEvent;
 import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
@@ -22,6 +23,8 @@ public class PlayerListener implements Listener {
         // This case should happen when using velocity
         if (address != null) {
             PlayerRepository.addPlayerList(address, player);
+            PlayerAuthEvent playerAuthEvent = new PlayerAuthEvent(address, player);
+            Bukkit.getPluginManager().callEvent(playerAuthEvent);
             return;
         }
 
