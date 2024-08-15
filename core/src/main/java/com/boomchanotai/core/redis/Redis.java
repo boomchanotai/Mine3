@@ -1,5 +1,7 @@
 package com.boomchanotai.core.redis;
 
+import com.boomchanotai.core.logger.Logger;
+
 import redis.clients.jedis.JedisPool;
 
 public class Redis {
@@ -24,9 +26,11 @@ public class Redis {
 
     public static void connect() {
         pool = new JedisPool(host, port);
+        Logger.info("Connected to Redis");
     }
 
     public static void disconnect() {
         getPool().close();
+        Logger.info("Disconnected to Redis");
     }
 }

@@ -71,8 +71,7 @@ public class AuthService {
         }
 
         // 4. Set Player
-        PlayerRepository.setPlayer(address, player, AUTH_FORCE_RESPAWN); // Set player in Mine3Lib
-        playerService.addPlayer(playerUUID); // Add player to player list
+        PlayerRepository.setPlayer(address, player, AUTH_FORCE_RESPAWN); // Add player to Redis & PlayerList
         redisRepo.deleteToken(token); // Delete login token
     }
 
@@ -86,8 +85,7 @@ public class AuthService {
     }
 
     public void disconnect(Address address, Player player) {
-        playerService.removePlayer(player.getUniqueId()); // Remove player from player list
-        PlayerRepository.removePlayer(address); // Remove player from Mine3Lib
+        PlayerRepository.removePlayer(address); // Remove player from Redis & PlayerList
         playerService.sendQuitMessage(address);
     }
 }

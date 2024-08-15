@@ -16,6 +16,16 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Address address = PlayerRepository.getAddress(player.getUniqueId());
+        // If player is already authenticated
+        // This case should happen when using velocity
+        if (address != null) {
+            PlayerRepository.addPlayerList(address, player);
+            return;
+        }
+
+        // If player is not authenticated
         PreAuthEvent preAuthEvent = new PreAuthEvent(event.getPlayer());
         Bukkit.getPluginManager().callEvent(preAuthEvent);
     }
@@ -24,10 +34,13 @@ public class PlayerListener implements Listener {
     public void onPlayerLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         Address address = PlayerRepository.getAddress(player.getUniqueId());
+        // If player is not authenticated yet
         if (address == null) {
             return;
         }
+        PlayerRepository.removePlayerList(address, player);
 
+        // If player is authenticated
         PlayerDisconnectEvent playerDisconnectEvent = new PlayerDisconnectEvent(address, player);
         Bukkit.getPluginManager().callEvent(playerDisconnectEvent);
     }

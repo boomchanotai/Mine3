@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.boomchanotai.mine3Auth.services.PlayerService;
+import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 
 public class PlayerActionListener implements Listener {
     private PlayerService playerService;
@@ -19,8 +20,8 @@ public class PlayerActionListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (!playerService.getPlayerList().isEmpty()
-                && playerService.getPlayerList().getOrDefault(player.getUniqueId(), false)) {
+        if (!PlayerRepository.getUUIDList().isEmpty()
+                && PlayerRepository.getUUIDList().getOrDefault(player.getUniqueId(), false)) {
             return;
         }
 
@@ -31,8 +32,8 @@ public class PlayerActionListener implements Listener {
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        if (!playerService.getPlayerList().isEmpty()
-                && playerService.getPlayerList().getOrDefault(player.getUniqueId(), false)) {
+        if (!PlayerRepository.getUUIDList().isEmpty()
+                && PlayerRepository.getUUIDList().getOrDefault(player.getUniqueId(), false)) {
             return;
         }
 
@@ -43,8 +44,8 @@ public class PlayerActionListener implements Listener {
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        if (!playerService.getPlayerList().isEmpty()
-                && playerService.getPlayerList().getOrDefault(player.getUniqueId(), false)) {
+        if (!PlayerRepository.getUUIDList().isEmpty()
+                && PlayerRepository.getUUIDList().getOrDefault(player.getUniqueId(), false)) {
             return;
         }
 

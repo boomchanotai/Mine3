@@ -76,7 +76,6 @@ public final class Mine3Auth extends JavaPlugin {
     public void onDisable() {
         // Disconnect all players when server stop / reload
         getServer().getOnlinePlayers().forEach(authService::disconnect);
-        playerService.removeAll();
 
         // Stop HTTP Server
         Server.stopServer();
