@@ -54,7 +54,7 @@ public class PermissionTabCompletion implements TabCompleter {
 
         if (args.length == 3) {
             if (args[0].equals("has") || args[0].equals("set-group")) {
-                ArrayList<Address> address = PlayerRepository.getOnlinePlayers();
+                Set<Address> address = PlayerRepository.getOnlinePlayers();
                 for (Address a : address) {
                     if (a.getValue().toLowerCase().contains(args[2].toLowerCase())) {
                         subCommand.add(a.getValue());
