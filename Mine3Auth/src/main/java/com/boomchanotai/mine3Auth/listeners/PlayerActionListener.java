@@ -9,10 +9,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.boomchanotai.mine3Auth.services.PlayerService;
 
-public class PreventPlayerActionWhenNotLoggedIn implements Listener {
+public class PlayerActionListener implements Listener {
     private PlayerService playerService;
 
-    public PreventPlayerActionWhenNotLoggedIn(PlayerService playerService) {
+    public PlayerActionListener(PlayerService playerService) {
         this.playerService = playerService;
     }
 
