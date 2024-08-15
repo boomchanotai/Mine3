@@ -46,7 +46,7 @@ public class BanCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 PlayerRepository.sendMessage((Player) sender, ChatColor.RED + "Player not found.");
             } else {
-                Logger.getLogger().warning("Player not found.");
+                Logger.warning("Player not found.");
             }
             return true;
         }
@@ -55,7 +55,7 @@ public class BanCommand implements CommandExecutor {
         if (sender instanceof Player) {
             PlayerRepository.sendMessage((Player) sender, args[0] + " has been banned.");
         } else {
-            Logger.getLogger().warning(args[0] + " has been banned.");
+            Logger.warning(args[0] + " has been banned.");
         }
 
         return true;

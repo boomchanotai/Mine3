@@ -62,7 +62,7 @@ public class InvseeCommand implements CommandExecutor, Listener {
                 message += item.getAmount() + "x" + item.getType().name() + ", ";
             }
 
-            Logger.getLogger().info(message);
+            Logger.info(message);
         }
 
         return true;

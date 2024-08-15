@@ -21,7 +21,7 @@ public class Postgres {
                 connect();
             }
         } catch (SQLException e) {
-            Logger.getLogger().warning(e.getMessage(), "Fail to check connection status.");
+            Logger.warning(e.getMessage(), "Fail to check connection status.");
         }
 
         return connection;
@@ -39,19 +39,19 @@ public class Postgres {
             DriverManager.registerDriver(new Driver());
             connection = DriverManager.getConnection(host, username, password);
         } catch (SQLException e) {
-            Logger.getLogger().warning(e.getMessage(), "Fail to connect database.");
+            Logger.warning(e.getMessage(), "Fail to connect database.");
         }
 
-        Logger.getLogger().info("Connected to database!");
+        Logger.info("Connected to database!");
     }
 
     public static void disconnect() {
         try {
             connection.close();
         } catch (SQLException e) {
-            Logger.getLogger().warning(e.getMessage(), "Fail to disconnect database.");
+            Logger.warning(e.getMessage(), "Fail to disconnect database.");
         }
 
-        Logger.getLogger().info("Disconnected to database!");
+        Logger.info("Disconnected to database!");
     }
 }

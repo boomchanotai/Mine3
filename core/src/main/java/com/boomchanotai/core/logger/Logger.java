@@ -20,4 +20,12 @@ public class Logger {
     public static LoggerAdapter getLogger() {
         return logger;
     }
+
+    public static void info(String message, String... msg) {
+        logger.info(message, msg);
+    }
+
+    public static void warning(String message, String... msg) {
+        logger.warning(message, msg);
+    }
 }

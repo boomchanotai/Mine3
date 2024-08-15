@@ -21,7 +21,7 @@ public class PostgresRepository {
             preparedStatement.setString(2, group);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to create group");
+            Logger.warning(e.getMessage(), "failed to create group");
         }
     }
 
@@ -41,7 +41,7 @@ public class PostgresRepository {
                 return res.getString("group");
             }
         } catch (SQLException e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to get group");
+            Logger.warning(e.getMessage(), "failed to get group");
         }
 
         return null;

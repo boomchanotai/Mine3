@@ -37,7 +37,7 @@ public class ItemStackAdapter {
         try {
             return objectMapper.writeValueAsString(itemMap);
         } catch (JsonProcessingException e) {
-            Logger.getLogger().warning(e.getMessage());
+            Logger.warning(e.getMessage());
         }
 
         return null;
@@ -68,16 +68,16 @@ public class ItemStackAdapter {
         try {
             itemStackNode = objectMapper.readTree(itemStackJson);
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "Failed to parse itemStack from PGObject");
+            Logger.warning(e.getMessage(), "Failed to parse itemStack from PGObject");
         }
 
         if (itemStackNode == null) {
-            Logger.getLogger().warning("ItemStackNode is null");
+            Logger.warning("ItemStackNode is null");
             return null;
         }
 
         if (!itemStackNode.isArray()) {
-            Logger.getLogger().warning("itemStackNode is not an array");
+            Logger.warning("itemStackNode is not an array");
             return null;
         }
 
@@ -118,7 +118,7 @@ public class ItemStackAdapter {
         try {
             itemStackObject.setValue(itemStackArray.toString());
         } catch (SQLException e) {
-            Logger.getLogger().warning(e.getMessage(), "Failed to set value to PGObject");
+            Logger.warning(e.getMessage(), "Failed to set value to PGObject");
         }
 
         return itemStackObject;

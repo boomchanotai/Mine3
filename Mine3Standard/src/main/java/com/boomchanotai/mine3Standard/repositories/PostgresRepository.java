@@ -37,7 +37,7 @@ public class PostgresRepository {
 
             return res.next();
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to check if player exist");
+            Logger.warning(e.getMessage(), "failed to check if player exist");
         }
 
         return false;
@@ -100,7 +100,7 @@ public class PostgresRepository {
                 return playerData;
             }
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to get player data");
+            Logger.warning(e.getMessage(), "failed to get player data");
         }
 
         return null;
@@ -132,7 +132,7 @@ public class PostgresRepository {
             preparedStatement.setString(9, playerData.getPlayerLocation().getWorld().getName());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to create new player");
+            Logger.warning(e.getMessage(), "failed to create new player");
         }
 
     }
@@ -195,7 +195,7 @@ public class PostgresRepository {
             preparedStatement.setString(23, playerData.getAddress().getValue());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to update user inventory");
+            Logger.warning(e.getMessage(), "failed to update user inventory");
         }
     }
 
@@ -209,7 +209,7 @@ public class PostgresRepository {
             preparedStatement.setString(1, address.getValue());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to update user login");
+            Logger.warning(e.getMessage(), "failed to update user login");
         }
     }
 
@@ -227,7 +227,7 @@ public class PostgresRepository {
                 bannedPlayers.add(address);
             }
         } catch (SQLException e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to get banned players");
+            Logger.warning(e.getMessage(), "failed to get banned players");
         }
 
         return bannedPlayers;
@@ -245,7 +245,7 @@ public class PostgresRepository {
             preparedStatement.setString(2, address.getValue());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to update user ban status");
+            Logger.warning(e.getMessage(), "failed to update user ban status");
         }
     }
 }

@@ -30,7 +30,7 @@ public class SpawnConfig {
         try {
             spawnConfig.load(spawnConfigFile);
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "Fail to load spawn.yml");
+            Logger.warning(e.getMessage(), "Fail to load spawn.yml");
         }
     }
 
@@ -38,7 +38,7 @@ public class SpawnConfig {
         try {
             spawnConfig.save(spawnConfigFile);
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "Fail to save spawn.yml");
+            Logger.warning(e.getMessage(), "Fail to save spawn.yml");
         }
     }
 
@@ -51,7 +51,7 @@ public class SpawnConfig {
         List<World> worlds = Mine3Standard.getPlugin().getServer().getWorlds();
 
         if (worlds.size() < 1) {
-            Logger.getLogger().warning("No world found", "Fail to set spawn location");
+            Logger.warning("No world found", "Fail to set spawn location");
             return;
         }
 

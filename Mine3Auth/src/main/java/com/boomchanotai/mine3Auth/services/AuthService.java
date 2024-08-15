@@ -53,20 +53,20 @@ public class AuthService {
         // 1. Get player UUID
         UUID playerUUID = redisRepo.getPlayerUUIDFromToken(token);
         if (playerUUID == null) {
-            Logger.getLogger().warning("INVALID_TOKEN", "Can't get player from token.", address.getValue());
+            Logger.warning("INVALID_TOKEN", "Can't get player from token.", address.getValue());
             throw new Exception("INVALID_TOKEN");
         }
 
         // 2. Get player from spigot
         Player player = Mine3Auth.getPlugin().getServer().getPlayer(playerUUID);
         if (player == null) {
-            Logger.getLogger().warning("PLAYER_NOT_IN_GAME", "Not found player in game.", address.getValue());
+            Logger.warning("PLAYER_NOT_IN_GAME", "Not found player in game.", address.getValue());
             throw new Exception("PLAYER_NOT_IN_GAME");
         }
 
         // 3. Get Player from Address
         if (PlayerRepository.getPlayer(address) != null) {
-            Logger.getLogger().warning("ADDRESS_ALREADY_USED", "Address already used", address.getValue());
+            Logger.warning("ADDRESS_ALREADY_USED", "Address already used", address.getValue());
             throw new Exception("ADDRESS_ALREADY_USED");
         }
 

@@ -30,7 +30,7 @@ public class RedisRepository {
                 allAddress.add(new Address(address));
             }
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to get all address");
+            Logger.warning(e.getMessage(), "failed to get all address");
             return null;
         }
 
@@ -42,7 +42,7 @@ public class RedisRepository {
         try (Jedis j = Redis.getPool().getResource()) {
             playerInfo = j.hget(playerKey, uuid.toString());
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to get player from uuid", uuid.toString());
+            Logger.warning(e.getMessage(), "failed to get player from uuid", uuid.toString());
             return null;
         }
 
@@ -59,7 +59,7 @@ public class RedisRepository {
         try (Jedis j = Redis.getPool().getResource()) {
             playerUUID = j.hget(addressKey, address.getValue());
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to get player from address", address.getValue());
+            Logger.warning(e.getMessage(), "failed to get player from address", address.getValue());
             return null;
         }
 
@@ -74,7 +74,7 @@ public class RedisRepository {
         try (Jedis j = Redis.getPool().getResource()) {
             j.hset(addressKey, address.getValue(), player.getUniqueId().toString());
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to set player address key", address.getValue());
+            Logger.warning(e.getMessage(), "failed to set player address key", address.getValue());
         }
 
         // 2. Set player pair of uuid, (json) { address }
@@ -85,7 +85,7 @@ public class RedisRepository {
         try (Jedis j = Redis.getPool().getResource()) {
             j.hset(playerKey, player.getUniqueId().toString(), playerInfo.toString());
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to set player player key",
+            Logger.warning(e.getMessage(), "failed to set player player key",
                     player.getUniqueId().toString());
         }
     }
@@ -103,14 +103,14 @@ public class RedisRepository {
         try (Jedis j = Redis.getPool().getResource()) {
             j.hdel(addressKey, address.getValue());
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to remove player address key", address.getValue());
+            Logger.warning(e.getMessage(), "failed to remove player address key", address.getValue());
         }
 
         try (
                 Jedis j = Redis.getPool().getResource()) {
             j.hdel(playerKey, playerUUID.toString());
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to remove player player key",
+            Logger.warning(e.getMessage(), "failed to remove player player key",
                     playerUUID.toString());
         }
     }
@@ -120,7 +120,7 @@ public class RedisRepository {
             j.del(addressKey);
             j.del(playerKey);
         } catch (Exception e) {
-            Logger.getLogger().warning(e.getMessage(), "failed to clear player");
+            Logger.warning(e.getMessage(), "failed to clear player");
         }
     }
 }
