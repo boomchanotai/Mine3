@@ -9,7 +9,7 @@ import com.boomchanotai.mine3Auth.commands.AuthTabCompletion;
 import com.boomchanotai.mine3Auth.config.Config;
 import com.boomchanotai.mine3Auth.config.SpawnConfig;
 import com.boomchanotai.mine3Auth.listeners.AuthListener;
-import com.boomchanotai.mine3Auth.listeners.PlayerJoinQuitEvent;
+import com.boomchanotai.mine3Auth.listeners.PlayerJoinQuitListener;
 import com.boomchanotai.mine3Auth.listeners.PlayerActionListener;
 import com.boomchanotai.mine3Auth.repositories.RedisRepository;
 import com.boomchanotai.mine3Auth.server.Server;
@@ -56,7 +56,7 @@ public final class Mine3Auth extends JavaPlugin {
         server.startServer();
 
         // Register Events
-        getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerActionListener(playerService), this);
         getServer().getPluginManager().registerEvents(new AuthListener(authService, playerService), this);
 
