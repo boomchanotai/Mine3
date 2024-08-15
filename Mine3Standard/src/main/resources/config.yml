@@ -8,6 +8,7 @@ postgres:
   host: "jdbc:postgresql://localhost:5432/postgres"
   username: "postgres"
   password: "password"
+  user_table: "users"
 
 # Plugin Settings
 # {displayname} will be replaced with the player's display name with prefix and suffix group

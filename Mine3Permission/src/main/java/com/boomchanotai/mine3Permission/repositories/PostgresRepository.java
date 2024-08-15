@@ -8,9 +8,11 @@ import com.boomchanotai.mine3Lib.core.entities.Address;
 import com.boomchanotai.core.logger.Logger;
 import com.boomchanotai.core.postgres.Postgres;
 
+import static com.boomchanotai.mine3Permission.config.Config.POSTGRES_GROUP_TABLE;
+
 public class PostgresRepository {
     public void createGroup(Address address, String group) {
-        String query = "INSERT INTO groups (address, \"group\") \n" +
+        String query = "INSERT INTO " + POSTGRES_GROUP_TABLE + " (address, \"group\") \n" +
                 "VALUES (?, ?) \n" +
                 "ON CONFLICT (address) \n" +
                 "DO UPDATE SET \"group\" = EXCLUDED.\"group\";";
@@ -26,7 +28,7 @@ public class PostgresRepository {
     }
 
     public String getGroup(Address address) {
-        String query = "SELECT * FROM groups WHERE address = ?";
+        String query = "SELECT * FROM " + POSTGRES_GROUP_TABLE + " WHERE address = ?";
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);

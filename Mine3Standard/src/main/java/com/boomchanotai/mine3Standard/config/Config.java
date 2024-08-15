@@ -9,6 +9,7 @@ public class Config {
     public static String POSTGRES_HOST;
     public static String POSTGRES_USERNAME;
     public static String POSTGRES_PASSWORD;
+    public static String POSTGRES_USER_TABLE;
 
     // Chat Settings
     public static String CHAT_FORMAT;
@@ -26,6 +27,7 @@ public class Config {
         POSTGRES_HOST = config.getString("postgres.host");
         POSTGRES_USERNAME = config.getString("postgres.username");
         POSTGRES_PASSWORD = config.getString("postgres.password");
+        POSTGRES_USER_TABLE = config.getString("postgres.user_table");
 
         CHAT_FORMAT = config.getString("chat_format");
 
