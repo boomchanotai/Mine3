@@ -2,7 +2,7 @@ package com.boomchanotai.mine3AuthPaper;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.boomchanotai.mine3Lib.listeners.PlayerListener;
+import com.boomchanotai.mine3AuthPaper.listeners.PaperListener;
 
 public final class Mine3AuthPaper extends JavaPlugin {
     private static Mine3AuthPaper plugin;
@@ -14,7 +14,7 @@ public final class Mine3AuthPaper extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        getServer().getPluginManager().registerEvents(new PaperListener(), this);
     }
 
     @Override

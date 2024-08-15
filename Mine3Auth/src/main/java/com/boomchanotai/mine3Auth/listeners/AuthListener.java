@@ -2,6 +2,7 @@ package com.boomchanotai.mine3Auth.listeners;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.boomchanotai.mine3Auth.services.AuthService;
@@ -21,13 +22,17 @@ public class AuthListener implements Listener {
         this.playerService = playerService;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void preAuth(PreAuthEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         Player player = event.getPlayer();
         authService.connect(player);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerAuth(PlayerAuthEvent event) {
         Address address = event.getAddress();
         Player player = event.getPlayer();
@@ -38,8 +43,12 @@ public class AuthListener implements Listener {
         PlayerRepository.sendMessage(player, "Login as " + address);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onDisconnect(PlayerDisconnectEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         Address address = event.getAddress();
         Player player = event.getPlayer();
 
