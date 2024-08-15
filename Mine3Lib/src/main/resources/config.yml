@@ -13,6 +13,7 @@ color_code_prefix: "&"
 redis:
   host: "localhost"
   port: 6379
+  clear_on_disable: true # Clear all data when plugin disable
 
 # Player data settings
 player:

@@ -114,8 +114,10 @@ public class PlayerRepository {
     }
 
     public static void clearPlayer() {
-        RedisRepository.clearPlayer();
         clearPlayerList();
+        if (REDIS_CLEAR_ON_DISABLE) {
+            RedisRepository.clearPlayer();
+        }
     }
 
     public static void sendMessage(Player player, String message) {

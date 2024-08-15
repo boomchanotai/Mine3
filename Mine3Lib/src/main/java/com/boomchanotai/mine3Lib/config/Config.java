@@ -14,6 +14,7 @@ public class Config {
     // Redis Settings
     public static String REDIS_HOST;
     public static int REDIS_PORT;
+    public static boolean REDIS_CLEAR_ON_DISABLE;
 
     // Player Settings
     public static String PLAYER_ADDRESS_KEY;
@@ -31,6 +32,7 @@ public class Config {
 
         REDIS_HOST = config.getString("redis.host");
         REDIS_PORT = config.getInt("redis.port");
+        REDIS_CLEAR_ON_DISABLE = config.getBoolean("redis.clear_on_disable");
 
         PLAYER_ADDRESS_KEY = config.getString("player.address_key");
         PLAYER_PLAYER_KEY = config.getString("player.player_key");
