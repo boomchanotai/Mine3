@@ -250,7 +250,7 @@ public final class Mine3Standard extends JavaPlugin {
         }
 
         try {
-            statement.execute("CREATE TABLE IF NOT EXISTS \"users\" (\n" +
+            statement.execute("CREATE TABLE IF NOT EXISTS \"" + Config.POSTGRES_USER_TABLE + "\" (\n" +
                     "\t\"address\" TEXT PRIMARY KEY,\n" +
                     "\t\"ens_domain\" TEXT NOT NULL DEFAULT '',\n" +
                     "\t\"is_logged_in\" BOOLEAN NOT NULL DEFAULT FALSE,\n" +

@@ -63,7 +63,7 @@ public final class Mine3Permission extends JavaPlugin {
         }
 
         try {
-            statement.execute("CREATE TABLE IF NOT EXISTS \"groups\" (\n" +
+            statement.execute("CREATE TABLE IF NOT EXISTS \"" + Config.POSTGRES_GROUP_TABLE + "\" (\n" +
                     "\t\"address\" TEXT PRIMARY KEY,\n" +
                     "\t\"group\" TEXT NOT NULL,\n" +
                     "\t\"metadata\" JSONB NOT NULL DEFAULT '{}',\n" +
