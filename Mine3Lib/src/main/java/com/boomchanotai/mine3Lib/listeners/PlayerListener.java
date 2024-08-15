@@ -6,8 +6,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.boomchanotai.core.entities.Address;
+import com.boomchanotai.mine3Lib.Mine3Lib;
 import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
 import com.boomchanotai.mine3Lib.events.PlayerDisconnectEvent;
 import com.boomchanotai.mine3Lib.events.PreAuthEvent;
@@ -23,8 +25,14 @@ public class PlayerListener implements Listener {
         // This case should happen when using velocity
         if (address != null) {
             PlayerRepository.addPlayerList(address, player);
-            PlayerAuthEvent playerAuthEvent = new PlayerAuthEvent(address, player);
-            Bukkit.getPluginManager().callEvent(playerAuthEvent);
+            BukkitRunnable runnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    PlayerAuthEvent playerAuthEvent = new PlayerAuthEvent(address, player);
+                    Bukkit.getPluginManager().callEvent(playerAuthEvent);
+                }
+            };
+            runnable.runTaskLater(Mine3Lib.getPlugin(), 0);
             return;
         }
 
