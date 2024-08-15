@@ -2,6 +2,7 @@ package com.boomchanotai.mine3Standard.tabcompletion;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,7 +24,7 @@ public class SpeedTabCompletion implements TabCompleter {
         }
 
         if (args.length == 2) {
-            ArrayList<Address> address = PlayerRepository.getOnlinePlayers();
+            Set<Address> address = PlayerRepository.getOnlinePlayers();
             for (Address a : address) {
                 if (a.getValue().toLowerCase().contains(args[1].toLowerCase())) {
                     subCommand.add(a.getValue());

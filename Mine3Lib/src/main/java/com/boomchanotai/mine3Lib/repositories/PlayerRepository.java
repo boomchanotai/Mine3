@@ -3,6 +3,8 @@ package com.boomchanotai.mine3Lib.repositories;
 import static com.boomchanotai.mine3Lib.config.Config.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -10,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.boomchanotai.core.entities.Address;
+import com.boomchanotai.core.logger.Logger;
 import com.boomchanotai.core.repositories.RedisRepository;
 import com.boomchanotai.mine3Lib.Mine3Lib;
 import com.boomchanotai.mine3Lib.events.PlayerAuthEvent;
@@ -18,16 +21,48 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class PlayerRepository {
-    private static ArrayList<Address> playerList = new ArrayList<>();
+    private static HashMap<UUID, Boolean> playerList = new HashMap<>();
+    private static HashMap<Address, Boolean> addressList = new HashMap<>();
 
-    // Get All Address in Redis
-    public static ArrayList<Address> getAllAddress() {
-        return RedisRepository.getAllAddress();
-    }
+    // Plugin PlayerList
 
     // Get All Player in this server
-    public static ArrayList<Address> getOnlinePlayers() {
+    public static Set<Address> getOnlinePlayers() {
+        return addressList.keySet();
+    }
+
+    public static Set<UUID> getOnlineUUIDs() {
+        return playerList.keySet();
+    }
+
+    public static HashMap<Address, Boolean> getAddressList() {
+        return addressList;
+    }
+
+    public static HashMap<UUID, Boolean> getUUIDList() {
         return playerList;
+    }
+
+    public static void addPlayerList(Address address, Player player) {
+        addressList.put(address, true);
+        playerList.put(player.getUniqueId(), true);
+    }
+
+    public static void removePlayerList(Address address, Player player) {
+        addressList.remove(address);
+        playerList.remove(player.getUniqueId());
+    }
+
+    public static void clearPlayerList() {
+        addressList.clear();
+        playerList.clear();
+    }
+
+    // Redis PlayerList
+
+    // Get All Player in Redis
+    public static ArrayList<Address> getAllAddress() {
+        return RedisRepository.getAllAddress();
     }
 
     public static Address getAddress(UUID uuid) {
@@ -35,12 +70,18 @@ public class PlayerRepository {
     }
 
     public static Player getPlayer(Address address) {
-        return RedisRepository.getPlayer(address);
+        UUID playerUUID = RedisRepository.getPlayerUUID(address);
+        if (playerUUID == null) {
+            return null;
+        }
+
+        Player player = Mine3Lib.getPlugin().getServer().getPlayer(playerUUID);
+        return player;
     }
 
     public static void setPlayer(Address address, Player player, boolean forceRespawn) {
         RedisRepository.setPlayer(address, player);
-        playerList.add(address);
+        addPlayerList(address, player);
 
         // Call PlayerAuthEvent
         BukkitRunnable runnable = new BukkitRunnable() {
@@ -60,17 +101,23 @@ public class PlayerRepository {
     public static void removePlayer(Address address) {
         Player player = getPlayer(address);
         if (player == null) {
+            Logger.warning("unexpected event",
+                    "PlayerRepository",
+                    "removePlayer",
+                    "Can't resolve player from address",
+                    address.getValue());
             return;
         }
 
         RedisRepository.removePlayer(address);
-        playerList.remove(address);
+        removePlayerList(address, player);
     }
 
     public static void clearPlayer() {
-        RedisRepository.clearPlayer();
-
-        playerList.clear();
+        clearPlayerList();
+        if (REDIS_CLEAR_ON_DISABLE) {
+            RedisRepository.clearPlayer();
+        }
     }
 
     public static void sendMessage(Player player, String message) {

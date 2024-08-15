@@ -1,0 +1,16 @@
+# Mine3Proxy
+# Velocity Proxy for Mine3Auth
+# Repository: https://github.com/boomchanotai/Mine3
+# Author: BoomChanotai (https://www.boomchanotai.com/)
+
+auth_server: lobby
+
+# Redis Settings
+redis:
+  host: "localhost"
+  port: 6379
+
+# Player data settings
+player:
+  address_key: "mine3:auth:address" # redis key (hash) key: address, value: uuid
+  player_key: "mine3:auth:player" # redis key (hash) key: uuid, value: json (address)

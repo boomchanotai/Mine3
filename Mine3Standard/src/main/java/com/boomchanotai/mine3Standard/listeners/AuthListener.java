@@ -56,7 +56,8 @@ public class AuthListener implements Listener {
         // 3. Restore player state
         PlayerData playerData = pgRepo.getPlayerData(address);
         if (playerData == null) {
-            Logger.warning("PlayerData is null", "Failed to get player data in database.", address.getValue());
+            Logger.warning("PlayerData is null", "Failed to get player data in database.",
+                    address.getValue());
             return;
         }
 

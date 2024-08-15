@@ -1,0 +1,8 @@
+name: Mine3AuthPaper
+version: "1.0-SNAPSHOT"
+main: com.boomchanotai.mine3AuthPaper.Mine3AuthPaper
+api-version: "1.21"
+authors: [BoomChanotai]
+depend: [Mine3Lib]
+description: Velocity paper wrapper for Mine3Auth
+website: https://boomchanotai.com

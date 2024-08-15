@@ -10,6 +10,7 @@ public class Config {
     public static String POSTGRES_HOST;
     public static String POSTGRES_USERNAME;
     public static String POSTGRES_PASSWORD;
+    public static String POSTGRES_GROUP_TABLE;
 
     public static void saveDefaultConfig() {
         Mine3Permission.getPlugin().saveDefaultConfig();
@@ -21,6 +22,7 @@ public class Config {
         POSTGRES_HOST = config.getString("postgres.host");
         POSTGRES_USERNAME = config.getString("postgres.username");
         POSTGRES_PASSWORD = config.getString("postgres.password");
+        POSTGRES_GROUP_TABLE = config.getString("postgres.group_table");
     }
 
     public static void reloadConfig() {

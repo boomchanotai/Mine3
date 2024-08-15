@@ -13,31 +13,7 @@ import com.boomchanotai.mine3Lib.repositories.PlayerRepository;
 import static com.boomchanotai.mine3Lib.config.Config.COLOR_CODE_PREFIX;
 import static com.boomchanotai.mine3Auth.config.Config.*;
 
-import java.util.*;
-
 public class PlayerService {
-    private HashMap<UUID, Boolean> playerList;
-
-    public PlayerService() {
-        playerList = new HashMap<>();
-    }
-
-    public Map<UUID, Boolean> getPlayerList() {
-        return playerList;
-    }
-
-    public void addPlayer(UUID playerUUID) {
-        playerList.put(playerUUID, true);
-    }
-
-    public void removePlayer(UUID playerUUID) {
-        playerList.remove(playerUUID);
-    }
-
-    public void removeAll() {
-        playerList.clear();
-    }
-
     public void sendLoginURL(Player player, String token) {
         String url = AUTH_WEBSITE_TOKEN_BASE_URL + token;
         TextComponent urlComponent = new TextComponent(

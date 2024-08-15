@@ -19,6 +19,8 @@ import com.boomchanotai.mine3Standard.entities.PlayerLocation;
 import com.boomchanotai.core.logger.Logger;
 import com.boomchanotai.core.postgres.Postgres;
 
+import static com.boomchanotai.mine3Standard.config.Config.POSTGRES_USER_TABLE;
+
 public class PostgresRepository {
     private ItemStackAdapter itemStackAdapter;
     private PotionEffectAdapter potionEffectAdapter;
@@ -31,7 +33,7 @@ public class PostgresRepository {
     public boolean isAddressExist(Address address) {
         try {
             PreparedStatement preparedStatement = Postgres.getConnection()
-                    .prepareStatement("SELECT * FROM users WHERE address = ?");
+                    .prepareStatement("SELECT * FROM " + POSTGRES_USER_TABLE + " WHERE address = ?");
             preparedStatement.setString(1, address.getValue());
             ResultSet res = preparedStatement.executeQuery();
 
@@ -44,7 +46,7 @@ public class PostgresRepository {
     }
 
     public PlayerData getPlayerData(Address address) {
-        String query = "SELECT * FROM users WHERE address = ?";
+        String query = "SELECT * FROM " + POSTGRES_USER_TABLE + " WHERE address = ?";
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection()
@@ -107,7 +109,8 @@ public class PostgresRepository {
     }
 
     public void createNewPlayer(PlayerData playerData) {
-        String query = "INSERT INTO users(address, ens_domain, is_logged_in, last_location_x, last_location_y, last_location_z, last_location_yaw, last_location_pitch, last_location_world) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING";
+        String query = "INSERT INTO " + POSTGRES_USER_TABLE
+                + "(address, ens_domain, is_logged_in, last_location_x, last_location_y, last_location_z, last_location_yaw, last_location_pitch, last_location_world) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING";
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
@@ -138,7 +141,8 @@ public class PostgresRepository {
     }
 
     public void updateUserInventory(PlayerData playerData) {
-        String query = "UPDATE users SET ens_domain = ?, is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, game_mode = ?, fly_speed = ?, walk_speed = ?, allow_flight = ?, is_flying = ?, is_op = ?, is_banned = ?, potion_effects = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?";
+        String query = "UPDATE " + POSTGRES_USER_TABLE
+                + " SET ens_domain = ?, is_logged_in = ?, xp_level = ?, xp_exp = ?, health = ?, food_level = ?, game_mode = ?, fly_speed = ?, walk_speed = ?, allow_flight = ?, is_flying = ?, is_op = ?, is_banned = ?, potion_effects = ?, inventory = ?, ender_chest = ?, last_location_x = ?, last_location_y = ?, last_location_z = ?, last_location_yaw = ?, last_location_pitch = ?, last_location_world = ? WHERE address = ?";
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
@@ -200,7 +204,8 @@ public class PostgresRepository {
     }
 
     public void setUserLoggedIn(Address address) {
-        String query = "UPDATE users SET is_logged_in = true, last_login = CURRENT_TIMESTAMP WHERE address = ?";
+        String query = "UPDATE " + POSTGRES_USER_TABLE
+                + " SET is_logged_in = true, last_login = CURRENT_TIMESTAMP WHERE address = ?";
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);
@@ -234,7 +239,7 @@ public class PostgresRepository {
     }
 
     public void setPlayerBanned(Address address, boolean isBanned) {
-        String query = "UPDATE users SET is_banned = ? WHERE address = ?";
+        String query = "UPDATE " + POSTGRES_USER_TABLE + " SET is_banned = ? WHERE address = ?";
 
         try {
             PreparedStatement preparedStatement = Postgres.getConnection().prepareStatement(query);

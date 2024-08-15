@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.json.JSONObject;
 
 import com.boomchanotai.core.entities.Address;
@@ -15,12 +14,10 @@ import com.boomchanotai.core.redis.Redis;
 import redis.clients.jedis.Jedis;
 
 public class RedisRepository {
-    private static JavaPlugin plugin;
     public static String addressKey;
     public static String playerKey;
 
-    public static void init(JavaPlugin plugin, String addressKey, String playerKey) {
-        RedisRepository.plugin = plugin;
+    public static void init(String addressKey, String playerKey) {
         RedisRepository.addressKey = addressKey;
         RedisRepository.playerKey = playerKey;
     }
@@ -57,7 +54,7 @@ public class RedisRepository {
         return new Address(address);
     }
 
-    public static Player getPlayer(Address address) {
+    public static UUID getPlayerUUID(Address address) {
         String playerUUID = null;
         try (Jedis j = Redis.getPool().getResource()) {
             playerUUID = j.hget(addressKey, address.getValue());
@@ -69,9 +66,7 @@ public class RedisRepository {
         if (playerUUID == null || playerUUID.isEmpty())
             return null;
 
-        UUID uuid = UUID.fromString(playerUUID);
-        Player player = plugin.getServer().getPlayer(uuid);
-        return player;
+        return UUID.fromString(playerUUID);
     }
 
     public static void setPlayer(Address address, Player player, boolean forceRespawn) {
@@ -90,7 +85,8 @@ public class RedisRepository {
         try (Jedis j = Redis.getPool().getResource()) {
             j.hset(playerKey, player.getUniqueId().toString(), playerInfo.toString());
         } catch (Exception e) {
-            Logger.warning(e.getMessage(), "failed to set player player key", player.getUniqueId().toString());
+            Logger.warning(e.getMessage(), "failed to set player player key",
+                    player.getUniqueId().toString());
         }
     }
 
@@ -99,8 +95,8 @@ public class RedisRepository {
     }
 
     public static void removePlayer(Address address) {
-        Player player = getPlayer(address);
-        if (player == null) {
+        UUID playerUUID = getPlayerUUID(address);
+        if (playerUUID == null) {
             return;
         }
 
@@ -112,10 +108,10 @@ public class RedisRepository {
 
         try (
                 Jedis j = Redis.getPool().getResource()) {
-            j.hdel(playerKey, player.getUniqueId().toString());
+            j.hdel(playerKey, playerUUID.toString());
         } catch (Exception e) {
             Logger.warning(e.getMessage(), "failed to remove player player key",
-                    player.getUniqueId().toString());
+                    playerUUID.toString());
         }
     }
 

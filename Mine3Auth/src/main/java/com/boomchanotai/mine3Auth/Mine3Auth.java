@@ -9,8 +9,8 @@ import com.boomchanotai.mine3Auth.commands.AuthTabCompletion;
 import com.boomchanotai.mine3Auth.config.Config;
 import com.boomchanotai.mine3Auth.config.SpawnConfig;
 import com.boomchanotai.mine3Auth.listeners.AuthListener;
-import com.boomchanotai.mine3Auth.listeners.PlayerJoinQuitEvent;
-import com.boomchanotai.mine3Auth.listeners.PreventPlayerActionWhenNotLoggedIn;
+import com.boomchanotai.mine3Auth.listeners.PlayerJoinQuitListener;
+import com.boomchanotai.mine3Auth.listeners.PlayerActionListener;
 import com.boomchanotai.mine3Auth.repositories.RedisRepository;
 import com.boomchanotai.mine3Auth.server.Server;
 import com.boomchanotai.mine3Auth.services.AuthService;
@@ -31,7 +31,7 @@ public final class Mine3Auth extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        Logger.init(this);
+        Logger.init(getLogger());
 
         // Configuration
         Config.saveDefaultConfig();
@@ -56,8 +56,8 @@ public final class Mine3Auth extends JavaPlugin {
         server.startServer();
 
         // Register Events
-        getServer().getPluginManager().registerEvents(new PlayerJoinQuitEvent(), this);
-        getServer().getPluginManager().registerEvents(new PreventPlayerActionWhenNotLoggedIn(playerService), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerActionListener(playerService), this);
         getServer().getPluginManager().registerEvents(new AuthListener(authService, playerService), this);
 
         // Register Commands
@@ -76,7 +76,6 @@ public final class Mine3Auth extends JavaPlugin {
     public void onDisable() {
         // Disconnect all players when server stop / reload
         getServer().getOnlinePlayers().forEach(authService::disconnect);
-        playerService.removeAll();
 
         // Stop HTTP Server
         Server.stopServer();
