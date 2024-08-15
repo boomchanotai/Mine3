@@ -10,7 +10,6 @@ title: "&9[Mine3] &7"
 color_code_prefix: "&"
 
 # Redis Settings
-# you can't disable this because we store player data in redis
 redis:
   host: "localhost"
   port: 6379
