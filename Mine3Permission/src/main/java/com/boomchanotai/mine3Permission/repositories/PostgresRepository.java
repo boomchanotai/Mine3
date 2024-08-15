@@ -33,10 +33,6 @@ public class PostgresRepository {
             preparedStatement.setString(1, address.getValue());
             ResultSet res = preparedStatement.executeQuery();
 
-            if (res.next() == false) {
-                return null;
-            }
-
             if (res.next()) {
                 return res.getString("group");
             }
