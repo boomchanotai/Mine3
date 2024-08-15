@@ -18,9 +18,8 @@ public class PlayerDisconnectListener implements AwaitingEventExecutor<Disconnec
 
         return EventTask.async(() -> {
             Address address = RedisRepository.getAddress(event.getPlayer().getUniqueId());
-            if (address == null) 
+            if (address == null)
                 return;
-            
 
             RedisRepository.removePlayer(address);
         });

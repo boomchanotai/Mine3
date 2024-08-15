@@ -1,9 +1,12 @@
 package com.boomchanotai.mine3AuthProxy;
 
+import com.boomchanotai.core.redis.Redis;
+import com.boomchanotai.core.repositories.RedisRepository;
 import com.boomchanotai.mine3AuthProxy.config.Config;
 import com.boomchanotai.mine3AuthProxy.listeners.PlayerDisconnectListener;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
+import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.plugin.Plugin;
@@ -32,6 +35,9 @@ public class Mine3AuthProxy {
         plugin = this;
 
         Config.loadConfig(dataDirectory);
+        Redis.init(Config.REDIS_HOST, Config.REDIS_PORT);
+
+        RedisRepository.init(Config.PLAYER_ADDRESS_KEY, Config.PLAYER_PLAYER_KEY);
     }
 
     public ProxyServer getServer() {
@@ -41,5 +47,11 @@ public class Mine3AuthProxy {
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         server.getEventManager().register(this, DisconnectEvent.class, new PlayerDisconnectListener());
+    }
+
+    @Subscribe
+    public void onProxyDisable(ProxyShutdownEvent event) {
+        RedisRepository.clearPlayer();
+        Redis.disconnect();
     }
 }
